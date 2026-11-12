@@ -8,7 +8,7 @@ import { InteractiveSimulator } from "@/components/landing/simulator";
 import { ContrastSection } from "@/components/landing/contrast-section";
 import { BentoFeatures } from "@/components/landing/bento-features";
 import { FAQSection } from "@/components/landing/faq-section";
-import { APP_NAME, PLATFORM_FEE_PERCENT } from "@/lib/config";
+import { APP_NAME } from "@/lib/config";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function HomePage() {
@@ -31,8 +31,6 @@ export default async function HomePage() {
       redirect("/s");
     }
   }
-
-  const tutorKeepPercent = 100 - PLATFORM_FEE_PERCENT;
 
   return (
     <div className="min-h-screen bg-bg text-ink flex flex-col justify-between selection:bg-primary-soft selection:text-primary transition-colors duration-300">
@@ -98,8 +96,8 @@ export default async function HomePage() {
               <p className="text-xs text-muted">Auto-grading &amp; answers</p>
             </div>
             <div className="space-y-0.5">
-              <p className="font-serif text-xl sm:text-2xl font-bold text-ink">{tutorKeepPercent}%</p>
-              <p className="text-xs text-muted">Direct tutor payout</p>
+              <p className="font-serif text-xl sm:text-2xl font-bold text-emerald-600 dark:text-emerald-400">₹0</p>
+              <p className="text-xs text-muted">Monthly platform fee</p>
             </div>
           </div>
         </section>
@@ -198,7 +196,7 @@ export default async function HomePage() {
         </section>
 
         {/* =================================================================== */}
-        {/* 6. TRANSPARENT ECONOMICS (Pricing) */}
+        {/* 6. TRANSPARENT ECONOMICS (Zero Software Lock-in Disruption Matrix) */}
         {/* =================================================================== */}
         <section id="pricing" className="w-full my-20 text-left">
           <div className="text-center mb-12">
@@ -206,100 +204,141 @@ export default async function HomePage() {
               variant="outline"
               className="rounded-full border-primary/20 bg-primary-soft text-primary font-semibold text-xs mb-3 px-3 py-1"
             >
-              Economics
+              Zero Software Lock-in
             </Badge>
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-ink">
-              Transparent, Educator-First Pricing
+              ₹0 Forever. No Subscriptions, No Lock-in.
             </h2>
-            <p className="text-xs sm:text-sm text-muted max-w-xl mx-auto mt-3 leading-relaxed">
-              We only succeed when you succeed. Zero monthly fees, zero hidden charges.
+            <p className="text-xs sm:text-sm text-muted max-w-2xl mx-auto mt-3 leading-relaxed">
+              Traditional course platforms charge ₹10,000 to ₹25,000 every single month just to host your classroom. Classy gives you unlimited classrooms, auto-grading, and direct AI sync with zero monthly charges.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            {/* Free Tier */}
-            <div className="p-8 rounded-3xl border border-border/80 bg-surface/90 shadow-2xs flex flex-col justify-between space-y-6">
+          {/* 3-Column Disruption Comparison Matrix */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-5xl mx-auto items-stretch">
+            {/* Column 1: Legacy LMS */}
+            <div className="p-7 sm:p-8 rounded-3xl border border-border/80 bg-surface/80 shadow-2xs flex flex-col justify-between space-y-6">
               <div className="space-y-4">
                 <div className="inline-flex px-3 py-1 rounded-full text-xs font-semibold bg-bg text-muted border border-border/60">
-                  Free Classrooms
+                  Legacy Course Platforms
                 </div>
                 <div>
-                  <h3 className="font-serif text-3xl font-bold text-ink">₹0</h3>
-                  <p className="text-xs text-muted mt-1">100% free forever for open batches</p>
+                  <h3 className="font-serif text-2xl sm:text-3xl font-bold text-ink">$119 – $299</h3>
+                  <p className="text-xs text-muted mt-1">₹10,000 to ₹25,000 / month fixed cost</p>
                 </div>
-                <ul className="space-y-3 text-xs sm:text-sm text-ink/90 pt-2">
-                  <li className="flex items-center gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Unlimited batches &amp; enrolled students</span>
-                  </li>
-                  <li className="flex items-center gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Timed interactive quizzes with auto-scoring</span>
-                  </li>
-                  <li className="flex items-center gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Study notes, formula drops, &amp; homework</span>
-                  </li>
-                  <li className="flex items-center gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Connect Claude, ChatGPT, or Cursor via MCP</span>
-                  </li>
-                </ul>
+                <div className="space-y-3 pt-2 text-xs text-muted border-t border-border/50">
+                  <div className="flex items-start gap-2.5">
+                    <span className="text-rose-500 font-bold shrink-0">✕</span>
+                    <span><strong>AI Sync:</strong> Clunky chatbots, no direct MCP connection</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <span className="text-rose-500 font-bold shrink-0">✕</span>
+                    <span><strong>Quizzes:</strong> 40-click manual form builders</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <span className="text-rose-500 font-bold shrink-0">✕</span>
+                    <span><strong>Student Access:</strong> Heavy desktop portals</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <span className="text-rose-500 font-bold shrink-0">✕</span>
+                    <span><strong>Capacity:</strong> Strict batch &amp; student paywalls</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <span className="text-rose-500 font-bold shrink-0">✕</span>
+                    <span><strong>Setup:</strong> 3 to 5 days of painful configuration</span>
+                  </div>
+                </div>
               </div>
 
-              <Link
-                href="/tutor/register"
-                className={buttonVariants({
-                  variant: "outline",
-                  className: "w-full rounded-xl text-xs font-semibold h-11 border-border hover:bg-bg",
-                })}
-              >
-                Become a Tutor (Free)
-              </Link>
+              <div className="p-3 rounded-xl bg-bg border border-border/60 text-[11px] text-muted text-center">
+                High monthly overhead regardless of student count
+              </div>
             </div>
 
-            {/* Paid Batches Tier */}
-            <div className="p-8 rounded-3xl border-2 border-primary/40 bg-primary-soft/30 shadow-xs flex flex-col justify-between space-y-6">
+            {/* Column 2: WhatsApp Tuitions */}
+            <div className="p-7 sm:p-8 rounded-3xl border border-border/80 bg-surface/80 shadow-2xs flex flex-col justify-between space-y-6">
               <div className="space-y-4">
-                <div className="inline-flex px-3 py-1 rounded-full text-xs font-semibold bg-primary text-primary-foreground">
-                  Monetized Batches
+                <div className="inline-flex px-3 py-1 rounded-full text-xs font-semibold bg-bg text-muted border border-border/60">
+                  Traditional WhatsApp Tuitions
                 </div>
                 <div>
-                  <div className="flex items-baseline gap-1.5">
-                    <h3 className="font-serif text-3xl font-bold text-ink">{PLATFORM_FEE_PERCENT}%</h3>
-                    <span className="text-xs text-muted">platform fee on paid enrollments</span>
-                  </div>
-                  <p className="text-xs text-primary font-medium mt-1">
-                    You keep {tutorKeepPercent}% of every rupee collected
-                  </p>
+                  <h3 className="font-serif text-2xl sm:text-3xl font-bold text-ink">₹0</h3>
+                  <p className="text-xs text-muted mt-1">Free, but costs 8+ hours/week in manual chaos</p>
                 </div>
-                <ul className="space-y-3 text-xs sm:text-sm text-ink/90 pt-2">
-                  <li className="flex items-center gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Set custom enrollment fees per batch</span>
-                  </li>
-                  <li className="flex items-center gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Instant UPI &amp; card checkout via Razorpay</span>
-                  </li>
-                  <li className="flex items-center gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Direct bank account settlements</span>
-                  </li>
-                  <li className="flex items-center gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Automated payment receipts for parents</span>
-                  </li>
-                </ul>
+                <div className="space-y-3 pt-2 text-xs text-muted border-t border-border/50">
+                  <div className="flex items-start gap-2.5">
+                    <span className="text-rose-500 font-bold shrink-0">✕</span>
+                    <span><strong>AI Sync:</strong> None (manual copy-paste between apps)</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <span className="text-rose-500 font-bold shrink-0">✕</span>
+                    <span><strong>Quizzes:</strong> Pen &amp; paper or separate Google Forms</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <span className="text-rose-500 font-bold shrink-0">✕</span>
+                    <span><strong>Student Access:</strong> PDFs get buried under group chat noise</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <span className="text-rose-500 font-bold shrink-0">✕</span>
+                    <span><strong>Grading:</strong> Weekends lost manually scoring answer sheets</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <span className="text-rose-500 font-bold shrink-0">✕</span>
+                    <span><strong>Fee Collection:</strong> Awkward UPI screenshot chasing</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-3 rounded-xl bg-bg border border-border/60 text-[11px] text-muted text-center">
+                Zero software bill, but heavy administrative burnout
+              </div>
+            </div>
+
+            {/* Column 3: Classy OS (Highlighted) */}
+            <div className="p-7 sm:p-8 rounded-3xl border-2 border-primary/50 bg-primary-soft/30 shadow-md flex flex-col justify-between space-y-6 relative overflow-hidden">
+              <div className="absolute top-0 right-0 px-3.5 py-1 rounded-bl-xl bg-primary text-primary-foreground text-[10px] font-bold tracking-wider uppercase">
+                Recommended
+              </div>
+
+              <div className="space-y-4">
+                <div className="inline-flex px-3 py-1 rounded-full text-xs font-semibold bg-primary text-primary-foreground">
+                  Classy Operating System
+                </div>
+                <div>
+                  <h3 className="font-serif text-3xl sm:text-4xl font-bold text-primary">₹0 Forever</h3>
+                  <p className="text-xs text-ink/80 font-medium mt-1">Zero monthly subscriptions, zero software lock-in</p>
+                </div>
+                <div className="space-y-3 pt-2 text-xs text-ink/90 border-t border-primary/20">
+                  <div className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                    <span><strong>AI Sync:</strong> Direct sync with Claude, ChatGPT, Gemini, etc</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                    <span><strong>Quizzes:</strong> Auto-generated with timers &amp; encrypted server keys</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                    <span><strong>Student Access:</strong> Fast, distraction-free mobile web app</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                    <span><strong>Capacity:</strong> Unlimited batches &amp; unlimited enrolled students</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                    <span><strong>Setup:</strong> 30 seconds to launch and invite your students</span>
+                  </div>
+                </div>
               </div>
 
               <Link
                 href="/tutor/register"
                 className={buttonVariants({
-                  className: "w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl text-xs font-semibold h-11 shadow-xs",
+                  className: "w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl text-xs font-semibold h-11 shadow-xs justify-center",
                 })}
               >
-                Start Teaching &amp; Monetizing
+                Start Teaching for Free
               </Link>
             </div>
           </div>
@@ -328,7 +367,7 @@ export default async function HomePage() {
         </section>
 
         {/* =================================================================== */}
-        {/* 8. FINAL CALL TO ACTION (Menler Style) */}
+        {/* 8. FINAL CALL TO ACTION (Menler Style with High-Contrast Buttons) */}
         {/* =================================================================== */}
         <section className="w-full my-12 p-8 sm:p-12 rounded-3xl bg-linear-to-br from-primary via-primary/95 to-ink text-white text-center relative overflow-hidden shadow-lg">
           <div className="max-w-2xl mx-auto space-y-5 relative z-10">
@@ -341,22 +380,15 @@ export default async function HomePage() {
             <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link
                 href="/tutor/register"
-                className={buttonVariants({
-                  size: "lg",
-                  className: "w-full sm:w-auto bg-white text-ink hover:bg-white/90 text-xs sm:text-sm font-bold h-12 px-8 rounded-2xl shadow-sm gap-2",
-                })}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-2xl bg-white !text-[#14161F] hover:bg-neutral-100 text-xs sm:text-sm font-bold h-12 px-8 shadow-md transition-all cursor-pointer"
               >
-                <span>Become a Tutor (Free)</span>
-                <ArrowRight className="w-4 h-4" />
+                <span className="!text-[#14161F] font-bold">Become a Tutor (Free)</span>
+                <ArrowRight className="w-4 h-4 !text-[#14161F]" />
               </Link>
 
               <Link
                 href="/student/login"
-                className={buttonVariants({
-                  variant: "outline",
-                  size: "lg",
-                  className: "w-full sm:w-auto text-white border-white/30 hover:bg-white/10 text-xs sm:text-sm font-semibold h-12 px-6 rounded-2xl",
-                })}
+                className="w-full sm:w-auto inline-flex items-center justify-center rounded-2xl border border-white/40 hover:bg-white/10 text-white text-xs sm:text-sm font-semibold h-12 px-7 transition-all cursor-pointer"
               >
                 <span>Student Portal</span>
               </Link>

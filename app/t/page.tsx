@@ -13,7 +13,6 @@ import { AppShell } from "@/components/layout/app-shell";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { NewBatchDialog } from "@/components/tutor/new-batch-dialog";
 import { BatchCard } from "@/components/tutor/batch-card";
-import { buttonVariants } from "@/components/ui/button";
 import { PLATFORM_FEE_PERCENT } from "@/lib/config";
 
 export default async function TutorDashboardPage() {
@@ -144,11 +143,9 @@ export default async function TutorDashboardPage() {
               <Link
                 href="/t/batches"
                 prefetch={true}
-                className={buttonVariants({
-                  className: "rounded-xl bg-white text-ink hover:bg-white/90 text-xs font-bold shadow-sm px-4 py-2.5 whitespace-nowrap",
-                })}
+                className="inline-flex items-center justify-center rounded-xl bg-white !text-[#14161F] hover:bg-neutral-100 text-xs font-bold shadow-sm px-4 py-2.5 whitespace-nowrap transition-colors"
               >
-                Manage Batches &rarr;
+                <span>Manage Batches &rarr;</span>
               </Link>
             </div>
           </div>

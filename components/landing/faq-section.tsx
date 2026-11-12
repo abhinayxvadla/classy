@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { PLATFORM_FEE_PERCENT } from "@/lib/config";
 
 interface FAQItem {
   question: string;
@@ -39,12 +38,12 @@ const FAQS: FAQItem[] = [
   {
     question: "Is Classy free to use for teachers?",
     answer:
-      "Yes, 100% free for open classrooms. You can create unlimited batches, invite unlimited students, publish unlimited study notes, run timed practice quizzes, and assign homework with zero monthly subscription fees.",
+      "Yes, 100% free with zero monthly subscription fees. You can create unlimited batches, invite unlimited students, publish unlimited study notes, run timed practice quizzes, and assign homework at zero software cost.",
   },
   {
     question: "Can I collect fees for my coaching batches or courses?",
     answer:
-      `Yes! If you choose to set an enrollment fee for any batch, students can pay securely using Razorpay UPI, credit/debit cards, or netbanking. Classy retains a transparent ${PLATFORM_FEE_PERCENT}% platform fee to cover gateway charges and server hosting, and you receive ${100 - PLATFORM_FEE_PERCENT}% transferred directly to your bank account with automated receipts sent to parents.`,
+      "Yes! You can set custom enrollment fees for any crash course, test series, or batch. Students pay securely via Razorpay UPI, cards, or netbanking, with payouts transferred directly to your bank account and automated receipts delivered to parents.",
   },
 ];
 

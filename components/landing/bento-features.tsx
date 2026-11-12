@@ -7,11 +7,8 @@ import {
   CreditCard,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { PLATFORM_FEE_PERCENT } from "@/lib/config";
 
 export function BentoFeatures() {
-  const tutorKeepPercent = 100 - PLATFORM_FEE_PERCENT;
-
   const capabilities = [
     {
       icon: MessageSquare,
@@ -53,7 +50,7 @@ export function BentoFeatures() {
       tag: "Monetization",
       title: "Built-In UPI & Card Checkout",
       description:
-        `Collect course fees seamlessly through Razorpay UPI and cards. You keep ${tutorKeepPercent}% of every rupee earned, settled directly to your bank account.`,
+        "Collect course and batch fees seamlessly through Razorpay UPI and cards. Payments settle directly into your bank account with zero manual spreadsheet tracking.",
     },
   ];
 

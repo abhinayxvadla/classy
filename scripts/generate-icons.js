@@ -75,7 +75,6 @@ async function run() {
   // 2. SVG Icons (Vector for modern high-DPI displays)
   const svg128 = createSvg(128);
   fs.writeFileSync(path.join(publicDir, 'icon.svg'), svg128);
-  fs.writeFileSync(path.join(appDir, 'icon.svg'), svg128);
 
   // 3. Multi-resolution ICO (16x16, 32x32, 48x48)
   const png16 = await sharp(Buffer.from(createSvg(16))).resize(16, 16).png().toBuffer();
@@ -89,9 +88,8 @@ async function run() {
   ]);
 
   fs.writeFileSync(path.join(publicDir, 'favicon.ico'), icoBuffer);
-  fs.writeFileSync(path.join(appDir, 'favicon.ico'), icoBuffer);
 
-  console.log('✓ Classy favicon.ico and icon assets generated successfully in public/ and app/!');
+  console.log('✓ Classy favicon.ico and icon assets generated successfully in public/!');
 }
 
 run().catch((err) => {

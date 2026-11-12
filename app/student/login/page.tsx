@@ -1,0 +1,198 @@
+"use client";
+
+import * as React from "react";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { toast } from "sonner";
+import { Loader2, ArrowRight } from "lucide-react";
+import { AuthLayout } from "@/components/auth/auth-layout";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { PasswordInput } from "@/components/auth/password-input";
+import { signInAction } from "@/app/actions/auth";
+
+function StudentLoginForm() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const next = searchParams.get("next") || "";
+  const joinCode = searchParams.get("join") || "";
+  const message = searchParams.get("message") || "";
+
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+  const [errorMsg, setErrorMsg] = React.useState<string | null>(null);
+  const [portalRedirect, setPortalRedirect] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (message === "password_updated") {
+      toast.success("Password updated. Sign in with your new password.");
+    }
+  }, [message]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMsg(null);
+    setPortalRedirect(null);
+    setLoading(true);
+
+    try {
+      const res = await signInAction({
+        email,
+        password,
+        expectedRole: "student",
+        joinCode: joinCode || undefined,
+        next: next || undefined,
+      });
+
+      if (res.error) {
+        setErrorMsg(res.error);
+        if (res.redirectUrl) {
+          setPortalRedirect(res.redirectUrl);
+        }
+        setLoading(false);
+        return;
+      }
+
+      toast.success("Welcome back!");
+      router.push(res.redirectUrl || "/s");
+      router.refresh();
+    } catch {
+      setErrorMsg("An unexpected error occurred. Please try again.");
+      setLoading(false);
+    }
+  };
+
+  const registerHref = `/student/register${
+    next || joinCode
+      ? `?${new URLSearchParams({
+          ...(next ? { next } : {}),
+          ...(joinCode ? { join: joinCode } : {}),
+        }).toString()}`
+      : ""
+  }`;
+
+  return (
+    <AuthLayout
+      portal="student"
+      title="Student Sign In"
+      subtitle="Access your batches, quizzes, assignments, and study materials."
+      otherPortalLink={{
+        label: "Go to Tutor Login",
+        href: `/tutor/login${
+          next || joinCode
+            ? `?${new URLSearchParams({
+                ...(next ? { next } : {}),
+                ...(joinCode ? { join: joinCode } : {}),
+              }).toString()}`
+            : ""
+        }`,
+      }}
+    >
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {joinCode && (
+          <div className="p-2.5 rounded-xl bg-primary-soft text-primary text-xs font-medium border border-primary/20">
+            Joining batch code: <span className="font-mono font-bold uppercase">{joinCode}</span>
+          </div>
+        )}
+
+        {errorMsg && (
+          <Alert variant="destructive" className="rounded-xl">
+            <AlertDescription className="text-xs sm:text-sm flex flex-col gap-1.5">
+              <span>{errorMsg}</span>
+              {portalRedirect && (
+                <Link
+                  href={portalRedirect}
+                  className="font-medium underline hover:opacity-80 inline-flex items-center gap-1"
+                >
+                  Switch to Tutor Login <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              )}
+            </AlertDescription>
+          </Alert>
+        )}
+
+        <div className="space-y-1.5">
+          <Label htmlFor="email" className="text-xs font-semibold">
+            Email address
+          </Label>
+          <Input
+            id="email"
+            type="email"
+            required
+            autoComplete="email"
+            placeholder="student@gmail.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            disabled={loading}
+            className="rounded-xl"
+          />
+        </div>
+
+        <div className="space-y-1.5">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="password" className="text-xs font-semibold">
+              Password
+            </Label>
+            <Link
+              href={`/forgot-password?email=${encodeURIComponent(email)}`}
+              className="text-xs text-primary hover:underline font-medium"
+            >
+              Forgot password?
+            </Link>
+          </div>
+          <PasswordInput
+            id="password"
+            required
+            autoComplete="current-password"
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            disabled={loading}
+          />
+        </div>
+
+        <Button
+          type="submit"
+          disabled={loading}
+          className="w-full rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-2.5 shadow-xs"
+        >
+          {loading ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin mr-2" />
+              Signing in...
+            </>
+          ) : (
+            "Sign In as Student"
+          )}
+        </Button>
+
+        <div className="pt-2 text-center text-xs text-muted">
+          New here?{" "}
+          <Link
+            href={registerHref}
+            className="font-semibold text-primary hover:underline"
+          >
+            Register as a Student
+          </Link>
+        </div>
+      </form>
+    </AuthLayout>
+  );
+}
+
+export default function StudentLoginPage() {
+  return (
+    <React.Suspense
+      fallback={
+        <div className="min-h-screen bg-bg flex items-center justify-center">
+          <Loader2 className="w-6 h-6 animate-spin text-primary" />
+        </div>
+      }
+    >
+      <StudentLoginForm />
+    </React.Suspense>
+  );
+}

@@ -1,0 +1,156 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "katex/dist/katex.min.css";
+
+@custom-variant dark (&:is(.dark, .dark *));
+
+@theme inline {
+  --font-serif: var(--font-fraunces);
+  --font-sans: var(--font-plus-jakarta-sans);
+  --font-heading: var(--font-fraunces);
+
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-soft: var(--primary-soft);
+  --color-accent: var(--accent);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+
+  --color-background: var(--bg);
+  --color-foreground: var(--ink);
+  --color-card: var(--surface);
+  --color-card-foreground: var(--ink);
+  --color-popover: var(--surface);
+  --color-popover-foreground: var(--ink);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--primary-soft);
+  --color-secondary-foreground: var(--primary);
+  --color-muted-foreground: var(--muted);
+  --color-accent-foreground: var(--ink);
+  --color-destructive: var(--danger);
+  --color-destructive-foreground: #ffffff;
+  --color-input: var(--border);
+  --color-ring: var(--primary);
+
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --radius-full: 9999px;
+}
+
+:root {
+  --bg: #F7F6F2;
+  --surface: #FFFFFF;
+  --ink: #14161F;
+  --muted: #6B7080;
+  --border: #E7E5DF;
+  --primary: #3730A3;
+  --primary-soft: #EEF0FF;
+  --accent: #D99A1E;
+  --success: #15803D;
+  --warning: #B45309;
+  --danger: #DC2626;
+
+  --background: var(--bg);
+  --foreground: var(--ink);
+  --card: var(--surface);
+  --card-foreground: var(--ink);
+  --popover: var(--surface);
+  --popover-foreground: var(--ink);
+  --primary-foreground: #FFFFFF;
+  --secondary: var(--primary-soft);
+  --secondary-foreground: var(--primary);
+  --muted-foreground: var(--muted);
+  --destructive: var(--danger);
+  --destructive-foreground: #FFFFFF;
+  --input: var(--border);
+  --ring: var(--primary);
+  --radius: 0.75rem;
+}
+
+.dark {
+  --bg: #0C0D12;
+  --surface: #15171F;
+  --ink: #F2F2F5;
+  --muted: #9AA0AE;
+  --border: #262A35;
+  --primary: #8B93FF;
+  --primary-soft: #1E2140;
+  --accent: #E8B54A;
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+
+  --background: var(--bg);
+  --foreground: var(--ink);
+  --card: var(--surface);
+  --card-foreground: var(--ink);
+  --popover: var(--surface);
+  --popover-foreground: var(--ink);
+  --primary-foreground: #0C0D12;
+  --secondary: var(--primary-soft);
+  --secondary-foreground: var(--primary);
+  --muted-foreground: var(--muted);
+  --destructive: var(--danger);
+  --destructive-foreground: #FFFFFF;
+  --input: var(--border);
+  --ring: var(--primary);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --bg: #0C0D12;
+    --surface: #15171F;
+    --ink: #F2F2F5;
+    --muted: #9AA0AE;
+    --border: #262A35;
+    --primary: #8B93FF;
+    --primary-soft: #1E2140;
+    --accent: #E8B54A;
+    --success: #22C55E;
+    --warning: #F59E0B;
+    --danger: #EF4444;
+
+    --background: var(--bg);
+    --foreground: var(--ink);
+    --card: var(--surface);
+    --card-foreground: var(--ink);
+    --popover: var(--surface);
+    --popover-foreground: var(--ink);
+    --primary-foreground: #0C0D12;
+    --secondary: var(--primary-soft);
+    --secondary-foreground: var(--primary);
+    --muted-foreground: var(--muted);
+    --destructive: var(--danger);
+    --destructive-foreground: #FFFFFF;
+    --input: var(--border);
+    --ring: var(--primary);
+  }
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-plus-jakarta-sans), sans-serif;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-fraunces), Georgia, serif;
+  letter-spacing: -0.02em;
+}
+
+.shadow-soft {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(20, 22, 31, 0.06);
+}
+
+.badge-premium {
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  background-color: rgba(217, 154, 30, 0.1);
+}

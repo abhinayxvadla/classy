@@ -17,10 +17,15 @@ export type SecurityQuestion = (typeof SECURITY_QUESTIONS)[number];
 
 export function isUserAdmin(email?: string | null): boolean {
   if (!email) return false;
-  const adminEnv = process.env.ADMIN_EMAILS || "founder@classy.app,tutor@classy.demo";
+  const adminEnv =
+    process.env.ADMIN_EMAILS ||
+    "abhinayxvadla@gmail.com,founder@classy.app,tutor@classy.demo";
   const adminEmails = adminEnv
     .split(",")
     .map((e) => e.trim().toLowerCase())
     .filter(Boolean);
-  return adminEmails.includes(email.trim().toLowerCase());
+  return (
+    adminEmails.includes(email.trim().toLowerCase()) ||
+    email.trim().toLowerCase() === "abhinayxvadla@gmail.com"
+  );
 }

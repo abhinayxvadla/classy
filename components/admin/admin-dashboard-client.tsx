@@ -187,7 +187,6 @@ export function AdminDashboardClient({
   // Payments / Revenue
   const filteredPayments = payments.filter((p) => filterByRange(p.created_at));
   const gmvInr = filteredPayments.reduce((acc, p) => acc + p.amount_inr, 0);
-  const revenueInr = filteredPayments.reduce((acc, p) => acc + p.commission_inr, 0);
   const unlocksCount = filteredPayments.length;
 
   // Calculate percentage change helper
@@ -542,19 +541,19 @@ export function AdminDashboardClient({
               </CardContent>
             </Card>
 
-            {/* 10. GMV & Revenue */}
+            {/* 10. Platform GMV */}
             <Card className="rounded-2xl border-border bg-surface shadow-2xs">
               <CardHeader className="p-4 pb-1">
                 <CardDescription className="text-xs font-medium flex items-center justify-between">
-                  <span>GMV & Revenue (15%)</span>
+                  <span>Platform GMV</span>
                   <IndianRupee className="w-3.5 h-3.5 text-emerald-600" />
                 </CardDescription>
                 <CardTitle className="text-2xl sm:text-3xl font-serif font-bold text-ink">
-                  ₹{revenueInr}
+                  ₹{gmvInr}
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-4 pt-1 text-[11px] text-muted">
-                <span>From ₹{gmvInr} total GMV</span>
+                <span>100% routed to tutors (₹0 platform fee)</span>
               </CardContent>
             </Card>
           </div>

@@ -60,7 +60,7 @@ export function AuthLayout({
                   <>
                     <div className="flex items-start gap-3 text-xs lg:text-sm text-white/90">
                       <CheckCircle2 className="w-4 h-4 text-accent mt-0.5 shrink-0" />
-                      <span>Anyone can teach — create batches in 30 seconds with zero paperwork.</span>
+                      <span>Anyone can teach: create batches in 30 seconds with zero paperwork.</span>
                     </div>
                     <div className="flex items-start gap-3 text-xs lg:text-sm text-white/90">
                       <CheckCircle2 className="w-4 h-4 text-accent mt-0.5 shrink-0" />

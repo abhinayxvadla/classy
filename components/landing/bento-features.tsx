@@ -15,11 +15,11 @@ export function BentoFeatures() {
       tag: "Conversational Ops",
       title: "Talk to Create & Dispatch",
       description:
-        "Speak or prompt naturally to your favorite AI (Claude, ChatGPT, or Classy). Generate full quizzes, lecture recaps, and homework sets without filling out tedious form builders.",
+        "Speak or prompt naturally to your favorite AI (Claude, ChatGPT, Gemini, etc.). Generate full quizzes, lecture recaps, and homework sets without filling out tedious form builders.",
     },
     {
       icon: Smartphone,
-      tag: "Zero Friction",
+      tag: "Direct Access",
       title: "Clean Student Mobile Hub",
       description:
         "Students join in seconds via a 1-tap browser link. No hefty App Store downloads or student logins required to start practicing.",
@@ -50,7 +50,7 @@ export function BentoFeatures() {
       tag: "Monetization",
       title: "Built-In UPI & Card Checkout",
       description:
-        "Collect course and batch fees seamlessly through Razorpay UPI and cards. Payments settle directly into your bank account with zero manual spreadsheet tracking.",
+        "Collect course and batch fees directly through Razorpay UPI and cards. Payments settle straight into your bank account with zero manual spreadsheet tracking.",
     },
   ];
 
@@ -61,13 +61,13 @@ export function BentoFeatures() {
           variant="outline"
           className="rounded-full border-primary/20 bg-primary-soft text-primary font-semibold text-xs mb-3 px-3 py-1"
         >
-          Classroom Superpowers
+          Platform Features
         </Badge>
         <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-ink">
-          How Classy Runs The Class For You
+          Everything You Need to Run Your Batches
         </h2>
         <p className="text-xs sm:text-sm text-muted max-w-xl mx-auto mt-3 leading-relaxed">
-          The heavy lifting of running batches, creating tests, and managing student submissions happens on auto-pilot.
+          Create tests, share study notes, and track student submissions without administrative headaches.
         </p>
       </div>
 

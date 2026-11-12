@@ -135,8 +135,8 @@ async function seed() {
     },
   });
 
-  // 3. Create or update Batch: "Class 10 Science – Batch A"
-  const batchName = "Class 10 Science – Batch A";
+  // 3. Create or update Batch: "Class 10 Science (Batch A)"
+  const batchName = "Class 10 Science (Batch A)";
   const { data: existingBatch } = await admin
     .from("batches")
     .select("id")
@@ -346,14 +346,14 @@ $$\\text{Zn (s)} + \\text{H}_2\\text{SO}_4 \\text{ (aq)} \\longrightarrow \\text
   // Item E: 1 Announcement
   await upsertItem({
     type: "announcement",
-    title: "Welcome to Class 10 Science – Batch A!",
+    title: "Welcome to Class 10 Science (Batch A)!",
     access: "free",
     visibility: "batch",
     is_published: true,
     max_marks: null,
     due_at: null,
     body: {
-      content: "Hello students! Welcome to our AI-native classroom batch. All lecture summaries, practice quizzes, and lab assignments will be published here. Complete the Chemical Reactions notes before Wednesday's session!",
+      content: "Hello students! Welcome to our classroom batch. All lecture summaries, practice quizzes, and lab assignments will be published here. Complete the Chemical Reactions notes before Wednesday's session!",
     },
   });
 
@@ -428,7 +428,7 @@ $$\\text{Zn (s)} + \\text{H}_2\\text{SO}_4 \\text{ (aq)} \\longrightarrow \\text
   console.log("👤 Tutor Login:   tutor@classy.demo / Demo@1234");
   console.log("🎓 Student Login: student@classy.demo / Demo@1234");
   console.log("🔒 Security Ans:  demo (Question: 'What was the name of your first school?')");
-  console.log("🏫 Batch:         Class 10 Science – Batch A (Code: SCI10A, ₹299)");
+  console.log("🏫 Batch:         Class 10 Science (Batch A) [Code: SCI10A, ₹299]");
   console.log("🤖 Stable MCP URL:");
   console.log(`   ${demoMcpUrl}`);
   console.log("========================================================\n");

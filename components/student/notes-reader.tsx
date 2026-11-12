@@ -238,7 +238,7 @@ export function NotesReader({
           }`}
         >
           <CheckCircle2 className="h-4 w-4" />
-          <span>{isRead ? "Completed! Mark as Unread" : "Finished Reading — Mark as Read"}</span>
+          <span>{isRead ? "Completed! Mark as Unread" : "Finished Reading: Mark as Read"}</span>
         </Button>
 
         {batchId && (

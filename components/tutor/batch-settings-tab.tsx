@@ -19,7 +19,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
-import { PLATFORM_FEE_PERCENT } from "@/lib/config";
 import {
   updateBatchAction,
   regenerateJoinCodeAction,
@@ -74,12 +73,6 @@ export function BatchSettingsTab({ batch, payments = [] }: BatchSettingsTabProps
   // Compute batch earnings
   const paidPayments = payments.filter((p) => p.status === "paid");
   const grossEarnings = paidPayments.reduce((acc, p) => acc + p.amountInr, 0);
-  const platformFee = paidPayments.reduce(
-    (acc, p) =>
-      acc + (p.commissionInr || Math.round((p.amountInr * PLATFORM_FEE_PERCENT) / 100)),
-    0
-  );
-  const netEarnings = grossEarnings - platformFee;
 
   // Regenerate Code Modal State
   const [regenOpen, setRegenOpen] = React.useState(false);
@@ -295,7 +288,7 @@ export function BatchSettingsTab({ batch, payments = [] }: BatchSettingsTabProps
           </Badge>
         </div>
 
-        {/* 3-Part Earnings Breakdown: Gross, Classy Fee 15%, Net */}
+        {/* 3-Part Earnings Breakdown: Gross, Zero Platform Fee, 100% Payout */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div className="p-4 rounded-xl bg-bg border border-border space-y-1">
             <span className="text-[11px] font-semibold text-muted uppercase tracking-wider block">
@@ -309,22 +302,22 @@ export function BatchSettingsTab({ batch, payments = [] }: BatchSettingsTabProps
 
           <div className="p-4 rounded-xl bg-bg border border-border space-y-1">
             <span className="text-[11px] font-semibold text-muted uppercase tracking-wider block">
-              Classy Fee ({PLATFORM_FEE_PERCENT}%)
+              Platform Fee (₹0 Forever)
             </span>
-            <span className="font-serif text-2xl font-bold text-muted">
-              -₹{platformFee.toLocaleString("en-IN")}
+            <span className="font-serif text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+              ₹0
             </span>
-            <span className="text-[10px] text-muted block">Platform & hosting share</span>
+            <span className="text-[10px] text-muted block">Zero platform cut</span>
           </div>
 
           <div className="p-4 rounded-xl bg-primary-soft/60 border border-primary/20 space-y-1">
             <span className="text-[11px] font-semibold text-primary uppercase tracking-wider block">
-              Net Earnings
+              Your Earnings (100%)
             </span>
             <span className="font-serif text-2xl font-bold text-accent">
-              ₹{netEarnings.toLocaleString("en-IN")}
+              ₹{grossEarnings.toLocaleString("en-IN")}
             </span>
-            <span className="text-[10px] text-muted block">Your payout share</span>
+            <span className="text-[10px] text-muted block">100% direct payouts</span>
           </div>
         </div>
 

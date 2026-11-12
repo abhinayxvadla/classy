@@ -9,13 +9,13 @@ export function ContrastSection() {
           variant="outline"
           className="rounded-full border-primary/20 bg-primary-soft text-primary font-semibold text-xs mb-3 px-3 py-1"
         >
-          The Operational Shift
+          Why Tutors Switch
         </Badge>
         <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-ink">
-          The 5-App Headache vs. The Classy OS
+          The 5-App Teaching Headache vs. Teaching on Classy
         </h2>
         <p className="text-xs sm:text-sm text-muted max-w-xl mx-auto mt-3 leading-relaxed">
-          Educators love brainstorming with AI. But running the actual class usually turns into an administrative nightmare. Here is how Classy fixes it:
+          Educators love brainstorming with AI. But running the actual class usually turns into an administrative chore. Here is how Classy fixes it:
         </p>
       </div>
 
@@ -72,12 +72,12 @@ export function ContrastSection() {
                 The Classy Way
               </span>
               <span className="text-xs text-primary font-medium flex items-center gap-1">
-                <Sparkles className="w-3.5 h-3.5" /> You Talk • Classy Runs
+                <Sparkles className="w-3.5 h-3.5" /> You Talk, Classy Delivers
               </span>
             </div>
 
             <h3 className="font-serif text-2xl font-bold text-ink">
-              One Unified Operating System
+              One Unified Teaching Hub
             </h3>
             <p className="text-xs sm:text-sm text-muted leading-relaxed">
               Speak or type to your AI, and Classy immediately handles the classroom execution end-to-end:
@@ -86,7 +86,7 @@ export function ContrastSection() {
             <ul className="space-y-3.5 text-xs sm:text-sm text-ink/90 pt-1">
               <li className="flex items-start gap-3">
                 <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
-                <span><strong>Conversational Dispatch:</strong> Just prompt your quiz, homework, or revision notes. Classy parses and publishes it in under a second.</span>
+                <span><strong>Direct Publishing:</strong> Just prompt your quiz, homework, or revision notes. Classy formats and publishes it in under a second.</span>
               </li>
               <li className="flex items-start gap-3">
                 <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
@@ -98,7 +98,7 @@ export function ContrastSection() {
               </li>
               <li className="flex items-start gap-3">
                 <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
-                <span><strong>Built-In UPI &amp; Bank Payouts:</strong> Set course fees with one click. Parents pay seamlessly via UPI; payouts settle directly to your bank account.</span>
+                <span><strong>Built-In UPI &amp; Bank Payouts:</strong> Set course fees with one click. Parents pay directly via UPI; payouts settle straight to your bank account.</span>
               </li>
             </ul>
           </div>

@@ -23,7 +23,7 @@ const FAQS: FAQItem[] = [
   {
     question: "Which AI models or apps can I connect with Classy?",
     answer:
-      "You can talk to Classy directly via the built-in web dashboard, or connect external AI desktop and coding tools (like Claude Desktop, Cursor, or any MCP-compatible agent) using your private Classy token found under your Tutor Account settings.",
+      "You can connect Claude, ChatGPT, Gemini, Perplexity, or any MCP-compatible agent using your private Classy connector link found under your Tutor Account settings. Classy receives your instructions, generates the quizzes and notes, and delivers them directly to your students.",
   },
   {
     question: "Do students need to install an app from the Play Store or App Store?",

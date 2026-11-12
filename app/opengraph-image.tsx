@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { APP_NAME, APP_TAGLINE } from "@/lib/config";
 
 export const runtime = "edge";
-export const alt = `${APP_NAME} — ${APP_TAGLINE}`;
+export const alt = `${APP_NAME}: ${APP_TAGLINE}`;
 export const size = {
   width: 1200,
   height: 630,

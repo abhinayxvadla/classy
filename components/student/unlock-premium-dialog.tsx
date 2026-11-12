@@ -164,7 +164,7 @@ export function UnlockPremiumDialog({
         amount: data.amount,
         currency: data.currency,
         name: "Classy",
-        description: `Batch Premium Access — ${data.batchName}`,
+        description: `Batch Premium Access: ${data.batchName}`,
         order_id: data.orderId,
         prefill: {
           name: data.student?.name || "",

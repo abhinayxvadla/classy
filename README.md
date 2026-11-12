@@ -1,11 +1,11 @@
-# Classy — The AI-Native Classroom
+# Classy: Connect Your AI to Your Classroom
 
 > **Prompt it. Push it. Track it.**  
 > Tutors run their entire classroom directly from their favourite AI assistant (Claude, ChatGPT, Gemini, Perplexity) through the **Model Context Protocol (MCP)**. Classy receives, organizes, and securely delivers notes, quizzes, and assignments to students, evaluates attempts against answer keys, and handles batch subscriptions.
 
 ---
 
-## 🚫 Hard Architectural Principle: Zero AI Inside the App
+## Hard Architectural Principle: Zero AI Inside the App
 
 **Classy contains NO AI SDKs, models, LLM wrappers, or AI dependencies.**
 - Zero imports of `openai`, `@google/genai`, `@anthropic-ai/sdk`, `langchain`, or `ai`.
@@ -15,19 +15,19 @@
 
 ---
 
-## 📱 Features
+## Features
 
 - **PWA & Offline Access**: Installable on iOS, Android, and Desktop with service worker precaching via `@serwist/next`. Opened study notes are cached offline for 30 days.
 - **MCP Server Endpoints**: Exposes Streamable HTTP endpoints for any MCP-compliant AI client (`/api/c/[token]/mcp` and `/api/mcp`).
 - **Deterministic Quiz Evaluation**: Secure answer keys stored server-side. Auto-evaluated upon student submission with score tracking and explanations.
-- **Monetized Batches**: Tutors can set optional monthly fees in INR. Students unlock 30-day access via Razorpay (UPI, Cards, Netbanking) or instant simulated test mode. Platform takes a 15% fee, tutors keep 85% net earnings.
-- **6-Character Join Codes**: Frictionless student onboarding via short codes (`SCI10A`), direct invite links (`/join/CODE`), WhatsApp sharing, and classroom QR codes.
+- **Monetized Batches**: Tutors can set optional monthly fees in INR. Students unlock 30-day access via Razorpay (UPI, Cards, Netbanking) or instant simulated test mode. Platform has zero monthly subscription fees and zero software lock-in.
+- **6-Character Join Codes**: Simple student onboarding via short codes (`SCI10A`), direct invite links (`/join/CODE`), WhatsApp sharing, and classroom QR codes.
 - **Public & Free Revision Library**: Tutors can publish study materials to the public library, searchable and filtered by grade and subject.
 - **Strict Role-Based Security**: Tutors and students have isolated portals (`/t` and `/s`) protected by Postgres Row Level Security (RLS) policies and `@supabase/ssr`.
 
 ---
 
-## 🔑 Demo & Test Accounts
+## Demo & Test Accounts
 
 Run the database seed script to initialize or reset demo accounts:
 ```bash
@@ -39,7 +39,7 @@ npm run seed
 | **Tutor Portal** | `tutor@classy.demo` | `Demo@1234` | **Q:** What was the name of your first school?<br>**A:** `demo` |
 | **Student Portal** | `student@classy.demo` | `Demo@1234` | **Q:** What was the name of your first school?<br>**A:** `demo` |
 
-- **Demo Batch**: `Class 10 Science – Batch A`
+- **Demo Batch**: `Class 10 Science (Batch A)`
 - **Batch Join Code**: `SCI10A`
 - **Premium Price**: ₹299 / month (includes 1 free notes item, 1 free public notes item, 1 premium quiz, 1 assignment, and 1 announcement).
 

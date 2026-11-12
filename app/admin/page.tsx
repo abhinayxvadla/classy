@@ -9,7 +9,7 @@ import { Card } from "@/components/ui/card";
 import { AdminDashboardClient, type AdminEventRow } from "@/components/admin/admin-dashboard-client";
 
 export const metadata = {
-  title: "Founder Dashboard – Classy",
+  title: "Founder Console | Classy",
 };
 
 interface AdminDashboardData {

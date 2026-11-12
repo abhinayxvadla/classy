@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, Sparkles, MessageSquare, Smartphone, Zap } from "lucide-react";
+import { ArrowRight, CheckCircle2, MessageSquare, Smartphone, Zap } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { FloatingNav } from "@/components/nav/floating-nav";
@@ -44,8 +44,8 @@ export default async function HomePage() {
         {/* =================================================================== */}
         <section className="max-w-4xl mx-auto flex flex-col items-center pt-6 pb-10">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary-soft text-primary text-xs font-semibold tracking-wide uppercase mb-6 border border-primary/20 shadow-2xs">
-            <Sparkles className="w-3.5 h-3.5 text-primary" />
-            <span>The Operating System for Modern Educators</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+            <span>Built for Independent Tutors &amp; Teachers</span>
           </div>
 
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-bold tracking-tight text-ink leading-[1.08] mb-6">
@@ -54,7 +54,7 @@ export default async function HomePage() {
           </h1>
 
           <p className="text-sm sm:text-base md:text-lg text-muted max-w-2xl leading-relaxed mb-8">
-            Create timed quizzes, push study decks, and assign homework just by talking to Claude, ChatGPT, or your AI companion. Classy delivers it to your students&apos; phones, grades submissions, and tracks attendance automatically.
+            Create timed quizzes, push study decks, and assign homework just by talking to Claude, ChatGPT, Gemini, or your preferred AI. Classy delivers it to your students&apos; phones, grades submissions, and tracks attendance automatically.
           </p>
 
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
@@ -111,13 +111,13 @@ export default async function HomePage() {
               variant="outline"
               className="rounded-full border-primary/20 bg-primary-soft text-primary font-semibold text-xs mb-2 px-3 py-1"
             >
-              Live Hand-Off Simulator
+              See How It Works
             </Badge>
             <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">
-              Watch Conversational Classroom Execution
+              From Your Prompt to Students&apos; Phones
             </h2>
             <p className="text-xs sm:text-sm text-muted max-w-lg mx-auto mt-2">
-              Select a tutor prompt below to see how speech or text transforms into a live mobile classroom experience for students:
+              Select a sample prompt below to see how a quick instruction turns into an interactive mobile quiz on student devices:
             </p>
           </div>
 
@@ -163,7 +163,7 @@ export default async function HomePage() {
                 01. Talk or Type
               </h3>
               <p className="text-xs sm:text-sm text-muted leading-relaxed">
-                Speak or prompt your favorite AI (Claude, ChatGPT, or Classy&apos;s assistant). Describe the quiz, revision notes, or homework assignment in plain words.
+                Speak or prompt your favorite AI (Claude, ChatGPT, Gemini, or Perplexity). Describe the quiz, revision notes, or homework assignment in plain words.
               </p>
             </div>
 
@@ -223,7 +223,7 @@ export default async function HomePage() {
                   Legacy Course Platforms
                 </div>
                 <div>
-                  <h3 className="font-serif text-2xl sm:text-3xl font-bold text-ink">$119 – $299</h3>
+                  <h3 className="font-serif text-2xl sm:text-3xl font-bold text-ink">$119 to $299</h3>
                   <p className="text-xs text-muted mt-1">₹10,000 to ₹25,000 / month fixed cost</p>
                 </div>
                 <div className="space-y-3 pt-2 text-xs text-muted border-t border-border/50">
@@ -294,7 +294,7 @@ export default async function HomePage() {
               </div>
             </div>
 
-            {/* Column 3: Classy OS (Highlighted) */}
+            {/* Column 3: The Classy Platform (Highlighted) */}
             <div className="p-7 sm:p-8 rounded-3xl border-2 border-primary/50 bg-primary-soft/30 shadow-md flex flex-col justify-between space-y-6 relative overflow-hidden">
               <div className="absolute top-0 right-0 px-3.5 py-1 rounded-bl-xl bg-primary text-primary-foreground text-[10px] font-bold tracking-wider uppercase">
                 Recommended
@@ -302,7 +302,7 @@ export default async function HomePage() {
 
               <div className="space-y-4">
                 <div className="inline-flex px-3 py-1 rounded-full text-xs font-semibold bg-primary text-primary-foreground">
-                  Classy Operating System
+                  Classy Platform
                 </div>
                 <div>
                   <h3 className="font-serif text-3xl sm:text-4xl font-bold text-primary">₹0 Forever</h3>
@@ -413,7 +413,7 @@ export default async function HomePage() {
 
           <div className="flex items-center gap-6">
             <a href="#how-it-works" className="hover:text-ink transition-colors">How It Works</a>
-            <a href="#capabilities" className="hover:text-ink transition-colors">Superpowers</a>
+            <a href="#capabilities" className="hover:text-ink transition-colors">Features</a>
             <a href="#the-difference" className="hover:text-ink transition-colors">The Difference</a>
             <a href="#pricing" className="hover:text-ink transition-colors">Pricing</a>
             <a href="#faq" className="hover:text-ink transition-colors">FAQ</a>

@@ -45,8 +45,8 @@ const DEMO_SCENARIOS: DemoScenario[] = [
     icon: HelpCircle,
     userPrompt: "Draft a 4-question timed diagnostic quiz on Chemical Reactions with 15m timer for Grade 10 Batch A.",
     aiResponse: "Generated 4 MCQs with step explanations, set 15m timer, encrypted answer keys, and dispatched to Grade 10 Batch A stream.",
-    targetBatch: "Grade 10 Science — Batch A",
-    syncStats: "24 Students Notified • 0.3s Sync",
+    targetBatch: "Grade 10 Science (Batch A)",
+    syncStats: "24 Students Notified | 0.3s Sync",
     extractedMeta: [
       { label: "Action", value: "Timed Assessment" },
       { label: "Duration", value: "15 Minutes (Countdown)" },
@@ -66,7 +66,7 @@ const DEMO_SCENARIOS: DemoScenario[] = [
         "Neutralization without temperature change",
       ],
       correctIndex: 0,
-      explanation: "Quicklime reacts vigorously with water to form slaked lime Ca(OH)₂ while releasing substantial heat — making it both combination and exothermic.",
+      explanation: "Quicklime reacts vigorously with water to form slaked lime Ca(OH)₂ while releasing substantial heat, making it both combination and exothermic.",
     },
   },
   {
@@ -75,7 +75,7 @@ const DEMO_SCENARIOS: DemoScenario[] = [
     icon: FileText,
     userPrompt: "Summarize modern periodic table trends into clean revision bullet points and pin to Batch A notes.",
     aiResponse: "Formatted concise Markdown revision sheet highlighting atomic radii, electronegativity, and exam rules. Pinned to student feeds.",
-    targetBatch: "Grade 10 Science — Batch A",
+    targetBatch: "Grade 10 Science (Batch A)",
     syncStats: "Revision Feed Updated • Offline Ready",
     extractedMeta: [
       { label: "Action", value: "Study Material Drop" },
@@ -236,7 +236,7 @@ export function InteractiveSimulator() {
                 </span>
               </div>
               <Badge variant="outline" className="text-[10px] font-semibold border-border text-muted bg-bg">
-                Claude • ChatGPT • Classy
+                Claude • ChatGPT • Gemini
               </Badge>
             </div>
 
@@ -260,7 +260,7 @@ export function InteractiveSimulator() {
             <div className="p-4 rounded-2xl bg-primary-soft/40 border border-primary/20 space-y-2">
               <div className="flex items-center gap-1.5 text-primary text-xs font-semibold">
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>Classy Protocol Execution</span>
+                <span>Classy Sync &amp; Delivery</span>
               </div>
               <p className="text-xs text-ink/90 leading-relaxed">
                 {scenario.aiResponse}
@@ -270,7 +270,7 @@ export function InteractiveSimulator() {
             {/* Structured Parameters Hand-Off */}
             <div className="space-y-1.5 pt-1">
               <p className="text-[11px] font-semibold text-muted uppercase tracking-wider">
-                Extracted Blueprint
+                Delivered to Classroom
               </p>
               <div className="grid grid-cols-2 gap-2">
                 {scenario.extractedMeta.map((meta, idx) => (

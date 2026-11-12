@@ -53,172 +53,191 @@ export default async function TutorBatchDetailPage({
     redirect("/s");
   }
 
-  // 1. Fetch batch
-  const { data: batch } = await supabase
-    .from("batches")
-    .select("*")
-    .eq("id", batchId)
-    .eq("tutor_id", user.id)
-    .single();
+  // 1. Fetch batch, items, roster, payments in parallel for instant loading
+  const [batchRes, itemsRes, rosterRes, paymentsRes] = await Promise.all([
+    supabase
+      .from("batches")
+      .select("*")
+      .eq("id", batchId)
+      .eq("tutor_id", user.id)
+      .single(),
+    supabase
+      .from("items")
+      .select("*")
+      .eq("batch_id", batchId)
+      .order("created_at", { ascending: false }),
+    supabase
+      .from("roster")
+      .select("*")
+      .eq("batch_id", batchId)
+      .order("created_at", { ascending: false }),
+    supabase
+      .from("payments")
+      .select(`
+        id,
+        amount_inr,
+        commission_inr,
+        status,
+        created_at,
+        razorpay_payment_id,
+        profiles:student_id (
+          full_name,
+          email
+        )
+      `)
+      .eq("batch_id", batchId)
+      .order("created_at", { ascending: false }),
+  ]);
 
+  const batch = batchRes.data;
   if (!batch) {
     notFound();
   }
 
-  // 2. Fetch items for this batch
-  const { data: items } = await supabase
-    .from("items")
-    .select("*")
-    .eq("batch_id", batchId)
-    .order("created_at", { ascending: false });
-
-  const itemList = items || [];
-
-  // 3. Fetch roster for this batch
-  const { data: roster } = await supabase
-    .from("roster")
-    .select("*")
-    .eq("batch_id", batchId)
-    .order("created_at", { ascending: false });
-
-  const rosterList = roster || [];
+  const itemList = itemsRes.data || [];
+  const rosterList = rosterRes.data || [];
   const joinedMembers = rosterList.filter((r) => r.status === "joined");
 
-  // 4. Fetch quiz analytics data for Tab 3 (Results)
   const quizItems = itemList.filter((i) => i.type === "quiz");
-  const quizResultsData: QuizResultData[] = [];
-
-  if (quizItems.length > 0) {
-    const admin = createAdminClient();
-
-    for (const q of quizItems) {
-      // Fetch quiz keys
-      const { data: keyData } = await admin
-        .from("quiz_keys")
-        .select("answers")
-        .eq("item_id", q.id)
-        .maybeSingle();
-
-      // Fetch attempts
-      const { data: attempts } = await supabase
-        .from("attempts")
-        .select(`
-          id,
-          student_id,
-          score,
-          total,
-          submitted_at,
-          answers,
-          profiles (
-            full_name,
-            email
-          )
-        `)
-        .eq("item_id", q.id)
-        .order("submitted_at", { ascending: false });
-
-      const parsedQuestions =
-        typeof q.body === "object" && q.body && "questions" in q.body
-          ? (q.body.questions as Array<{ id: string; text: string; marks?: number }>)
-          : [];
-
-      quizResultsData.push({
-        item_id: q.id,
-        title: q.title,
-        max_marks: q.max_marks,
-        due_at: q.due_at,
-        questions: parsedQuestions,
-        quiz_answers: (keyData?.answers as Record<string, number>) || {},
-        attempts: (attempts || []).map((att) => {
-          const prof = att.profiles as unknown as { full_name: string; email: string | null } | null;
-          return {
-            id: att.id,
-            student_id: att.student_id,
-            student_name: prof?.full_name || "Student",
-            student_email: prof?.email || null,
-            score: att.score,
-            total: att.total,
-            submitted_at: att.submitted_at,
-            answers: (att.answers as Record<string, number>) || null,
-          };
-        }),
-      });
-    }
-  }
-
-  // 5. Fetch assignment submissions data for Tab 4 (Submissions)
   const assignmentItems = itemList.filter((i) => i.type === "assignment");
-  const assignmentData: AssignmentItemData[] = [];
+  const quizIds = quizItems.map((q) => q.id);
+  const assignmentIds = assignmentItems.map((a) => a.id);
 
-  if (assignmentItems.length > 0) {
-    for (const a of assignmentItems) {
-      const { data: subs } = await supabase
-        .from("submissions")
-        .select(`
-          id,
-          item_id,
-          student_id,
-          text_answer,
-          link_url,
-          status,
-          marks,
-          feedback,
-          submitted_at,
-          graded_at,
-          released_at,
-          profiles (
-            full_name,
-            email
-          )
-        `)
-        .eq("item_id", a.id)
-        .order("submitted_at", { ascending: false });
+  // 2. Fetch all quiz keys, attempts, and submissions in parallel
+  const admin = createAdminClient();
+  const [quizKeysRes, attemptsRes, submissionsRes] = await Promise.all([
+    quizIds.length > 0
+      ? admin
+          .from("quiz_keys")
+          .select("item_id, answers")
+          .in("item_id", quizIds)
+      : Promise.resolve({ data: [] }),
+    quizIds.length > 0
+      ? supabase
+          .from("attempts")
+          .select(`
+            id,
+            item_id,
+            student_id,
+            score,
+            total,
+            submitted_at,
+            answers,
+            profiles (
+              full_name,
+              email
+            )
+          `)
+          .in("item_id", quizIds)
+          .order("submitted_at", { ascending: false })
+      : Promise.resolve({ data: [] }),
+    assignmentIds.length > 0
+      ? supabase
+          .from("submissions")
+          .select(`
+            id,
+            item_id,
+            student_id,
+            text_answer,
+            link_url,
+            status,
+            marks,
+            feedback,
+            submitted_at,
+            graded_at,
+            released_at,
+            profiles (
+              full_name,
+              email
+            )
+          `)
+          .in("item_id", assignmentIds)
+          .order("submitted_at", { ascending: false })
+      : Promise.resolve({ data: [] }),
+  ]);
 
-      assignmentData.push({
-        item_id: a.id,
-        title: a.title,
-        max_marks: a.max_marks,
-        submissions: (subs || []).map((sub) => {
-          const prof = sub.profiles as unknown as { full_name: string; email: string | null } | null;
-          return {
-            id: sub.id,
-            item_id: sub.item_id,
-            student_id: sub.student_id,
-            student_name: prof?.full_name || "Student",
-            student_email: prof?.email || null,
-            text_answer: sub.text_answer,
-            link_url: sub.link_url,
-            status: sub.status,
-            marks: sub.marks,
-            feedback: sub.feedback,
-            submitted_at: sub.submitted_at,
-            graded_at: sub.graded_at,
-            released_at: sub.released_at,
-          };
-        }),
-      });
-    }
-  }
+  // Index quiz keys by item_id
+  const keyMap = new Map<string, Record<string, number>>();
+  (quizKeysRes.data || []).forEach((k) => {
+    keyMap.set(k.item_id, (k.answers as Record<string, number>) || {});
+  });
 
-  // 6. Fetch payments for this batch for Tab 5 (Settings)
-  const { data: batchPayments } = await supabase
-    .from("payments")
-    .select(`
-      id,
-      amount_inr,
-      commission_inr,
-      status,
-      created_at,
-      razorpay_payment_id,
-      profiles:student_id (
-        full_name,
-        email
-      )
-    `)
-    .eq("batch_id", batchId)
-    .order("created_at", { ascending: false });
+  // Index attempts by item_id
+  const attemptsMap = new Map<string, typeof attemptsRes.data>();
+  (attemptsRes.data || []).forEach((att) => {
+    const list = attemptsMap.get(att.item_id) || [];
+    list.push(att);
+    attemptsMap.set(att.item_id, list);
+  });
 
-  const paymentList = (batchPayments || []).map((p) => ({
+  // Index submissions by item_id
+  const submissionsMap = new Map<string, typeof submissionsRes.data>();
+  (submissionsRes.data || []).forEach((sub) => {
+    const list = submissionsMap.get(sub.item_id) || [];
+    list.push(sub);
+    submissionsMap.set(sub.item_id, list);
+  });
+
+  // Assemble quizResultsData
+  const quizResultsData: QuizResultData[] = quizItems.map((q) => {
+    const parsedQuestions =
+      typeof q.body === "object" && q.body && "questions" in q.body
+        ? (q.body.questions as Array<{ id: string; text: string; marks?: number }>)
+        : [];
+    const itemAttempts = attemptsMap.get(q.id) || [];
+
+    return {
+      item_id: q.id,
+      title: q.title,
+      max_marks: q.max_marks,
+      due_at: q.due_at,
+      questions: parsedQuestions,
+      quiz_answers: keyMap.get(q.id) || {},
+      attempts: itemAttempts.map((att) => {
+        const prof = att.profiles as unknown as { full_name: string; email: string | null } | null;
+        return {
+          id: att.id,
+          student_id: att.student_id,
+          student_name: prof?.full_name || "Student",
+          student_email: prof?.email || null,
+          score: att.score,
+          total: att.total,
+          submitted_at: att.submitted_at,
+          answers: (att.answers as Record<string, number>) || null,
+        };
+      }),
+    };
+  });
+
+  // Assemble assignmentData
+  const assignmentData: AssignmentItemData[] = assignmentItems.map((a) => {
+    const itemSubs = submissionsMap.get(a.id) || [];
+    return {
+      item_id: a.id,
+      title: a.title,
+      max_marks: a.max_marks,
+      submissions: itemSubs.map((sub) => {
+        const prof = sub.profiles as unknown as { full_name: string; email: string | null } | null;
+        return {
+          id: sub.id,
+          item_id: sub.item_id,
+          student_id: sub.student_id,
+          student_name: prof?.full_name || "Student",
+          student_email: prof?.email || null,
+          text_answer: sub.text_answer,
+          link_url: sub.link_url,
+          status: sub.status,
+          marks: sub.marks,
+          feedback: sub.feedback,
+          submitted_at: sub.submitted_at,
+          graded_at: sub.graded_at,
+          released_at: sub.released_at,
+        };
+      }),
+    };
+  });
+
+  const paymentList = (paymentsRes.data || []).map((p) => ({
     id: p.id,
     amountInr: p.amount_inr,
     commissionInr: p.commission_inr,

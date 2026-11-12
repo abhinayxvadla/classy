@@ -465,7 +465,7 @@ export default async function StudentHomePage() {
                       Free for You
                     </h2>
                     <p className="text-xs text-muted">
-                      Open study materials and practice quizzes tailored to {profile.grade || "your grade"}.
+                      Open study materials and practice quizzes for {profile.grade || "your grade"}.
                     </p>
                   </div>
                   <Link

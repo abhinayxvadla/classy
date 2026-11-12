@@ -37,7 +37,7 @@ interface ConnectMcpClientProps {
 }
 
 const EXAMPLE_PROMPTS = [
-  "Create a batch called Class 10 Science – Batch A and add these students: Rohan Sharma, rohan@example.com, 9876543210\nPriya Verma, priya@example.com",
+  "Create a batch called Class 10 Science (Batch A) and add these students: Rohan Sharma, rohan@example.com, 9876543210\nPriya Verma, priya@example.com",
   "Give me the invite link for Batch A",
   "Make a 10-question quiz on photosynthesis for Batch A, mark it premium",
   "Write revision notes on chemical reactions for Batch A, free and public",

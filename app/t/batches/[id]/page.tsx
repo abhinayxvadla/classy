@@ -244,7 +244,7 @@ export default async function TutorBatchDetailPage({
         userEmail={profile.email}
       />
 
-      <main className="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-[104px] pb-[calc(96px+env(safe-area-inset-bottom))]">
+      <main className="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-20">
         {/* Back navigation link */}
         <div className="mb-4">
           <Link

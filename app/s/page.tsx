@@ -3,7 +3,6 @@ import Link from "next/link";
 import {
   Users,
   BookOpen,
-  Sparkles,
   ArrowRight,
   Clock,
   AlertCircle,
@@ -185,23 +184,21 @@ export default async function StudentHomePage() {
         userEmail={profile.email}
       />
 
-      <main className="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 md:pt-[104px] pb-[calc(96px+env(safe-area-inset-bottom))] space-y-8">
+      <main className="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-20 space-y-8">
         {/* Dismissible PWA Install Banner */}
         <InstallBanner />
 
-        {/* Welcome Greeting Banner (Fraunces headline) */}
-        <section className="p-6 sm:p-8 rounded-3xl bg-linear-to-br from-primary via-primary/95 to-ink text-white relative overflow-hidden shadow-lg">
-          <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-accent/20 blur-3xl pointer-events-none" />
+        {/* Welcome Greeting Banner */}
+        <section className="p-6 sm:p-8 rounded-3xl bg-linear-to-br from-primary via-primary/95 to-ink text-white relative overflow-hidden shadow-sm">
           <div className="relative z-10 space-y-3">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/10 backdrop-blur-md border border-white/15">
-              <Sparkles className="w-3.5 h-3.5 text-accent" />
-              Student Portal • {profile.grade || "All Classes"}
+              <span>Student Portal • {profile.grade || "All Classes"}</span>
             </div>
             <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
               Hi, {profile.full_name}
             </h1>
             <p className="text-white/80 text-sm sm:text-base max-w-2xl leading-relaxed">
-              Your classes, quizzes, and revision library in one calm space. Join a batch with a code from your teacher or explore free open content.
+              Your classes, quizzes, and revision library in one calm space. Join a batch with a code from your teacher or explore free study material.
             </p>
           </div>
         </section>

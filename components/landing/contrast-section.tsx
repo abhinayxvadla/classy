@@ -1,112 +1,110 @@
-import { XCircle, CheckCircle2, Clock, Sparkles } from "lucide-react";
+import { CheckCircle2, Clock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export function ContrastSection() {
   return (
-    <section id="the-difference" className="w-full my-16 text-left">
-      <div className="text-center mb-10">
+    <section id="the-difference" className="w-full my-20 text-left">
+      <div className="text-center mb-12">
         <Badge
           variant="outline"
-          className="rounded-full border-primary/30 bg-primary-soft text-primary font-semibold text-xs mb-2"
+          className="rounded-full border-primary/20 bg-primary-soft text-primary font-semibold text-xs mb-3 px-3 py-1"
         >
           The Difference
         </Badge>
-        <h2 className="font-serif text-3xl sm:text-4xl font-bold text-ink">
-          The 6-App Chaos vs. The Classy Loop
+        <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-ink">
+          Why Educators Are Moving to Classy
         </h2>
-        <p className="text-xs sm:text-sm text-muted max-w-lg mx-auto mt-2">
-          Why modern educators are retiring clumsy form builders and fragmented chat threads.
+        <p className="text-xs sm:text-sm text-muted max-w-xl mx-auto mt-3 leading-relaxed">
+          The contrast between juggling 5 disconnected tools and running a streamlined, modern classroom.
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
-        {/* Card 1: The Old Way (6-App Chaos) */}
-        <div className="p-6 sm:p-7 rounded-3xl border border-rose-500/20 bg-rose-500/5 shadow-xs flex flex-col justify-between space-y-6">
+        {/* Card 1: The Old Way (Fragmented Tools) */}
+        <div className="p-7 sm:p-8 rounded-3xl border border-border/80 bg-surface/60 shadow-2xs flex flex-col justify-between space-y-6">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/10 text-rose-700 dark:text-rose-400 text-xs font-semibold">
-                <XCircle className="w-3.5 h-3.5" /> The Old Way
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-muted/10 text-muted text-xs font-semibold">
+                The Fragmented Setup
               </span>
-              <span className="text-xs font-mono text-muted flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5" /> ~6 hours / week lost
+              <span className="text-xs text-muted flex items-center gap-1">
+                <Clock className="w-3.5 h-3.5" /> 6+ hours / week lost
               </span>
             </div>
 
             <h3 className="font-serif text-2xl font-bold text-ink">
-              The 6-App Administration Trap
+              Juggling 5 Disparate Apps
             </h3>
             <p className="text-xs sm:text-sm text-muted leading-relaxed">
-              You already use AI to draft great questions. Then the friction begins:
+              Educators spend more time on manual logistics than actual teaching:
             </p>
 
-            <ul className="space-y-3 text-xs sm:text-sm text-ink/90 pt-1">
-              <li className="flex items-start gap-2.5">
+            <ul className="space-y-3.5 text-xs sm:text-sm text-ink/90 pt-1">
+              <li className="flex items-start gap-3">
                 <span className="text-rose-500 font-bold shrink-0 mt-0.5">✕</span>
-                <span><strong>Google Forms:</strong> Copy-pasting 20 questions & 80 options one by one, manually setting radio buttons.</span>
+                <span><strong>Google Forms:</strong> Manually copy-pasting questions and radio options one-by-one.</span>
               </li>
-              <li className="flex items-start gap-2.5">
+              <li className="flex items-start gap-3">
                 <span className="text-rose-500 font-bold shrink-0 mt-0.5">✕</span>
-                <span><strong>WhatsApp / Telegram:</strong> Dumping PDF links that get buried under 300 family & student messages.</span>
+                <span><strong>WhatsApp Groups:</strong> PDF study materials get lost in family and group message clutter.</span>
               </li>
-              <li className="flex items-start gap-2.5">
+              <li className="flex items-start gap-3">
                 <span className="text-rose-500 font-bold shrink-0 mt-0.5">✕</span>
-                <span><strong>GPay / PhonePe:</strong> Chasing parents for transaction screenshots to track monthly tuition fees.</span>
+                <span><strong>Payment Chasing:</strong> Verifying UPI and bank transfer screenshots across multiple chat threads.</span>
               </li>
-              <li className="flex items-start gap-2.5">
+              <li className="flex items-start gap-3">
                 <span className="text-rose-500 font-bold shrink-0 mt-0.5">✕</span>
-                <span><strong>Pen & Paper:</strong> Spending entire Sunday afternoons manually correcting homework submissions.</span>
+                <span><strong>Manual Grading:</strong> Spending weekends checking test answers and recording marks on spreadsheets.</span>
               </li>
             </ul>
           </div>
 
-          <div className="p-3 rounded-2xl bg-surface/80 border border-border/60 text-xs text-muted flex items-center justify-between">
-            <span>Result:</span>
-            <span className="font-semibold text-rose-600 dark:text-rose-400">Exhausting, manual, repetitive</span>
+          <div className="pt-3 border-t border-border/60 text-xs text-muted">
+            Result: Administrative fatigue and lost student engagement.
           </div>
         </div>
 
-        {/* Card 2: The Classy Way (The Loop) */}
-        <div className="p-6 sm:p-7 rounded-3xl border border-emerald-500/30 bg-emerald-500/5 shadow-xs flex flex-col justify-between space-y-6 relative overflow-hidden">
+        {/* Card 2: The Classy Way (Streamlined Classroom) */}
+        <div className="p-7 sm:p-8 rounded-3xl border-2 border-primary/40 bg-primary-soft/30 shadow-xs flex flex-col justify-between space-y-6">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-xs font-semibold">
-                <Sparkles className="w-3.5 h-3.5" /> The Classy Loop
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-semibold">
+                The Classy Way
               </span>
-              <span className="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
-                ⚡ 30 seconds
+              <span className="text-xs text-primary font-medium">
+                Under 15 seconds per task
               </span>
             </div>
 
             <h3 className="font-serif text-2xl font-bold text-ink">
-              One Command to a Live Classroom
+              One Unified Teaching Hub
             </h3>
             <p className="text-xs sm:text-sm text-muted leading-relaxed">
-              Your AI handles the thinking. Classy handles the entire delivery pipeline:
+              Instruct your assistant or dashboard, and your classroom updates automatically:
             </p>
 
-            <ul className="space-y-3 text-xs sm:text-sm text-ink/90 pt-1">
-              <li className="flex items-start gap-2.5">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-                <span><strong>Instant Tool Call:</strong> Prompts turn directly into published coursework with 0 copy-pasting.</span>
+            <ul className="space-y-3.5 text-xs sm:text-sm text-ink/90 pt-1">
+              <li className="flex items-start gap-3">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                <span><strong>One-Command Publishing:</strong> Draft quizzes or notes in Claude, ChatGPT, or web — published in 1 click.</span>
               </li>
-              <li className="flex items-start gap-2.5">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-                <span><strong>Clean Mobile App:</strong> Delivered straight to students&apos; phones with timed questions and progress bars.</span>
+              <li className="flex items-start gap-3">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                <span><strong>Dedicated Mobile Portal:</strong> Students access their batch stream, study notes, and tests in one quiet app.</span>
               </li>
-              <li className="flex items-start gap-2.5">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-                <span><strong>Integrated UPI Checkout:</strong> Students unlock premium batches in 1 tap; automatic payout bookkeeping.</span>
+              <li className="flex items-start gap-3">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                <span><strong>Instant Auto-Scoring:</strong> Quizzes are graded automatically with explanations released immediately.</span>
               </li>
-              <li className="flex items-start gap-2.5">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-                <span><strong>12ms Server Grading:</strong> Tests evaluate automatically against encrypted answer keys the moment students submit.</span>
+              <li className="flex items-start gap-3">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                <span><strong>Built-In Payouts:</strong> Students enroll and pay via Razorpay; 85% is transferred directly to your bank.</span>
               </li>
             </ul>
           </div>
 
-          <div className="p-3 rounded-2xl bg-surface/80 border border-emerald-500/20 text-xs text-muted flex items-center justify-between">
-            <span>Result:</span>
-            <span className="font-semibold text-emerald-600 dark:text-emerald-400">Effortless, structured, on autopilot</span>
+          <div className="pt-3 border-t border-primary/20 text-xs text-primary font-semibold">
+            Result: More time teaching, zero administrative friction.
           </div>
         </div>
       </div>

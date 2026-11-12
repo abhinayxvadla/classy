@@ -2,13 +2,11 @@
 
 import { useState } from "react";
 import {
-  Bot,
-  Smartphone,
-  Sparkles,
+  HelpCircle,
+  FileText,
+  ClipboardList,
+  Megaphone,
   CheckCircle2,
-  ShieldCheck,
-  Zap,
-  ArrowRight,
   Clock,
   RotateCcw,
 } from "lucide-react";
@@ -18,8 +16,9 @@ import { cn } from "@/lib/utils";
 interface DemoScenario {
   id: string;
   label: string;
+  icon: typeof HelpCircle;
   prompt: string;
-  toolCall: string;
+  assistantReply: string;
   itemType: string;
   studentView: {
     title: string;
@@ -35,11 +34,12 @@ const DEMO_SCENARIOS: DemoScenario[] = [
   {
     id: "quiz",
     label: "Timed Quiz",
+    icon: HelpCircle,
     prompt: "Create a 5-question timed quiz on Chemical Reactions for Class 10 with answer keys and explanations.",
-    toolCall: "create_quiz(batch_id: 'SCI10A', max_marks: 10, time_limit: 15)",
-    itemType: "Quiz · 5 Questions",
+    assistantReply: "Created and published 'Chemical Reactions Diagnostic' to Class 10 Science. 5 questions configured with 15-minute timer.",
+    itemType: "Quiz · 5 Questions · 15 mins",
     studentView: {
-      title: "Chemical Reactions Diagnostics",
+      title: "Chemical Reactions Diagnostic",
       badge: "Timed Quiz · 15m",
       question: "When quicklime (CaO) reacts vigorously with water, what type of reaction takes place?",
       options: [
@@ -49,300 +49,274 @@ const DEMO_SCENARIOS: DemoScenario[] = [
         "Neutralization without heat change",
       ],
       correctIndex: 0,
-      explanation: "Quicklime reacts with water to form slaked lime with tremendous heat release (combination & exothermic).",
-    },
-  },
-  {
-    id: "math",
-    label: "Math Practice",
-    prompt: "Create a diagnostic quiz on Trigonometric Identities for Class 10 with step-by-step solutions.",
-    toolCall: "create_quiz(batch_id: 'MATH10', max_marks: 10, time_limit: 20)",
-    itemType: "Quiz · 5 Questions",
-    studentView: {
-      title: "Class 10 Trigonometry Check",
-      badge: "Math · 20m",
-      question: "Which of the following is equal to (1 + tan²θ)?",
-      options: [
-        "cot²θ",
-        "sec²θ",
-        "cos²θ",
-        "cosec²θ",
-      ],
-      correctIndex: 1,
-      explanation: "From fundamental Pythagorean identities, 1 + tan²θ = sec²θ.",
+      explanation: "Quicklime reacts with water to form slaked lime Ca(OH)₂ with significant heat release (combination and exothermic).",
     },
   },
   {
     id: "notes",
     label: "Revision Notes",
-    prompt: "Draft concise revision notes on Periodic Trends and post them to Class 10 Science as free study material.",
-    toolCall: "create_notes(batch_id: 'SCI10A', is_free: true, is_public: true)",
-    itemType: "Notes · 4 min read",
+    icon: FileText,
+    prompt: "Draft concise revision notes on Periodic Trends in Modern Periodic Table for Class 10 Science.",
+    assistantReply: "Published revision notes 'Modern Periodic Trends' to Class 10 Science stream. Free for all enrolled students.",
+    itemType: "Study Material · 4 min read",
     studentView: {
-      title: "Periodic Trends Essentials",
-      badge: "Revision Notes · Free",
-      question: "Sample Check: What happens to atomic radius down a group?",
+      title: "Periodic Trends Summary Sheet",
+      badge: "Revision Notes",
+      question: "Key Trend to Remember:",
       options: [
-        "Increases due to added electron shells",
-        "Decreases due to nuclear charge",
-        "Remains exactly constant",
-        "Fluctuates unpredictably",
+        "Atomic radius decreases across a period (left to right) due to higher nuclear charge.",
+        "Atomic radius increases across a period due to shielding effect.",
+        "Metallic character increases from left to right across a period.",
+        "Electronegativity decreases across a period.",
       ],
       correctIndex: 0,
-      explanation: "Down a group, each subsequent element adds an entire electron shell, increasing atomic size.",
+      explanation: "As nuclear charge increases across a period without adding shells, electrons are pulled closer, reducing atomic radius.",
+    },
+  },
+  {
+    id: "assignment",
+    label: "Homework Task",
+    icon: ClipboardList,
+    prompt: "Post an assignment on Trigonometric Identities for Class 10 due Friday 6 PM with max marks 10.",
+    assistantReply: "Published 'Trigonometry Problem Set 1' to Class 10. Due Friday at 6:00 PM. Submission dropzone active.",
+    itemType: "Assignment · Due Friday · Max 10 Marks",
+    studentView: {
+      title: "Trigonometry Problem Set 1",
+      badge: "Homework · Due Friday",
+      question: "Verify the fundamental identity:",
+      options: [
+        "sin²θ + cos²θ = 1",
+        "1 + cos²θ = sin²θ",
+        "tan²θ - sec²θ = 1",
+        "sinθ · cosθ = 1",
+      ],
+      correctIndex: 0,
+      explanation: "sin²θ + cos²θ = 1 is the primary Pythagorean trigonometric identity, true for all values of θ.",
+    },
+  },
+  {
+    id: "broadcast",
+    label: "Class Announcement",
+    icon: Megaphone,
+    prompt: "Broadcast a message to Class 10 Science: Extra doubt-clearing session this Saturday at 4 PM on Zoom.",
+    assistantReply: "Posted announcement to Class 10 Science batch stream. Instant mobile notification sent to all enrolled students.",
+    itemType: "Notice · Class 10 Science",
+    studentView: {
+      title: "Saturday Doubt-Clearing Session",
+      badge: "Notice · Batch Stream",
+      question: "Scheduled Session Details:",
+      options: [
+        "Saturday 4:00 PM – 5:30 PM (Zoom Link inside batch stream)",
+        "Sunday 10:00 AM – 11:30 AM",
+        "Postponed until next week",
+        "Offline classroom only",
+      ],
+      correctIndex: 0,
+      explanation: "Tutor has scheduled doubt resolution on Saturday at 4:00 PM for all students preparing for midterm exams.",
     },
   },
 ];
 
 export function InteractiveSimulator() {
-  const [activeScenario, setActiveScenario] = useState<DemoScenario>(DEMO_SCENARIOS[0]);
+  const [selectedId, setSelectedId] = useState("quiz");
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
-  const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
 
-  const handleSelectScenario = (scenario: DemoScenario) => {
-    setActiveScenario(scenario);
+  const scenario = DEMO_SCENARIOS.find((s) => s.id === selectedId) || DEMO_SCENARIOS[0];
+
+  const handleSelectScenario = (id: string) => {
+    setSelectedId(id);
     setSelectedOption(null);
-    setIsAnswerSubmitted(false);
+    setHasSubmitted(false);
   };
 
-  const handleOptionClick = (index: number) => {
-    if (isAnswerSubmitted) return;
-    setSelectedOption(index);
-    setIsAnswerSubmitted(true);
+  const handleSelectOption = (idx: number) => {
+    setSelectedOption(idx);
+    setHasSubmitted(true);
   };
 
-  const resetQuiz = () => {
+  const handleReset = () => {
     setSelectedOption(null);
-    setIsAnswerSubmitted(false);
+    setHasSubmitted(false);
   };
+
+  const isCorrect = selectedOption === scenario.studentView.correctIndex;
 
   return (
-    <div className="w-full my-12 p-5 sm:p-8 rounded-3xl bg-linear-to-b from-surface via-surface/90 to-surface/40 border border-border shadow-md">
-      {/* Header */}
-      <div className="text-center mb-8">
-        <Badge
-          variant="outline"
-          className="rounded-full border-primary/30 bg-primary-soft text-primary font-semibold text-xs mb-2"
-        >
-          Interactive Playground
-        </Badge>
-        <h3 className="font-serif text-2xl sm:text-4xl font-bold text-ink">
-          From Prompt to Student in Seconds
-        </h3>
-        <p className="text-xs sm:text-sm text-muted max-w-xl mx-auto mt-2">
-          Click a prompt below to see how Classy turns your AI&apos;s response into an interactive mobile experience for your students.
-        </p>
-
-        {/* Preset Prompt Chips */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mt-5">
-          {DEMO_SCENARIOS.map((scenario) => {
-            const isActive = activeScenario.id === scenario.id;
-            return (
-              <button
-                key={scenario.id}
-                onClick={() => handleSelectScenario(scenario)}
-                className={cn(
-                  "px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5",
-                  isActive
-                    ? "bg-primary text-primary-foreground shadow-xs scale-105"
-                    : "bg-surface border border-border text-muted hover:text-ink hover:border-primary/40"
-                )}
-              >
-                <Sparkles className="w-3 h-3" />
-                {scenario.label}
-              </button>
-            );
-          })}
-        </div>
+    <div className="w-full my-8 text-left">
+      {/* Tab Switcher */}
+      <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
+        {DEMO_SCENARIOS.map((s) => {
+          const Icon = s.icon;
+          const isActive = s.id === selectedId;
+          return (
+            <button
+              key={s.id}
+              onClick={() => handleSelectScenario(s.id)}
+              className={cn(
+                "flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all border cursor-pointer",
+                isActive
+                  ? "bg-primary text-primary-foreground border-primary shadow-xs"
+                  : "bg-surface text-muted hover:text-ink border-border hover:bg-bg"
+              )}
+            >
+              <Icon className="w-3.5 h-3.5" />
+              <span>{s.label}</span>
+            </button>
+          );
+        })}
       </div>
 
-      {/* 3-Column Interactive Pipeline */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch relative">
-        {/* Col 1: Tutor AI Prompt (5 cols) */}
-        <div className="lg:col-span-4 p-5 rounded-2xl bg-bg border border-border shadow-xs flex flex-col justify-between space-y-4">
-          <div className="space-y-3">
-            <div className="flex items-center justify-between border-b border-border/60 pb-3">
-              <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg bg-primary-soft text-primary flex items-center justify-center">
-                  <Bot className="w-4 h-4" />
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-ink">Your AI Assistant</p>
-                  <p className="text-[10px] text-muted">Claude · ChatGPT · Gemini</p>
-                </div>
-              </div>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-surface border border-border text-muted">
-                Input
+      {/* Main Dual-Pane Canvas */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 rounded-3xl border border-border/80 bg-surface/95 p-5 sm:p-7 shadow-xs">
+        {/* Left Pane: Tutor Command View (5 cols) */}
+        <div className="lg:col-span-5 flex flex-col justify-between space-y-5 border-b lg:border-b-0 lg:border-r border-border/70 pb-6 lg:pb-0 lg:pr-6">
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-semibold text-muted uppercase tracking-wider">
+                Tutor Workflow
               </span>
+              <Badge variant="outline" className="text-[10px] font-mono border-border text-muted">
+                Claude · ChatGPT · Web
+              </Badge>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-surface border border-border/80 text-xs text-ink/90 space-y-2">
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-muted">
-                You Prompt:
-              </p>
-              <p className="font-serif italic text-ink text-xs sm:text-sm leading-relaxed">
-                &ldquo;{activeScenario.prompt}&rdquo;
-              </p>
+            {/* Tutor Message Bubble */}
+            <div className="space-y-1.5">
+              <p className="text-[11px] font-medium text-muted">You instruct:</p>
+              <div className="p-3.5 rounded-2xl bg-bg border border-border/80 font-mono text-xs text-ink leading-relaxed">
+                &ldquo;{scenario.prompt}&rdquo;
+              </div>
+            </div>
+
+            {/* Assistant Confirmation Bubble */}
+            <div className="space-y-1.5">
+              <p className="text-[11px] font-medium text-muted">Classy publishes instantly:</p>
+              <div className="p-3.5 rounded-2xl bg-primary-soft/60 border border-primary/20 text-xs text-primary leading-relaxed flex items-start gap-2.5">
+                <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                <p className="text-xs text-ink leading-relaxed">
+                  {scenario.assistantReply}
+                </p>
+              </div>
             </div>
           </div>
 
-          <div className="p-3 rounded-xl bg-primary/5 border border-primary/20 text-[11px] font-mono text-primary flex items-center gap-2">
-            <Zap className="w-3.5 h-3.5 animate-pulse shrink-0" />
-            <span className="truncate">{activeScenario.toolCall}</span>
+          <div className="pt-2">
+            <div className="p-3 rounded-xl bg-bg border border-border/60 text-[11px] text-muted flex items-center justify-between">
+              <span>Delivery Time</span>
+              <span className="font-semibold text-ink font-mono">&lt; 150ms</span>
+            </div>
           </div>
         </div>
 
-        {/* Col 2: Classy MCP Hub (3 cols) */}
-        <div className="lg:col-span-3 p-5 rounded-2xl bg-primary-soft/30 border border-primary/25 shadow-xs flex flex-col justify-between space-y-4">
-          <div>
-            <div className="flex items-center justify-between border-b border-primary/20 pb-3">
-              <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg bg-primary text-primary-foreground flex items-center justify-center font-serif text-xs font-bold shadow-xs">
-                  C
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-ink">Classy Engine</p>
-                  <p className="text-[10px] text-muted">Streamable MCP</p>
-                </div>
-              </div>
-              <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
-                12ms
+        {/* Right Pane: Live Student Mobile Experience (7 cols) */}
+        <div className="lg:col-span-7 flex flex-col justify-between space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-[11px] font-semibold text-muted uppercase tracking-wider">
+                Student Live Screen
               </span>
             </div>
-
-            <div className="space-y-2.5 mt-4 text-xs">
-              <div className="flex items-center gap-2 p-2 rounded-lg bg-surface border border-border/60 text-ink">
-                <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                <span className="text-[11px]">Keys encrypted server-side</span>
-              </div>
-              <div className="flex items-center gap-2 p-2 rounded-lg bg-surface border border-border/60 text-ink">
-                <Zap className="w-4 h-4 text-accent shrink-0" />
-                <span className="text-[11px]">Published to batch roster</span>
-              </div>
-              <div className="flex items-center gap-2 p-2 rounded-lg bg-surface border border-border/60 text-ink">
-                <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
-                <span className="text-[11px]">Zero AI in-app (100% private)</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="text-[10px] text-center text-muted font-medium pt-2">
-            Auto-dispatched with zero copy-pasting
-          </div>
-        </div>
-
-        {/* Col 3: Live Student Phone (5 cols) */}
-        <div className="lg:col-span-5 p-5 rounded-2xl bg-bg border border-border shadow-xs flex flex-col justify-between space-y-3 relative">
-          <div>
-            {/* Phone Top Header */}
-            <div className="flex items-center justify-between border-b border-border/60 pb-3">
-              <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg bg-accent/20 text-accent flex items-center justify-center">
-                  <Smartphone className="w-4 h-4" />
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-ink">Student Mobile App</p>
-                  <p className="text-[10px] text-muted">{activeScenario.itemType}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <Badge variant="outline" className="text-[10px] font-mono border-border">
-                  <Clock className="w-2.5 h-2.5 mr-1" /> 14:58
-                </Badge>
-                {isAnswerSubmitted && (
-                  <button
-                    onClick={resetQuiz}
-                    title="Try again"
-                    className="p-1 rounded-md text-muted hover:text-ink hover:bg-surface transition-colors cursor-pointer"
-                  >
-                    <RotateCcw className="w-3.5 h-3.5" />
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {/* Simulated Live Question */}
-            <div className="mt-3.5 space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-[11px] font-semibold text-primary">Question 1 of 5</span>
-                <span className="text-[10px] text-muted">Tap an option to test:</span>
-              </div>
-
-              <p className="font-serif text-xs sm:text-sm font-bold text-ink leading-snug">
-                {activeScenario.studentView.question}
-              </p>
-
-              {/* Tappable Options */}
-              <div className="space-y-1.5 pt-1">
-                {activeScenario.studentView.options.map((option, idx) => {
-                  const isSelected = selectedOption === idx;
-                  const isCorrect = idx === activeScenario.studentView.correctIndex;
-
-                  let optionStyle =
-                    "bg-surface border-border/80 text-ink hover:border-primary/50 hover:bg-surface/80";
-
-                  if (isAnswerSubmitted) {
-                    if (isCorrect) {
-                      optionStyle =
-                        "bg-emerald-500/10 border-emerald-500/50 text-emerald-700 dark:text-emerald-400 font-semibold";
-                    } else if (isSelected && !isCorrect) {
-                      optionStyle =
-                        "bg-rose-500/10 border-rose-500/50 text-rose-700 dark:text-rose-400";
-                    } else {
-                      optionStyle = "opacity-40 border-border/40 text-muted";
-                    }
-                  }
-
-                  return (
-                    <button
-                      key={idx}
-                      onClick={() => handleOptionClick(idx)}
-                      disabled={isAnswerSubmitted}
-                      className={cn(
-                        "w-full p-2.5 rounded-xl border text-left text-xs transition-all flex items-center justify-between cursor-pointer",
-                        optionStyle
-                      )}
-                    >
-                      <span className="flex items-center gap-2">
-                        <span className="w-4 h-4 rounded-full border border-current flex items-center justify-center text-[10px] font-mono shrink-0">
-                          {String.fromCharCode(65 + idx)}
-                        </span>
-                        <span className="leading-tight">{option}</span>
-                      </span>
-
-                      {isAnswerSubmitted && isCorrect && (
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 ml-2" />
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Feedback Banner upon tap */}
-              {isAnswerSubmitted && (
-                <div className="p-2.5 rounded-xl bg-surface border border-border/80 text-[11px] leading-relaxed text-muted space-y-1 animate-in fade-in duration-200">
-                  <p className="font-bold text-ink flex items-center gap-1.5">
-                    {selectedOption === activeScenario.studentView.correctIndex ? (
-                      <span className="text-emerald-600 dark:text-emerald-400">
-                        🎉 Correct! (+2 Marks)
-                      </span>
-                    ) : (
-                      <span className="text-rose-600 dark:text-rose-400">
-                        Incorrect Answer
-                      </span>
-                    )}
-                  </p>
-                  <p>{activeScenario.studentView.explanation}</p>
-                </div>
+            <div className="flex items-center gap-2">
+              <Badge className="bg-primary-soft text-primary font-medium text-[10px]">
+                {scenario.itemType}
+              </Badge>
+              {hasSubmitted && (
+                <button
+                  onClick={handleReset}
+                  className="text-xs text-muted hover:text-ink flex items-center gap-1 cursor-pointer"
+                  title="Try again"
+                >
+                  <RotateCcw className="w-3 h-3" />
+                  <span className="text-[11px]">Reset</span>
+                </button>
               )}
             </div>
           </div>
 
-          <div className="text-[10px] text-muted flex items-center justify-between border-t border-border/60 pt-2 font-medium">
-            <span>Instant automatic grading</span>
-            <span className="text-primary font-semibold flex items-center gap-1">
-              Live in App <ArrowRight className="w-3 h-3" />
-            </span>
+          {/* Interactive Card */}
+          <div className="p-5 rounded-2xl border border-border/80 bg-bg/50 space-y-4">
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-[11px] font-semibold text-primary uppercase tracking-wider">
+                  {scenario.studentView.badge}
+                </span>
+                <span className="text-[11px] text-muted flex items-center gap-1">
+                  <Clock className="w-3 h-3" /> Auto-Timed
+                </span>
+              </div>
+              <h4 className="font-serif text-base sm:text-lg font-bold text-ink">
+                {scenario.studentView.title}
+              </h4>
+            </div>
+
+            <p className="text-xs sm:text-sm font-medium text-ink/90 leading-relaxed">
+              {scenario.studentView.question}
+            </p>
+
+            {/* Multiple Choice Option Buttons */}
+            <div className="space-y-2">
+              {scenario.studentView.options.map((opt, idx) => {
+                const isSelected = selectedOption === idx;
+                const isCorrectOption = idx === scenario.studentView.correctIndex;
+
+                let stateStyle = "border-border bg-surface hover:border-primary/50 text-ink";
+
+                if (hasSubmitted) {
+                  if (isSelected && isCorrect) {
+                    stateStyle = "border-emerald-500 bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 font-semibold";
+                  } else if (isSelected && !isCorrect) {
+                    stateStyle = "border-rose-500 bg-rose-500/10 text-rose-800 dark:text-rose-300 font-semibold";
+                  } else if (isCorrectOption) {
+                    stateStyle = "border-emerald-500/50 bg-emerald-500/5 text-emerald-700 dark:text-emerald-400";
+                  }
+                }
+
+                return (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => handleSelectOption(idx)}
+                    className={cn(
+                      "w-full text-left p-3 rounded-xl border text-xs leading-relaxed transition-all flex items-center justify-between gap-3 cursor-pointer",
+                      stateStyle
+                    )}
+                  >
+                    <span>{opt}</span>
+                    <span className="w-5 h-5 rounded-full border border-border/80 flex items-center justify-center text-[10px] shrink-0 font-mono">
+                      {String.fromCharCode(65 + idx)}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Explanation card reveals upon answering */}
+            {hasSubmitted && (
+              <div
+                className={cn(
+                  "p-3.5 rounded-xl text-xs leading-relaxed transition-all",
+                  isCorrect
+                    ? "bg-emerald-500/10 text-emerald-900 dark:text-emerald-200 border border-emerald-500/30"
+                    : "bg-rose-500/10 text-rose-900 dark:text-rose-200 border border-rose-500/30"
+                )}
+              >
+                <div className="flex items-center gap-1.5 font-bold mb-1">
+                  {isCorrect ? (
+                    <>
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                      <span>Correct Answer!</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="text-rose-600 dark:text-rose-400 font-bold">✕ Incorrect</span>
+                    </>
+                  )}
+                </div>
+                <p className="text-xs opacity-90">{scenario.studentView.explanation}</p>
+              </div>
+            )}
           </div>
         </div>
       </div>

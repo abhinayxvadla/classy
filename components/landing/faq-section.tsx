@@ -12,68 +12,69 @@ interface FAQItem {
 
 const FAQS: FAQItem[] = [
   {
-    question: "How is Classy different from just copying questions from ChatGPT?",
+    question: "Do students need to install an app from the App Store or Play Store?",
     answer:
-      "A raw ChatGPT conversation or PDF is static, easy to leak, impossible to time, and requires manual grading. Classy turns your AI prompt directly into an interactive classroom on your students' phones—complete with countdown timers, server-encrypted answer keys, instant 12ms grading, and automated scoreboards.",
+      "No downloads are required. Students open your batch link in any browser (Safari, Chrome) on mobile or laptop. They can tap 'Add to Home Screen' to use it as a standalone progressive web app with offline support.",
   },
   {
-    question: "Do I need a special or paid AI subscription?",
+    question: "Which AI tools are supported?",
     answer:
-      "No. Classy works with both free and paid AI tiers. You can connect Claude Desktop, ChatGPT, Google Gemini, Perplexity, or Cursor using our standard MCP endpoint.",
+      "Classy supports the 4 leading AI platforms: Claude (Claude Desktop & Claude Code CLI), ChatGPT (Web & Mobile via Custom GPT Actions), Google Gemini (AI Studio & Function Calling), and Perplexity (Custom Connectors). You can also manage your classroom directly through our web dashboard without connecting an AI tool.",
   },
   {
-    question: "Do students need to download anything from the App Store or Play Store?",
+    question: "How does batch monetization and the platform fee work?",
     answer:
-      "No app store downloads or updates needed. Students simply open your batch link in any browser (Safari, Chrome) and tap 'Add to Home Screen' to get the full, distraction-free mobile app experience with offline revision support.",
+      `Classy is completely free for tutors to create unlimited free batches and share study material. If you set a price for a premium batch, students enroll via Razorpay UPI or cards. Classy retains a transparent ${PLATFORM_FEE_PERCENT}% platform fee to cover payment gateway charges and cloud infrastructure, and you receive ${100 - PLATFORM_FEE_PERCENT}% directly in your bank account.`,
   },
   {
-    question: "Can students cheat by inspecting browser code or HTML?",
+    question: "Can students cheat or inspect quiz answer keys in the browser?",
     answer:
-      "Never. Correct answers and step-by-step explanations are securely isolated on our backend and are never sent to the student client until after their test attempt has been submitted and permanently locked.",
+      "No. Correct answers and step-by-step explanations are evaluated on the server. They are never sent to the student's device until after their test attempt is finalized and locked.",
   },
   {
-    question: `How does batch pricing and the ${PLATFORM_FEE_PERCENT}% platform fee work?`,
+    question: "Can I manage multiple batches and subjects?",
     answer:
-      `Classy is completely free for tutors to create unlimited batches and publish free coursework. If you choose to monetize a batch with a monthly fee (e.g. ₹499/month), students pay via 1-tap UPI or cards. Classy retains a modest ${PLATFORM_FEE_PERCENT}% platform fee to cover server infrastructure and payment processing, and you keep ${100 - PLATFORM_FEE_PERCENT}% net earnings.`,
+      "Yes. You can create unlimited distinct batches (e.g. 'Class 10 Physics', 'Class 12 Calculus', 'NEET Biology Crash Course') with separate student rosters, join codes, and course streams.",
   },
   {
     question: "Does Classy train on my questions or student data?",
     answer:
-      "Zero. Classy has no internal AI models and will never train on your teaching IP. Your prompts remain between you and your AI provider; Classy only acts as the authenticated delivery bridge for your classroom.",
+      "No. Classy does not bundle or train any internal AI models. Your prompts and coursework remain entirely your intellectual property.",
   },
 ];
 
 export function FAQSection() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   const toggle = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
   return (
-    <div className="space-y-3 w-full max-w-3xl mx-auto">
+    <div className="space-y-3 w-full max-w-3xl mx-auto text-left">
       {FAQS.map((faq, index) => {
         const isOpen = openIndex === index;
         return (
           <div
             key={index}
-            className="rounded-2xl border border-border bg-surface transition-all overflow-hidden"
+            className="rounded-2xl border border-border/80 bg-surface/90 transition-all overflow-hidden shadow-2xs"
           >
             <button
+              type="button"
               onClick={() => toggle(index)}
-              className="w-full p-4 sm:p-5 flex items-center justify-between text-left font-serif font-bold text-base sm:text-lg text-ink hover:text-primary transition-colors gap-4 cursor-pointer"
-              aria-expanded={isOpen}
+              className="w-full flex items-center justify-between p-5 text-left text-sm sm:text-base font-semibold text-ink hover:text-primary transition-colors cursor-pointer"
             >
               <span>{faq.question}</span>
               <ChevronDown
                 className={cn(
-                  "w-5 h-5 text-muted shrink-0 transition-transform duration-200",
-                  isOpen && "transform rotate-180 text-primary"
+                  "w-4 h-4 text-muted transition-transform duration-200 shrink-0 ml-4",
+                  isOpen && "rotate-180 text-primary"
                 )}
               />
             </button>
+
             {isOpen && (
-              <div className="px-4 sm:px-5 pb-5 text-xs sm:text-sm text-muted leading-relaxed border-t border-border/40 pt-3">
+              <div className="px-5 pb-5 text-xs sm:text-sm text-muted leading-relaxed border-t border-border/40 pt-3">
                 {faq.answer}
               </div>
             )}

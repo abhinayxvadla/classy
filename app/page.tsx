@@ -1,22 +1,14 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import {
-  ArrowRight,
-  Sparkles,
-  Bot,
-  GraduationCap,
-  CheckCircle2,
-  BookOpen,
-} from "lucide-react";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { FloatingNav } from "@/components/nav/floating-nav";
 import { InteractiveSimulator } from "@/components/landing/simulator";
 import { ContrastSection } from "@/components/landing/contrast-section";
 import { BentoFeatures } from "@/components/landing/bento-features";
 import { FAQSection } from "@/components/landing/faq-section";
-import { InstallButton } from "@/components/pwa/install-button";
-import { APP_NAME, APP_TAGLINE, PLATFORM_FEE_PERCENT } from "@/lib/config";
+import { APP_NAME, PLATFORM_FEE_PERCENT } from "@/lib/config";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function HomePage() {
@@ -44,372 +36,344 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-screen bg-bg text-ink flex flex-col justify-between selection:bg-primary-soft selection:text-primary transition-colors duration-300">
-      {/* Floating Public Pill Nav */}
+      {/* Sticky Top Navigation */}
       <FloatingNav role="public" />
 
-      {/* Main Content Area */}
-      <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-24 md:pt-[104px] pb-[calc(104px+env(safe-area-inset-bottom))] flex flex-col items-center text-center">
+      {/* Main Page Content */}
+      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-12 md:pt-16 pb-20 flex flex-col items-center text-center">
         {/* =================================================================== */}
-        {/* 1. HERO SECTION */}
+        {/* 1. HERO SECTION (Editorial Serif, Menler Style) */}
         {/* =================================================================== */}
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary-soft text-primary text-xs font-semibold tracking-wide uppercase mb-6 border border-primary/20 shadow-2xs">
-          <Sparkles className="w-3.5 h-3.5 text-accent" />
-          The AI-Native Classroom · Unlimited for Tutors
-        </div>
-
-        <h1 className="text-4xl sm:text-6xl md:text-7xl font-serif font-bold tracking-tight text-ink max-w-3xl leading-[1.08] mb-6">
-          You talk to your AI. Classy runs the class.
-        </h1>
-
-        <p className="text-lg sm:text-xl text-muted max-w-2xl font-normal leading-relaxed mb-8">
-          Stop copy-pasting prompts into Google Forms, scattered PDFs, and chaotic WhatsApp groups.
-          Connect Claude, ChatGPT, or Gemini once—Classy turns your conversations into interactive
-          quizzes, offline revision notes, and auto-graded coursework on your students&apos; phones.
-        </p>
-
-        {/* Dual Portal CTAs */}
-        <div className="flex flex-col sm:flex-row items-center gap-3.5 mb-8 w-full sm:w-auto">
-          <Link
-            href="/tutor/register"
-            className={buttonVariants({
-              className:
-                "w-full sm:w-auto rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 px-7 py-3.5 font-semibold shadow-xs flex items-center justify-center gap-2 text-sm",
-            })}
-          >
-            <Bot className="w-4 h-4" />
-            Start as a Tutor Free
-          </Link>
-          <Link
-            href="/student/register"
-            className={buttonVariants({
-              variant: "outline",
-              className:
-                "w-full sm:w-auto rounded-xl border-border hover:bg-surface px-7 py-3.5 font-semibold flex items-center justify-center gap-2 text-sm",
-            })}
-          >
-            <GraduationCap className="w-4 h-4" />
-            I&apos;m a Student
-          </Link>
-        </div>
-
-        {/* Quick Batch Join Code Input */}
-        <form
-          action="/join"
-          method="GET"
-          className="w-full max-w-md bg-surface p-2 sm:p-2.5 rounded-2xl border border-border shadow-xs mb-6 flex flex-col sm:flex-row items-center gap-2"
-        >
-          <input
-            name="code"
-            type="text"
-            placeholder="Enter 6-char batch code (e.g. SCI10A)"
-            maxLength={6}
-            required
-            className="w-full px-4 py-2.5 rounded-xl bg-transparent border-0 text-ink placeholder:text-muted focus:outline-hidden uppercase font-mono tracking-widest text-center sm:text-left text-sm font-semibold"
-          />
-          <Button
-            type="submit"
-            className="w-full sm:w-auto rounded-xl bg-primary text-white hover:bg-primary/90 px-5 whitespace-nowrap font-semibold cursor-pointer"
-          >
-            Join Class <ArrowRight className="w-4 h-4 ml-1.5" />
-          </Button>
-        </form>
-
-        <p className="text-xs text-muted mb-10">
-          ✓ Free for tutors · Setup in 60 seconds · Works as an app on any phone
-        </p>
-
-        {/* AI Client Ecosystem Badges */}
-        <div className="flex flex-col items-center gap-3 mb-10 w-full">
-          <span className="text-xs font-semibold uppercase tracking-wider text-muted">
-            Works with your favourite AI assistant
-          </span>
-          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5">
-            <span className="px-3.5 py-1.5 rounded-xl bg-surface border border-border font-mono text-xs font-semibold text-ink shadow-2xs">
-              Claude 3.7 Sonnet
-            </span>
-            <span className="px-3.5 py-1.5 rounded-xl bg-surface border border-border font-mono text-xs font-semibold text-ink shadow-2xs">
-              ChatGPT (o3 / 4o)
-            </span>
-            <span className="px-3.5 py-1.5 rounded-xl bg-surface border border-border font-mono text-xs font-semibold text-ink shadow-2xs">
-              Google Gemini
-            </span>
-            <span className="px-3.5 py-1.5 rounded-xl bg-surface border border-border font-mono text-xs font-semibold text-ink shadow-2xs">
-              Perplexity AI
-            </span>
-            <span className="px-3.5 py-1.5 rounded-xl bg-surface border border-border font-mono text-xs font-semibold text-ink shadow-2xs">
-              Cursor IDE
-            </span>
+        <section className="max-w-3xl mx-auto flex flex-col items-center pt-6 pb-10">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary-soft text-primary text-xs font-semibold tracking-wide uppercase mb-6 border border-primary/20 shadow-2xs">
+            <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+            Classroom Operating System for Independent Tutors
           </div>
-        </div>
+
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-bold tracking-tight text-ink leading-[1.08] mb-6">
+            Run your entire classroom from the tools you already use.
+          </h1>
+
+          <p className="text-sm sm:text-base md:text-lg text-muted max-w-2xl leading-relaxed mb-8">
+            Create student batches, publish timed quizzes, distribute lecture notes, and collect homework — directly from Claude, ChatGPT, or your web dashboard. Free for educators.
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
+            <Link
+              href="/login?mode=signup"
+              className={buttonVariants({
+                size: "lg",
+                className: "bg-primary hover:bg-primary/90 text-primary-foreground text-sm font-semibold h-12 px-7 rounded-2xl shadow-sm gap-2 justify-center",
+              })}
+            >
+              <span>Start Teaching Free</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+
+            <Link
+              href="/student/login"
+              className={buttonVariants({
+                variant: "outline",
+                size: "lg",
+                className: "text-ink border-border hover:bg-surface text-sm font-semibold h-12 px-6 rounded-2xl justify-center",
+              })}
+            >
+              <span>Join as Student</span>
+            </Link>
+          </div>
+
+          {/* Trust & Outcome Metrics Strip */}
+          <div className="mt-12 pt-8 border-t border-border/60 w-full grid grid-cols-2 md:grid-cols-4 gap-4 text-left">
+            <div className="space-y-0.5">
+              <p className="font-serif text-xl sm:text-2xl font-bold text-ink">15s</p>
+              <p className="text-xs text-muted">Batch setup time</p>
+            </div>
+            <div className="space-y-0.5">
+              <p className="font-serif text-xl sm:text-2xl font-bold text-ink">Zero</p>
+              <p className="text-xs text-muted">App install required</p>
+            </div>
+            <div className="space-y-0.5">
+              <p className="font-serif text-xl sm:text-2xl font-bold text-ink">Instant</p>
+              <p className="text-xs text-muted">Quiz auto-scoring</p>
+            </div>
+            <div className="space-y-0.5">
+              <p className="font-serif text-xl sm:text-2xl font-bold text-ink">{tutorKeepPercent}%</p>
+              <p className="text-xs text-muted">Tutor payout rate</p>
+            </div>
+          </div>
+        </section>
 
         {/* =================================================================== */}
-        {/* 2. INTERACTIVE SIMULATOR (Show, Don't Tell) */}
+        {/* 2. INTERACTIVE PRODUCT CANVAS (Simulator) */}
         {/* =================================================================== */}
-        <InteractiveSimulator />
+        <section id="demo" className="w-full my-8">
+          <div className="text-center mb-6">
+            <Badge
+              variant="outline"
+              className="rounded-full border-primary/20 bg-primary-soft text-primary font-semibold text-xs mb-2 px-3 py-1"
+            >
+              Live Preview
+            </Badge>
+            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">
+              See How It Works in Real Time
+            </h2>
+            <p className="text-xs sm:text-sm text-muted max-w-lg mx-auto mt-2">
+              Select a workflow below to see how a simple tutor instruction translates into a live student experience:
+            </p>
+          </div>
+
+          <InteractiveSimulator />
+        </section>
 
         {/* =================================================================== */}
-        {/* 3. THE CONTRAST (The 6-App Chaos vs. The Classy Loop) */}
+        {/* 3. THE DIFFERENCE (Contrast Section) */}
         {/* =================================================================== */}
         <ContrastSection />
 
         {/* =================================================================== */}
-        {/* 4. THE 3-STEP ENGINE (Prompt it · Push it · Track it) */}
-        {/* =================================================================== */}
-        <section id="how-it-works" className="w-full my-16 text-left">
-          <div className="text-center mb-10">
-            <Badge
-              variant="outline"
-              className="rounded-full border-primary/30 bg-primary-soft text-primary font-semibold text-xs mb-2"
-            >
-              The 3-Step Engine
-            </Badge>
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-ink">
-              From Conversation to Graded Classroom
-            </h2>
-            <p className="text-muted text-xs sm:text-sm max-w-lg mx-auto mt-2">
-              Three seamless steps from natural prompt to an interactive mobile experience.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-6 rounded-2xl border border-border bg-surface shadow-xs space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-primary-soft text-primary flex items-center justify-center font-bold text-base">
-                1
-              </div>
-              <h3 className="font-serif text-xl font-bold text-ink">Prompt it</h3>
-              <p className="text-xs sm:text-sm text-muted leading-relaxed">
-                Draft quizzes, assignments, lecture notes, or notices in plain English inside your AI
-                assistant. Specify grade level, target topics, and answer explanations.
-              </p>
-            </div>
-
-            <div className="p-6 rounded-2xl border border-border bg-surface shadow-xs space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-primary-soft text-primary flex items-center justify-center font-bold text-base">
-                2
-              </div>
-              <h3 className="font-serif text-xl font-bold text-ink">Push it</h3>
-              <p className="text-xs sm:text-sm text-muted leading-relaxed">
-                Connect your unique MCP link once. Your AI tool-calls Classy to create and schedule
-                coursework in your batch instantly—with zero manual copy-pasting.
-              </p>
-            </div>
-
-            <div className="p-6 rounded-2xl border border-border bg-surface shadow-xs space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-primary-soft text-primary flex items-center justify-center font-bold text-base">
-                3
-              </div>
-              <h3 className="font-serif text-xl font-bold text-ink">Track it</h3>
-              <p className="text-xs sm:text-sm text-muted leading-relaxed">
-                Students solve timed quizzes, view notes offline in the app, and submit assignments.
-                Classy evaluates attempts against encrypted keys in 12ms.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* =================================================================== */}
-        {/* 5. TUTOR SUPERPOWERS (BENTO GRID) */}
+        {/* 4. CAPABILITIES (Bento Features) */}
         {/* =================================================================== */}
         <BentoFeatures />
 
         {/* =================================================================== */}
-        {/* 6. THE STUDENT EXPERIENCE */}
+        {/* 5. HOW IT WORKS (3 Simple Steps) */}
         {/* =================================================================== */}
-        <section className="w-full my-12 p-7 sm:p-10 rounded-3xl border border-border bg-surface shadow-xs text-left">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-            <div className="space-y-4 max-w-2xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/20 text-accent text-xs font-semibold">
-                <GraduationCap className="w-3.5 h-3.5" /> For Students
-              </div>
-              <h3 className="font-serif text-2xl sm:text-3xl font-bold text-ink">
-                A Distraction-Free Mobile App Built for Real Focus
-              </h3>
-              <p className="text-xs sm:text-sm text-muted leading-relaxed">
-                Students join your batch with a simple 6-character code. No social media spam, no
-                notification overload—just clean, interactive learning on any phone.
-              </p>
-
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm text-ink/90 pt-2">
-                <li className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-                  <span>1-click join with batch code, invite link, or blackboard QR.</span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-                  <span>Timed quiz player with live countdown & question navigator.</span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-                  <span>Instant score breakdown and step-by-step explanations.</span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-                  <span>Install as a mobile app; review opened study notes offline.</span>
-                </li>
-              </ul>
-            </div>
-
-            <div className="shrink-0 w-full sm:w-auto">
-              <Link
-                href="/student/register"
-                className={buttonVariants({
-                  variant: "outline",
-                  className: "rounded-xl border-border font-semibold w-full sm:w-auto px-6 py-3",
-                })}
-              >
-                Join as a Student <ArrowRight className="w-4 h-4 ml-1.5" />
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* =================================================================== */}
-        {/* 7. TRANSPARENT PRICING (Previous Revenue Model: 15% Platform Cut) */}
-        {/* =================================================================== */}
-        <section id="pricing" className="w-full my-16 text-center">
-          <div className="mb-8">
+        <section id="how-it-works" className="w-full my-20 text-left">
+          <div className="text-center mb-12">
             <Badge
               variant="outline"
-              className="rounded-full border-primary/30 bg-primary-soft text-primary font-semibold text-xs mb-2"
+              className="rounded-full border-primary/20 bg-primary-soft text-primary font-semibold text-xs mb-3 px-3 py-1"
             >
-              Transparent Pricing
+              Workflow
             </Badge>
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-ink">
-              Free for tutors.
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-ink">
+              Set Up in Under 2 Minutes
             </h2>
-            <p className="text-muted text-xs sm:text-sm max-w-lg mx-auto mt-2">
-              Classy earns {PLATFORM_FEE_PERCENT}% only when your premium students pay. You keep {tutorKeepPercent}% net.
+            <p className="text-xs sm:text-sm text-muted max-w-xl mx-auto mt-3 leading-relaxed">
+              No complicated configuration. No lengthy verification forms.
             </p>
           </div>
 
-          <div className="max-w-xl mx-auto p-8 rounded-3xl bg-surface border border-border shadow-sm text-left space-y-6">
-            <div className="flex items-baseline justify-between border-b border-border/80 pb-6">
-              <div>
-                <h3 className="font-serif text-2xl font-bold text-ink">Tutor Tier</h3>
-                <p className="text-xs text-muted mt-0.5">Everything you need to teach</p>
-              </div>
-              <div className="text-right">
-                <span className="font-serif text-3xl font-bold text-primary">₹0</span>
-                <span className="text-xs text-muted block">upfront or monthly fee</span>
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Step 1 */}
+            <div className="p-7 rounded-3xl border border-border/80 bg-surface/90 shadow-2xs space-y-4">
+              <span className="w-8 h-8 rounded-full bg-primary-soft text-primary font-bold text-sm flex items-center justify-center font-mono">
+                01
+              </span>
+              <h3 className="font-serif text-xl font-bold text-ink">
+                Create Your Batch
+              </h3>
+              <p className="text-xs sm:text-sm text-muted leading-relaxed">
+                Sign in and set up your classroom in seconds. Define your subject, grade level, and optional enrollment fee.
+              </p>
             </div>
 
-            <ul className="space-y-3 text-xs sm:text-sm text-ink/90">
-              <li className="flex items-center gap-2.5">
-                <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
-                <span>Unlimited batches & student rosters</span>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
-                <span>Full MCP Server integration for Claude, ChatGPT & Gemini</span>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
-                <span>Automated quiz evaluation & assignment collection</span>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
-                <span>Set your own premium monthly price per batch (keep {tutorKeepPercent}%)</span>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
-                <span>Integrated Razorpay UPI & card checkout with automated payouts</span>
-              </li>
-            </ul>
+            {/* Step 2 */}
+            <div className="p-7 rounded-3xl border border-border/80 bg-surface/90 shadow-2xs space-y-4">
+              <span className="w-8 h-8 rounded-full bg-primary-soft text-primary font-bold text-sm flex items-center justify-center font-mono">
+                02
+              </span>
+              <h3 className="font-serif text-xl font-bold text-ink">
+                Invite Students
+              </h3>
+              <p className="text-xs sm:text-sm text-muted leading-relaxed">
+                Share your unique 6-character short code or 1-tap WhatsApp link. Students open in any mobile browser with zero friction.
+              </p>
+            </div>
 
-            <div className="pt-2">
+            {/* Step 3 */}
+            <div className="p-7 rounded-3xl border border-border/80 bg-surface/90 shadow-2xs space-y-4">
+              <span className="w-8 h-8 rounded-full bg-primary-soft text-primary font-bold text-sm flex items-center justify-center font-mono">
+                03
+              </span>
+              <h3 className="font-serif text-xl font-bold text-ink">
+                Publish &amp; Track
+              </h3>
+              <p className="text-xs sm:text-sm text-muted leading-relaxed">
+                Instruct your assistant or dashboard to publish quizzes, revision notes, and homework. View automated scores instantly.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* =================================================================== */}
+        {/* 6. TRANSPARENT ECONOMICS (Pricing) */}
+        {/* =================================================================== */}
+        <section id="pricing" className="w-full my-20 text-left">
+          <div className="text-center mb-12">
+            <Badge
+              variant="outline"
+              className="rounded-full border-primary/20 bg-primary-soft text-primary font-semibold text-xs mb-3 px-3 py-1"
+            >
+              Economics
+            </Badge>
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-ink">
+              Transparent, Aligned Pricing
+            </h2>
+            <p className="text-xs sm:text-sm text-muted max-w-xl mx-auto mt-3 leading-relaxed">
+              We only make money when you make money. No monthly subscriptions for educators.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {/* Free Tier */}
+            <div className="p-8 rounded-3xl border border-border/80 bg-surface/90 shadow-2xs flex flex-col justify-between space-y-6">
+              <div className="space-y-4">
+                <div className="inline-flex px-3 py-1 rounded-full text-xs font-semibold bg-bg text-muted border border-border/60">
+                  Standard Classes
+                </div>
+                <div>
+                  <h3 className="font-serif text-3xl font-bold text-ink">₹0</h3>
+                  <p className="text-xs text-muted mt-1">Always free for open batches</p>
+                </div>
+                <ul className="space-y-3 text-xs sm:text-sm text-ink/90 pt-2">
+                  <li className="flex items-center gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span>Unlimited student batches</span>
+                  </li>
+                  <li className="flex items-center gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span>Timed interactive quizzes &amp; notes</span>
+                  </li>
+                  <li className="flex items-center gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span>Unlimited enrolled students</span>
+                  </li>
+                  <li className="flex items-center gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span>Claude, ChatGPT, &amp; Gemini connections</span>
+                  </li>
+                </ul>
+              </div>
+
               <Link
-                href="/tutor/register"
+                href="/login?mode=signup"
                 className={buttonVariants({
-                  className: "w-full rounded-xl bg-primary text-white font-semibold py-3",
+                  variant: "outline",
+                  className: "w-full rounded-xl text-xs font-semibold h-11 border-border hover:bg-bg",
                 })}
               >
-                Create Free Tutor Account
+                Get Started Free
+              </Link>
+            </div>
+
+            {/* Paid Batches Tier */}
+            <div className="p-8 rounded-3xl border-2 border-primary/40 bg-primary-soft/30 shadow-xs flex flex-col justify-between space-y-6">
+              <div className="space-y-4">
+                <div className="inline-flex px-3 py-1 rounded-full text-xs font-semibold bg-primary text-primary-foreground">
+                  Monetized Batches
+                </div>
+                <div>
+                  <div className="flex items-baseline gap-1.5">
+                    <h3 className="font-serif text-3xl font-bold text-ink">{PLATFORM_FEE_PERCENT}%</h3>
+                    <span className="text-xs text-muted">platform fee on paid enrollments</span>
+                  </div>
+                  <p className="text-xs text-primary font-medium mt-1">
+                    You keep {tutorKeepPercent}% of every rupee collected
+                  </p>
+                </div>
+                <ul className="space-y-3 text-xs sm:text-sm text-ink/90 pt-2">
+                  <li className="flex items-center gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span>Set custom enrollment fees per batch</span>
+                  </li>
+                  <li className="flex items-center gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span>Automated UPI &amp; card checkout via Razorpay</span>
+                  </li>
+                  <li className="flex items-center gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span>Direct bank account settlements</span>
+                  </li>
+                  <li className="flex items-center gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span>Automated payment receipts for parents</span>
+                  </li>
+                </ul>
+              </div>
+
+              <Link
+                href="/login?mode=signup"
+                className={buttonVariants({
+                  className: "w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl text-xs font-semibold h-11 shadow-xs",
+                })}
+              >
+                Start Monetizing Batches
               </Link>
             </div>
           </div>
         </section>
 
         {/* =================================================================== */}
-        {/* 8. FAQ SECTION */}
+        {/* 7. FREQUENTLY ASKED QUESTIONS */}
         {/* =================================================================== */}
-        <section id="faq" className="w-full my-16 text-center">
-          <div className="mb-10">
+        <section id="faq" className="w-full my-20">
+          <div className="text-center mb-12">
             <Badge
               variant="outline"
-              className="rounded-full border-primary/30 bg-primary-soft text-primary font-semibold text-xs mb-2"
+              className="rounded-full border-primary/20 bg-primary-soft text-primary font-semibold text-xs mb-3 px-3 py-1"
             >
-              Questions & Answers
+              FAQ
             </Badge>
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-ink">
-              Frequently asked questions
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-ink">
+              Frequently Asked Questions
             </h2>
+            <p className="text-xs sm:text-sm text-muted max-w-xl mx-auto mt-3 leading-relaxed">
+              Clear answers about privacy, student access, payments, and workflow integrations.
+            </p>
           </div>
 
           <FAQSection />
         </section>
 
         {/* =================================================================== */}
-        {/* 9. FINAL CONVERSION BANNER */}
+        {/* 8. FINAL CALL TO ACTION (Menler Style) */}
         {/* =================================================================== */}
-        <section className="w-full my-16 p-8 sm:p-12 rounded-3xl bg-linear-to-b from-primary/10 via-primary/5 to-surface border border-primary/20 text-center space-y-6">
-          <h2 className="font-serif text-3xl sm:text-5xl font-bold text-ink max-w-2xl mx-auto leading-tight">
-            Your classroom is one prompt away.
-          </h2>
-          <p className="text-xs sm:text-base text-muted max-w-lg mx-auto">
-            Join modern educators who manage their entire teaching workflow directly from their AI assistant.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-2">
-            <Link
-              href="/tutor/register"
-              className={buttonVariants({
-                className: "rounded-xl bg-primary text-white font-semibold px-8 py-3.5 shadow-xs",
-              })}
-            >
-              Start as a Tutor Free <ArrowRight className="w-4 h-4 ml-1.5" />
-            </Link>
-            <Link
-              href="/s/library"
-              className={buttonVariants({
-                variant: "outline",
-                className: "rounded-xl border-border font-semibold px-6 py-3.5",
-              })}
-            >
-              <BookOpen className="w-4 h-4 mr-2" />
-              Browse Public Library
-            </Link>
+        <section className="w-full my-12 p-8 sm:p-12 rounded-3xl bg-linear-to-br from-primary via-primary/95 to-ink text-white text-center relative overflow-hidden shadow-lg">
+          <div className="max-w-2xl mx-auto space-y-5 relative z-10">
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight">
+              Ready to streamline your teaching?
+            </h2>
+            <p className="text-white/80 text-xs sm:text-sm max-w-lg mx-auto leading-relaxed">
+              Join modern educators who spend less time on administration and more time teaching. Set up your first batch in under 2 minutes.
+            </p>
+            <div className="pt-2">
+              <Link
+                href="/login?mode=signup"
+                className={buttonVariants({
+                  size: "lg",
+                  className: "bg-white text-ink hover:bg-white/90 text-xs sm:text-sm font-bold h-12 px-8 rounded-2xl shadow-sm gap-2",
+                })}
+              >
+                <span>Start Teaching Free</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
           </div>
         </section>
       </main>
 
       {/* =================================================================== */}
-      {/* 10. FOOTER (Password Recovery Removed) */}
+      {/* 9. MINIMALIST FOOTER */}
       {/* =================================================================== */}
-      <footer className="w-full border-t border-border/80 bg-surface/50 py-8 text-xs text-muted">
-        <div className="max-w-5xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-primary text-primary-foreground flex items-center justify-center font-serif text-sm font-bold shadow-xs">
-              C
+      <footer className="w-full border-t border-border/80 bg-surface/50 py-10 text-xs text-muted">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 rounded-lg bg-primary text-primary-foreground flex items-center justify-center font-bold text-xs">
+              <span className="font-serif">C</span>
             </div>
-            <div>
-              <p className="font-semibold text-ink">{APP_NAME}</p>
-              <p className="text-[11px] text-muted">{APP_TAGLINE}</p>
-            </div>
+            <span className="font-serif italic font-bold text-base text-ink">{APP_NAME}</span>
+            <span className="text-muted/60">•</span>
+            <span>The modern classroom operating system</span>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-medium">
-            <Link href="/tutor/login" className="hover:text-ink transition-colors">
-              Tutor Portal
-            </Link>
-            <Link href="/student/login" className="hover:text-ink transition-colors">
-              Student Portal
-            </Link>
-            <InstallButton size="sm" variant="ghost" className="text-xs h-7 px-2" />
+          <div className="flex items-center gap-6">
+            <a href="#features" className="hover:text-ink transition-colors">Features</a>
+            <a href="#pricing" className="hover:text-ink transition-colors">Economics</a>
+            <a href="#faq" className="hover:text-ink transition-colors">FAQ</a>
+            <Link href="/tutor/login" className="hover:text-ink transition-colors">Tutors</Link>
+            <Link href="/student/login" className="hover:text-ink transition-colors">Students</Link>
           </div>
-
-          <p className="text-[11px] text-muted">
-            &copy; {new Date().getFullYear()} {APP_NAME}. Zero AI in-app.
-          </p>
         </div>
       </footer>
     </div>

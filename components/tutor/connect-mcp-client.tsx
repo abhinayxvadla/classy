@@ -21,7 +21,6 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { generateMcpTokenAction, revokeMcpTokenAction } from "@/app/actions/tutor";
-import { APP_NAME } from "@/lib/config";
 
 export interface McpTokenItem {
   id: string;
@@ -130,52 +129,52 @@ export function ConnectMcpClient({ tokens, appUrl }: ConnectMcpClientProps) {
   return (
     <div className="space-y-8">
       {/* Header Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-surface border border-border p-6 sm:p-8 shadow-xs">
-        <div className="max-w-2xl space-y-3">
-          <Badge className="bg-primary-soft text-primary font-medium text-xs px-2.5 py-1">
-            <Sparkles className="h-3.5 w-3.5 mr-1" /> External AI Control via MCP & Actions
+      <div className="relative overflow-hidden rounded-3xl bg-surface border border-border/80 p-6 sm:p-8 shadow-xs">
+        <div className="max-w-2xl space-y-2.5">
+          <Badge className="bg-primary-soft text-primary font-medium text-xs px-3 py-1">
+            Assistant Integration
           </Badge>
           <h1 className="font-serif text-2xl sm:text-3xl font-bold text-ink tracking-tight">
-            Connect your AI assistant to {APP_NAME}
+            Connect Your Teaching Assistant
           </h1>
           <p className="text-sm text-muted leading-relaxed">
-            Run your entire classroom directly from your favorite AI tool: Claude, ChatGPT, Gemini, or Perplexity. Your personal token securely connects your AI directly to your Classy account.
+            Run your classroom directly from Claude, ChatGPT, Gemini, or Perplexity. Your personal link enables your assistant to create quizzes, post notes, and grade submissions on your behalf.
           </p>
         </div>
       </div>
 
       {/* Connection State Card */}
       {!activeToken ? (
-        <Card className="p-8 text-center bg-surface border-border space-y-4">
+        <Card className="p-8 text-center bg-surface border-border/80 space-y-4 rounded-3xl">
           <div className="h-12 w-12 rounded-2xl bg-primary-soft flex items-center justify-center mx-auto text-primary">
             <Key className="h-6 w-6" />
           </div>
           <div>
             <h2 className="font-serif font-bold text-ink text-lg">
-              No active AI connection
+              No active assistant connection
             </h2>
             <p className="text-xs text-muted max-w-sm mx-auto mt-1">
-              Generate a unique personal connection link to plug {APP_NAME} into Claude, ChatGPT, Gemini, or Perplexity.
+              Generate a unique personal link to connect Claude, ChatGPT, Gemini, or Perplexity to your classrooms.
             </p>
           </div>
           <Button
             onClick={handleGenerateConnection}
             disabled={isPending}
-            className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-xs h-10 px-6 gap-2"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-xs h-10 px-6 gap-2 rounded-xl"
           >
             <Sparkles className="h-3.5 w-3.5" />
-            <span>{isPending ? "Generating..." : "Generate my personal connection"}</span>
+            <span>{isPending ? "Generating..." : "Generate my personal link"}</span>
           </Button>
         </Card>
       ) : (
-        <Card className="p-6 bg-surface border-border shadow-xs space-y-5">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-border">
+        <Card className="p-6 bg-surface border-border/80 shadow-xs space-y-5 rounded-3xl">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-border/60">
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="font-serif font-bold text-ink text-base">
-                  Your Personal AI Endpoint
+                  Your Personal Assistant Link
                 </h2>
-                <Badge className="bg-success/15 text-success text-[10px] font-medium flex items-center gap-1">
+                <Badge className="bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-[10px] font-medium flex items-center gap-1 border-emerald-500/20">
                   <ShieldCheck className="h-3 w-3" /> Scoped to Your Login
                 </Badge>
               </div>
@@ -189,10 +188,10 @@ export function ConnectMcpClient({ tokens, appUrl }: ConnectMcpClientProps) {
               size="sm"
               onClick={handleRegenerate}
               disabled={isPending}
-              className="text-xs gap-1.5 shrink-0 hover:bg-danger/10 hover:text-danger hover:border-danger/40"
+              className="text-xs gap-1.5 shrink-0 rounded-xl hover:bg-danger/10 hover:text-danger hover:border-danger/40"
             >
               <RefreshCw className="h-3.5 w-3.5" />
-              <span>Regenerate Token</span>
+              <span>Regenerate Link</span>
             </Button>
           </div>
 

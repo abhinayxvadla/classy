@@ -36,7 +36,7 @@ export default async function TutorConnectPage() {
     <div className="min-h-screen bg-bg">
       <FloatingNav role="tutor" />
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-24 md:pt-[104px] pb-[calc(96px+env(safe-area-inset-bottom))]">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-20">
         <ConnectMcpClient tokens={tokens || []} appUrl={appUrl} />
       </main>
     </div>

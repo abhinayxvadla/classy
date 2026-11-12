@@ -118,6 +118,54 @@ export type Database = {
           },
         ]
       }
+      events: {
+        Row: {
+          actor_id: string | null
+          actor_role: Database["public"]["Enums"]["user_role"] | null
+          batch_id: string | null
+          client_name: string | null
+          created_at: string
+          duration_ms: number | null
+          event: string
+          id: number
+          item_id: string | null
+          meta: Json
+          source: "mcp" | "app"
+          success: boolean
+          tool: string | null
+        }
+        Insert: {
+          actor_id?: string | null
+          actor_role?: Database["public"]["Enums"]["user_role"] | null
+          batch_id?: string | null
+          client_name?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          event: string
+          id?: number
+          item_id?: string | null
+          meta?: Json
+          source: "mcp" | "app"
+          success?: boolean
+          tool?: string | null
+        }
+        Update: {
+          actor_id?: string | null
+          actor_role?: Database["public"]["Enums"]["user_role"] | null
+          batch_id?: string | null
+          client_name?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          event?: string
+          id?: number
+          item_id?: string | null
+          meta?: Json
+          source?: "mcp" | "app"
+          success?: boolean
+          tool?: string | null
+        }
+        Relationships: []
+      }
       items: {
         Row: {
           access: Database["public"]["Enums"]["item_access"]
@@ -129,6 +177,7 @@ export type Database = {
           id: string
           max_marks: number | null
           published: boolean
+          source: "mcp" | "app"
           subject: string | null
           title: string
           tutor_id: string
@@ -146,6 +195,7 @@ export type Database = {
           id?: string
           max_marks?: number | null
           published?: boolean
+          source?: "mcp" | "app"
           subject?: string | null
           title: string
           tutor_id: string
@@ -163,6 +213,7 @@ export type Database = {
           id?: string
           max_marks?: number | null
           published?: boolean
+          source?: "mcp" | "app"
           subject?: string | null
           title?: string
           tutor_id?: string
@@ -284,6 +335,7 @@ export type Database = {
           grade: string | null
           id: string
           institute: string | null
+          last_seen_at: string | null
           must_change_password: boolean | null
           phone: string | null
           role: Database["public"]["Enums"]["user_role"]
@@ -296,6 +348,7 @@ export type Database = {
           grade?: string | null
           id: string
           institute?: string | null
+          last_seen_at?: string | null
           must_change_password?: boolean | null
           phone?: string | null
           role: Database["public"]["Enums"]["user_role"]
@@ -308,6 +361,7 @@ export type Database = {
           grade?: string | null
           id?: string
           institute?: string | null
+          last_seen_at?: string | null
           must_change_password?: boolean | null
           phone?: string | null
           role?: Database["public"]["Enums"]["user_role"]

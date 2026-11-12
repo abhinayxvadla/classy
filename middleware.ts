@@ -63,6 +63,25 @@ export async function middleware(request: NextRequest) {
   const isResetPasswordRoute = pathname === "/reset-password";
 
   if (user) {
+    // Update profiles.last_seen_at at most once every 10 minutes per user
+    const lastSeenCookie = request.cookies.get("classy_last_seen")?.value;
+    const now = Date.now();
+    if (!lastSeenCookie || now - Number(lastSeenCookie) > 10 * 60 * 1000) {
+      response.cookies.set("classy_last_seen", now.toString(), {
+        maxAge: 600,
+        path: "/",
+        sameSite: "lax",
+        httpOnly: true,
+      });
+      // Fire-and-forget update to profiles table
+      Promise.resolve(
+        supabase
+          .from("profiles")
+          .update({ last_seen_at: new Date(now).toISOString() })
+          .eq("id", user.id)
+      ).catch(() => {});
+    }
+
     // Read profile to verify role and must_change_password
     const { data: profile } = await supabase
       .from("profiles")

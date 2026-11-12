@@ -1,6 +1,7 @@
 import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { PLATFORM_FEE_PERCENT } from "@/lib/config";
+import { track } from "@/lib/track";
 
 interface UnlockBatchParams {
   batchId: string;
@@ -74,6 +75,15 @@ export async function recordPaidAndUnlockRoster(params: UnlockBatchParams) {
   if (updateErr) {
     throw new Error(`Failed to update roster: ${updateErr.message}`);
   }
+
+  track({
+    event: "premium_unlocked",
+    source: "app",
+    actorId: studentId,
+    actorRole: "student",
+    batchId,
+    meta: { amount_inr: amountInr },
+  });
 
   return {
     success: true,

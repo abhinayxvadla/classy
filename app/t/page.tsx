@@ -16,7 +16,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { NewBatchDialog } from "@/components/tutor/new-batch-dialog";
 import { BatchCard } from "@/components/tutor/batch-card";
 import { buttonVariants } from "@/components/ui/button";
-import { PLATFORM_FEE_PERCENT } from "@/lib/config";
+import { PLATFORM_FEE_PERCENT, isUserAdmin } from "@/lib/config";
 
 export default async function TutorDashboardPage() {
   const supabase = await createClient();
@@ -115,6 +115,7 @@ export default async function TutorDashboardPage() {
         role="tutor"
         userName={profile.full_name}
         userEmail={profile.email}
+        isAdmin={isUserAdmin(profile.email)}
       />
 
       <main className="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-[104px] pb-[calc(96px+env(safe-area-inset-bottom))]">

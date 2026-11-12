@@ -19,6 +19,7 @@ import {
   generateTemporaryPassword,
   normalizeIndianPhone,
 } from "@/lib/auth/utils";
+import { track } from "@/lib/track";
 
 // Dummy bcrypt hash for constant-time comparisons when email is not found
 const DUMMY_BCRYPT_HASH =
@@ -136,6 +137,12 @@ export async function registerTutorAction(
   }
 
   revalidatePath("/", "layout");
+  track({
+    event: "tutor_registered",
+    source: "app",
+    actorId: authData.user.id,
+    actorRole: "tutor",
+  });
   const targetUrl = next && next.startsWith("/") ? next : "/t";
   return { success: true, redirectUrl: targetUrl };
 }
@@ -267,6 +274,12 @@ export async function registerStudentAction(
   }
 
   revalidatePath("/", "layout");
+  track({
+    event: "student_registered",
+    source: "app",
+    actorId: authData.user.id,
+    actorRole: "student",
+  });
   return { success: true, redirectUrl: targetUrl };
 }
 
@@ -317,6 +330,12 @@ export async function signInAction(rawData: unknown): Promise<AuthActionResult> 
 
   // Forced password change check
   if (profile.must_change_password) {
+    track({
+      event: "login",
+      source: "app",
+      actorId: authData.user.id,
+      actorRole: profile.role,
+    });
     revalidatePath("/", "layout");
     return { success: true, redirectUrl: "/reset-password" };
   }
@@ -344,6 +363,12 @@ export async function signInAction(rawData: unknown): Promise<AuthActionResult> 
   }
 
   revalidatePath("/", "layout");
+  track({
+    event: "login",
+    source: "app",
+    actorId: authData.user.id,
+    actorRole: profile.role,
+  });
   return { success: true, redirectUrl: targetUrl };
 }
 

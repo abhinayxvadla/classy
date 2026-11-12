@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { track } from "@/lib/track";
 
 export interface PublicBatchInfo {
   id: string;
@@ -94,6 +95,14 @@ export async function joinBatchByCodeAction(
   revalidatePath(`/s/batches/${res.batch_id}`);
   revalidatePath(`/join/${cleanCode}`);
 
+  track({
+    event: res.status === "joined" ? "batch_joined" : "join_pending",
+    source: "app",
+    actorId: user.id,
+    actorRole: "student",
+    batchId: res.batch_id,
+  });
+
   return {
     success: true,
     batchId: res.batch_id,
@@ -143,6 +152,14 @@ export async function requestJoinAction(
 
   revalidatePath("/s");
   revalidatePath(`/s/batches/${batchId}`);
+
+  track({
+    event: "join_pending",
+    source: "app",
+    actorId: user.id,
+    actorRole: "student",
+    batchId,
+  });
 
   return {
     success: true,
@@ -198,9 +215,24 @@ export async function submitQuizAction(
   revalidatePath("/s");
   revalidatePath(`/s/items/${itemId}`);
 
+  const quizData = data as unknown as QuizSubmissionResult;
+  const scorePct =
+    quizData?.total && quizData.total > 0
+      ? Math.round((quizData.score / quizData.total) * 100)
+      : 0;
+
+  track({
+    event: "quiz_submitted",
+    source: "app",
+    actorId: user.id,
+    actorRole: "student",
+    itemId,
+    meta: { score_pct: scorePct },
+  });
+
   return {
     success: true,
-    data: data as unknown as QuizSubmissionResult,
+    data: quizData,
   };
 }
 
@@ -254,6 +286,14 @@ export async function submitAssignmentAction(
 
   revalidatePath("/s");
   revalidatePath(`/s/items/${itemId}`);
+
+  track({
+    event: "assignment_submitted",
+    source: "app",
+    actorId: user.id,
+    actorRole: "student",
+    itemId,
+  });
 
   return {
     success: true,

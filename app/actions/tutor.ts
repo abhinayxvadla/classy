@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { Database, ItemType, ItemAccess, ItemVisibility, RosterStatus } from "@/lib/database.types";
 import { normalizeIndianPhone } from "@/lib/auth/utils";
+import { track } from "@/lib/track";
 
 // Helper: Ensure the caller is authenticated and is a tutor
 async function getAuthenticatedTutor() {
@@ -66,6 +67,13 @@ export async function createBatchAction(data: {
 
   revalidatePath("/t");
   revalidatePath("/t/batches");
+  track({
+    event: "batch_created",
+    source: "app",
+    actorId: user.id,
+    actorRole: "tutor",
+    batchId: batch.id,
+  });
   return { success: true, batch };
 }
 
@@ -222,6 +230,14 @@ export async function addStudentToRosterAction(
   }
 
   revalidatePath(`/t/batches/${batchId}`);
+  track({
+    event: "students_added",
+    source: "app",
+    actorId: user.id,
+    actorRole: "tutor",
+    batchId,
+    meta: { count: 1 },
+  });
   return { success: true, rosterRow };
 }
 
@@ -344,6 +360,14 @@ export async function bulkAddStudentsAction(
   }
 
   revalidatePath(`/t/batches/${batchId}`);
+  track({
+    event: "students_added",
+    source: "app",
+    actorId: user.id,
+    actorRole: "tutor",
+    batchId,
+    meta: { count: addedRows.length },
+  });
   return {
     success: true,
     added: addedRows.length,
@@ -504,12 +528,25 @@ export async function saveItemAction(input: SaveItemInput) {
         due_at: input.due_at || null,
         max_marks: input.max_marks ?? null,
         published: input.published,
+        source: "app",
       })
       .select()
       .single();
 
     if (createErr || !newItem) {
       return { error: createErr?.message || "Failed to create item" };
+    }
+
+    if (input.published) {
+      track({
+        event: "item_published",
+        source: "app",
+        actorId: user.id,
+        actorRole: "tutor",
+        batchId: input.batch_id,
+        itemId: newItem.id,
+        meta: { type: input.type },
+      });
     }
 
     // If quiz, save correct answers in quiz_keys
@@ -623,6 +660,17 @@ export async function toggleItemPublishedAction(itemId: string, published: boole
 
   if (error) {
     return { error: error.message };
+  }
+
+  if (published) {
+    track({
+      event: "item_published",
+      source: "app",
+      actorId: user.id,
+      actorRole: "tutor",
+      batchId: item?.batch_id,
+      itemId,
+    });
   }
 
   if (item?.batch_id) revalidatePath(`/t/batches/${item.batch_id}`);
@@ -742,6 +790,14 @@ export async function gradeSubmissionAction(
 
   const batchId = (sub.items as unknown as { batch_id: string | null })?.batch_id;
   if (batchId) revalidatePath(`/t/batches/${batchId}`);
+  track({
+    event: "submission_graded",
+    source: "app",
+    actorId: user.id,
+    actorRole: "tutor",
+    itemId: sub.item_id,
+    batchId,
+  });
   return { success: true };
 }
 

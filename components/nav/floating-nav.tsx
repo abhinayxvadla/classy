@@ -14,6 +14,7 @@ import {
   LogOut,
   Sparkles,
   ChevronDown,
+  Shield,
 } from "lucide-react";
 import { APP_NAME } from "@/lib/config";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -33,12 +34,14 @@ interface FloatingNavProps {
   role?: "tutor" | "student" | "public";
   userName?: string;
   userEmail?: string;
+  isAdmin?: boolean;
 }
 
 export function FloatingNav({
   role = "public",
   userName = "User",
   userEmail,
+  isAdmin = false,
 }: FloatingNavProps) {
   const pathname = usePathname();
   const router = useRouter();
@@ -232,6 +235,15 @@ export function FloatingNav({
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
+                  {isAdmin && (
+                    <DropdownMenuItem
+                      onClick={() => router.push("/admin")}
+                      className="rounded-xl cursor-pointer flex items-center gap-2 text-xs font-semibold text-primary"
+                    >
+                      <Shield className="w-3.5 h-3.5" />
+                      <span>Founder Dashboard</span>
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuItem
                     onClick={() => router.push(role === "tutor" ? "/t/account" : "/s/profile")}
                     className="rounded-xl cursor-pointer flex items-center gap-2 text-xs"

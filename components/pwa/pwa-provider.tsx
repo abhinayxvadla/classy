@@ -101,6 +101,13 @@ export function PWAProvider({ children }: { children: React.ReactNode }) {
         const choice = await deferredPrompt.userChoice;
         if (choice.outcome === "accepted") {
           setIsInstalled(true);
+          try {
+            fetch("/api/track", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ event: "install_prompt_accepted" }),
+            }).catch(() => {});
+          } catch {}
         }
         setDeferredPrompt(null);
       } catch (err) {

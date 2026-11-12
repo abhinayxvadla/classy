@@ -5,7 +5,24 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { normalizeIndianPhone } from "@/lib/auth/utils";
 import { APP_NAME } from "@/lib/config";
+import { track } from "@/lib/track";
 import type { Database, ItemAccess, ItemVisibility, RosterStatus } from "@/lib/database.types";
+
+export function detectAiClient(req: Request): string {
+  const userAgent = req.headers.get("user-agent") || "";
+  const clientHeader =
+    req.headers.get("x-client-name") ||
+    req.headers.get("client-name") ||
+    req.headers.get("mcp-client-name") ||
+    "";
+  const str = `${clientHeader} ${userAgent}`.toLowerCase();
+
+  if (str.includes("claude") || str.includes("anthropic")) return "Claude";
+  if (str.includes("chatgpt") || str.includes("openai") || str.includes("gpt")) return "ChatGPT";
+  if (str.includes("perplexity")) return "Perplexity";
+  if (str.includes("gemini") || str.includes("google")) return "Gemini";
+  return "Other";
+}
 
 export const SERVER_INSTRUCTIONS =
   "Classy runs a tutor's classes. Usually call list_batches first to get batch ids. To create a batch from a student list, call create_batch then add_students. Content is published to a batch; use access 'premium' only when the tutor asks. Always confirm what you published and share the invite link when relevant.";
@@ -25,11 +42,33 @@ interface ToolDefinition<T extends z.ZodTypeAny> {
 // Helper to register tools supporting both McpServer.registerTool and McpServer.tool
 function registerClassyTool<T extends z.ZodTypeAny>(
   server: McpServer,
-  def: ToolDefinition<T>
+  def: ToolDefinition<T>,
+  tutorId: string,
+  clientName: string
 ) {
   const toolCallback = async (args: z.infer<T>) => {
+    const start = Date.now();
     try {
       const res = await def.handler(args);
+      const durationMs = Date.now() - start;
+
+      const batchId = (args as Record<string, unknown>)?.batch_id as string | undefined;
+      const itemId = (args as Record<string, unknown>)?.item_id as string | undefined;
+
+      track({
+        event: "mcp_tool_call",
+        source: "mcp",
+        actorId: tutorId,
+        actorRole: "tutor",
+        tool: def.name,
+        clientName,
+        batchId: batchId || null,
+        itemId: itemId || null,
+        success: true,
+        durationMs,
+        meta: { tool: def.name },
+      });
+
       return {
         content: [
           { type: "text" as const, text: res.text },
@@ -39,7 +78,28 @@ function registerClassyTool<T extends z.ZodTypeAny>(
         ],
       };
     } catch (err: unknown) {
+      const durationMs = Date.now() - start;
       const message = err instanceof Error ? err.message : String(err);
+      const batchId = (args as Record<string, unknown>)?.batch_id as string | undefined;
+      const itemId = (args as Record<string, unknown>)?.item_id as string | undefined;
+
+      track({
+        event: "mcp_tool_call",
+        source: "mcp",
+        actorId: tutorId,
+        actorRole: "tutor",
+        tool: def.name,
+        clientName,
+        batchId: batchId || null,
+        itemId: itemId || null,
+        success: false,
+        durationMs,
+        meta: {
+          tool: def.name,
+          error_name: err instanceof Error ? err.name : "ToolError",
+        },
+      });
+
       return {
         isError: true,
         content: [{ type: "text" as const, text: `Error: ${message}` }],
@@ -74,15 +134,19 @@ function registerClassyTool<T extends z.ZodTypeAny>(
 export function registerClassyTools(
   server: McpServer,
   tutorId: string,
+  clientName: string = "Other",
   adminClient?: SupabaseClient<Database>
 ) {
   const admin = adminClient || createAdminClient();
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
+  const register = <T extends z.ZodTypeAny>(def: ToolDefinition<T>) =>
+    registerClassyTool(server, def, tutorId, clientName);
+
   // ---------------------------------------------------------------------------
   // 1. list_batches
   // ---------------------------------------------------------------------------
-  registerClassyTool(server, {
+  register({
     name: "list_batches",
     title: "List Batches",
     description:
@@ -157,7 +221,7 @@ export function registerClassyTools(
   // ---------------------------------------------------------------------------
   // 2. create_batch
   // ---------------------------------------------------------------------------
-  registerClassyTool(server, {
+  register({
     name: "create_batch",
     title: "Create Batch",
     description:
@@ -194,6 +258,14 @@ export function registerClassyTools(
         throw new Error(error?.message || "Failed to create batch");
       }
 
+      track({
+        event: "batch_created",
+        source: "mcp",
+        actorId: tutorId,
+        actorRole: "tutor",
+        batchId: batch.id,
+      });
+
       const inviteUrl = `${appUrl}/join/${codeData}`;
       return {
         text: `Created batch "${batch.name}" successfully!\nJoin Code: ${codeData}\nInvite Link: ${inviteUrl}`,
@@ -213,7 +285,7 @@ export function registerClassyTools(
   // ---------------------------------------------------------------------------
   // 3. add_students
   // ---------------------------------------------------------------------------
-  registerClassyTool(server, {
+  register({
     name: "add_students",
     title: "Add Students to Roster",
     description:
@@ -325,6 +397,15 @@ export function registerClassyTools(
       if (rowsToInsert.length > 0) {
         const { error: insErr } = await admin.from("roster").insert(rowsToInsert);
         if (insErr) throw new Error(insErr.message);
+
+        track({
+          event: "students_added",
+          source: "mcp",
+          actorId: tutorId,
+          actorRole: "tutor",
+          batchId: args.batch_id,
+          meta: { count: rowsToInsert.length },
+        });
       }
 
       return {
@@ -337,7 +418,7 @@ export function registerClassyTools(
   // ---------------------------------------------------------------------------
   // 4. get_invite_link
   // ---------------------------------------------------------------------------
-  registerClassyTool(server, {
+  register({
     name: "get_invite_link",
     title: "Get Batch Invite Link",
     description:
@@ -373,7 +454,7 @@ export function registerClassyTools(
   // ---------------------------------------------------------------------------
   // 5. list_students
   // ---------------------------------------------------------------------------
-  registerClassyTool(server, {
+  register({
     name: "list_students",
     title: "List Students in Batch",
     description:
@@ -427,7 +508,7 @@ export function registerClassyTools(
   // ---------------------------------------------------------------------------
   // 6. approve_student
   // ---------------------------------------------------------------------------
-  registerClassyTool(server, {
+  register({
     name: "approve_student",
     title: "Approve or Reject Student",
     description: "Approve or reject a student's pending join request for a batch.",
@@ -475,7 +556,7 @@ export function registerClassyTools(
   // ---------------------------------------------------------------------------
   // 7. publish_quiz
   // ---------------------------------------------------------------------------
-  registerClassyTool(server, {
+  register({
     name: "publish_quiz",
     title: "Publish Quiz",
     description:
@@ -570,6 +651,7 @@ export function registerClassyTools(
           due_at: args.due_at || null,
           max_marks: totalMarks,
           published: true,
+          source: "mcp",
         })
         .select()
         .single();
@@ -577,6 +659,16 @@ export function registerClassyTools(
       if (itemErr || !item) {
         throw new Error(itemErr?.message || "Failed to publish quiz");
       }
+
+      track({
+        event: "item_published",
+        source: "mcp",
+        actorId: tutorId,
+        actorRole: "tutor",
+        batchId: args.batch_id,
+        itemId: item.id,
+        meta: { type: "quiz" },
+      });
 
       // Insert answers into quiz_keys
       const { error: keyErr } = await admin.from("quiz_keys").insert({
@@ -604,7 +696,7 @@ export function registerClassyTools(
   // ---------------------------------------------------------------------------
   // 8. publish_notes
   // ---------------------------------------------------------------------------
-  registerClassyTool(server, {
+  register({
     name: "publish_notes",
     title: "Publish Notes",
     description:
@@ -643,11 +735,22 @@ export function registerClassyTools(
           grade: batch.grade,
           subject: batch.subject,
           published: true,
+          source: "mcp",
         })
         .select()
         .single();
 
       if (error || !item) throw new Error(error?.message || "Failed to publish notes");
+
+      track({
+        event: "item_published",
+        source: "mcp",
+        actorId: tutorId,
+        actorRole: "tutor",
+        batchId: args.batch_id,
+        itemId: item.id,
+        meta: { type: "notes" },
+      });
 
       const editUrl = `${appUrl}/t/items/${item.id}`;
       return {
@@ -660,7 +763,7 @@ export function registerClassyTools(
   // ---------------------------------------------------------------------------
   // 9. publish_assignment
   // ---------------------------------------------------------------------------
-  registerClassyTool(server, {
+  register({
     name: "publish_assignment",
     title: "Publish Assignment",
     description:
@@ -709,11 +812,22 @@ export function registerClassyTools(
           grade: batch.grade,
           subject: batch.subject,
           published: true,
+          source: "mcp",
         })
         .select()
         .single();
 
       if (error || !item) throw new Error(error?.message || "Failed to publish assignment");
+
+      track({
+        event: "item_published",
+        source: "mcp",
+        actorId: tutorId,
+        actorRole: "tutor",
+        batchId: args.batch_id,
+        itemId: item.id,
+        meta: { type: "assignment" },
+      });
 
       const editUrl = `${appUrl}/t/items/${item.id}`;
       return {
@@ -726,7 +840,7 @@ export function registerClassyTools(
   // ---------------------------------------------------------------------------
   // 10. post_announcement
   // ---------------------------------------------------------------------------
-  registerClassyTool(server, {
+  register({
     name: "post_announcement",
     title: "Post Announcement",
     description: "Post an announcement message to all students in a batch.",
@@ -757,11 +871,22 @@ export function registerClassyTools(
           access: "free",
           visibility: "batch",
           published: true,
+          source: "mcp",
         })
         .select()
         .single();
 
       if (error || !item) throw new Error(error?.message || "Failed to post announcement");
+
+      track({
+        event: "item_published",
+        source: "mcp",
+        actorId: tutorId,
+        actorRole: "tutor",
+        batchId: args.batch_id,
+        itemId: item.id,
+        meta: { type: "announcement" },
+      });
 
       return {
         text: `Posted announcement "${item.title}" to batch "${batch.name}".`,
@@ -773,7 +898,7 @@ export function registerClassyTools(
   // ---------------------------------------------------------------------------
   // 11. list_items
   // ---------------------------------------------------------------------------
-  registerClassyTool(server, {
+  register({
     name: "list_items",
     title: "List Items in Batch",
     description:
@@ -847,7 +972,7 @@ export function registerClassyTools(
   // ---------------------------------------------------------------------------
   // 12. update_item
   // ---------------------------------------------------------------------------
-  registerClassyTool(server, {
+  register({
     name: "update_item",
     title: "Update Item",
     description:
@@ -958,7 +1083,7 @@ export function registerClassyTools(
   // ---------------------------------------------------------------------------
   // 13. get_results
   // ---------------------------------------------------------------------------
-  registerClassyTool(server, {
+  register({
     name: "get_results",
     title: "Get Quiz Results & Analytics",
     description:
@@ -1139,7 +1264,7 @@ export function registerClassyTools(
   // ---------------------------------------------------------------------------
   // 14. list_submissions
   // ---------------------------------------------------------------------------
-  registerClassyTool(server, {
+  register({
     name: "list_submissions",
     title: "List Assignment Submissions",
     description:
@@ -1226,7 +1351,7 @@ export function registerClassyTools(
   // ---------------------------------------------------------------------------
   // 15. grade_submission
   // ---------------------------------------------------------------------------
-  registerClassyTool(server, {
+  register({
     name: "grade_submission",
     title: "Grade Assignment Submission",
     description:

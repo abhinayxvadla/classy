@@ -1,6 +1,6 @@
 import { createMcpHandler } from "mcp-handler";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { registerClassyTools, SERVER_INSTRUCTIONS } from "@/lib/mcp/tools";
+import { registerClassyTools, SERVER_INSTRUCTIONS, detectAiClient } from "@/lib/mcp/tools";
 
 export const maxDuration = 60;
 
@@ -48,10 +48,13 @@ async function handleMcpRequest(req: Request, context: RouteContext) {
     .update({ last_used_at: new Date().toISOString() })
     .eq("id", tokenRow.id);
 
-  // Initialize MCP Handler per request with the tutor_id bound
+  // Detect AI client (Claude / ChatGPT / Perplexity / Gemini / Other)
+  const clientName = detectAiClient(req);
+
+  // Initialize MCP Handler per request with the tutor_id and clientName bound
   const handler = createMcpHandler(
     async (server) => {
-      registerClassyTools(server, tokenRow.tutor_id);
+      registerClassyTools(server, tokenRow.tutor_id, clientName);
     },
     {
       serverInfo: { name: "Classy", version: "1.0.0" },

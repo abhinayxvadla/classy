@@ -3,6 +3,8 @@ import { Fraunces, Plus_Jakarta_Sans } from "next/font/google";
 import { Toaster } from "sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { PWAProvider } from "@/components/pwa/pwa-provider";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { APP_NAME, APP_TAGLINE } from "@/lib/config";
 import "./globals.css";
 
@@ -68,6 +70,8 @@ export default function RootLayout({
           <TooltipProvider>
             {children}
             <Toaster richColors position="top-center" />
+            <Analytics />
+            <SpeedInsights />
           </TooltipProvider>
         </PWAProvider>
       </body>

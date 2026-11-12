@@ -3,11 +3,12 @@ const sharp = require('sharp');
 const path = require('path');
 
 const publicDir = path.join(process.cwd(), 'public');
+const appDir = path.join(process.cwd(), 'app');
 const iconsDir = path.join(publicDir, 'icons');
 if (!fs.existsSync(iconsDir)) fs.mkdirSync(iconsDir, { recursive: true });
 
 function createSvg(size, isMaskable = false) {
-  const fontSize = Math.round(isMaskable ? size * 0.48 : size * 0.56);
+  const fontSize = Math.round(isMaskable ? size * 0.48 : size * 0.58);
   const baselineOffset = Math.round(fontSize * 0.35);
   const cy = Math.round(size / 2 + baselineOffset * 0.95);
   const cx = Math.round(size / 2);
@@ -26,7 +27,39 @@ function createSvg(size, isMaskable = false) {
 </svg>`;
 }
 
+function createIco(pngBuffers) {
+  const count = pngBuffers.length;
+  let offset = 6 + 16 * count;
+
+  const header = Buffer.alloc(6);
+  header.writeUInt16LE(0, 0); // reserved
+  header.writeUInt16LE(1, 2); // ICO format
+  header.writeUInt16LE(count, 4); // count
+
+  const entries = [];
+  const datas = [];
+
+  for (const item of pngBuffers) {
+    const entry = Buffer.alloc(16);
+    entry.writeUInt8(item.width === 256 ? 0 : item.width, 0);
+    entry.writeUInt8(item.height === 256 ? 0 : item.height, 1);
+    entry.writeUInt8(0, 2); // colors
+    entry.writeUInt8(0, 3); // reserved
+    entry.writeUInt16LE(1, 4); // color planes
+    entry.writeUInt16LE(32, 6); // bpp
+    entry.writeUInt32LE(item.buffer.length, 8); // size
+    entry.writeUInt32LE(offset, 12); // offset
+
+    entries.push(entry);
+    datas.push(item.buffer);
+    offset += item.buffer.length;
+  }
+
+  return Buffer.concat([header, ...entries, ...datas]);
+}
+
 async function run() {
+  // 1. PWA & Mobile Touch Icons
   const svg192 = Buffer.from(createSvg(192));
   await sharp(svg192).resize(192, 192).png().toFile(path.join(iconsDir, 'icon-192.png'));
 
@@ -39,10 +72,26 @@ async function run() {
   const svgApple = Buffer.from(createSvg(180));
   await sharp(svgApple).resize(180, 180).png().toFile(path.join(publicDir, 'apple-touch-icon.png'));
 
-  // Also write SVG icon for modern browser favicon/vector icon
-  fs.writeFileSync(path.join(publicDir, 'icon.svg'), createSvg(128));
+  // 2. SVG Icons (Vector for modern high-DPI displays)
+  const svg128 = createSvg(128);
+  fs.writeFileSync(path.join(publicDir, 'icon.svg'), svg128);
+  fs.writeFileSync(path.join(appDir, 'icon.svg'), svg128);
 
-  console.log('PWA and Apple Touch icons generated successfully!');
+  // 3. Multi-resolution ICO (16x16, 32x32, 48x48)
+  const png16 = await sharp(Buffer.from(createSvg(16))).resize(16, 16).png().toBuffer();
+  const png32 = await sharp(Buffer.from(createSvg(32))).resize(32, 32).png().toBuffer();
+  const png48 = await sharp(Buffer.from(createSvg(48))).resize(48, 48).png().toBuffer();
+
+  const icoBuffer = createIco([
+    { width: 16, height: 16, buffer: png16 },
+    { width: 32, height: 32, buffer: png32 },
+    { width: 48, height: 48, buffer: png48 },
+  ]);
+
+  fs.writeFileSync(path.join(publicDir, 'favicon.ico'), icoBuffer);
+  fs.writeFileSync(path.join(appDir, 'favicon.ico'), icoBuffer);
+
+  console.log('✓ Classy favicon.ico and icon assets generated successfully in public/ and app/!');
 }
 
 run().catch((err) => {

@@ -29,7 +29,6 @@ import {
   RotateCw,
   TrendingUp,
   TrendingDown,
-  ArrowLeft,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -309,30 +308,30 @@ export function AdminDashboardClient({
       {/* Top Header Bar */}
       <header className="sticky top-0 z-40 w-full border-b border-border bg-surface/90 backdrop-blur-md px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Link href="/t">
-            <Button variant="ghost" size="sm" className="rounded-xl h-8 w-8 p-0 text-muted hover:text-ink">
-              <ArrowLeft className="w-4 h-4" />
-            </Button>
-          </Link>
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-xl bg-primary text-primary-foreground flex items-center justify-center font-serif text-sm font-bold shadow-xs">
               C
             </div>
             <div>
               <h1 className="font-serif font-bold text-base sm:text-lg text-ink leading-tight flex items-center gap-2">
-                Founder Telemetry & Analytics
+                Classy Founder Console
                 <Badge className="bg-primary-soft text-primary border-transparent text-[10px] uppercase font-semibold tracking-wider">
                   Live
                 </Badge>
               </h1>
               <p className="text-[11px] text-muted hidden sm:block">
-                First-party MCP usage, student engagement, and business health
+                Platform telemetry, educator growth, and business health
               </p>
             </div>
           </div>
         </div>
 
         <div className="flex items-center gap-2 sm:gap-3">
+          <Link href="/t">
+            <Button variant="ghost" size="sm" className="rounded-xl border border-border/60 h-8 px-2.5 text-xs text-muted hover:text-ink gap-1">
+              <span>Tutor View</span>
+            </Button>
+          </Link>
           {/* Date range filter */}
           <div className="flex items-center rounded-xl bg-bg border border-border p-0.5 text-xs font-semibold">
             {(["7d", "30d", "all"] as const).map((r) => (

@@ -1,9 +1,9 @@
 import {
-  Users,
-  QrCode,
-  HelpCircle,
+  MessageSquare,
+  Smartphone,
+  Zap,
   FileText,
-  ClipboardList,
+  QrCode,
   CreditCard,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -14,46 +14,46 @@ export function BentoFeatures() {
 
   const capabilities = [
     {
-      icon: Users,
-      tag: "Anyone Can Teach",
-      title: "Launch Batches in 30 Seconds",
+      icon: MessageSquare,
+      tag: "Conversational Ops",
+      title: "Talk to Create & Dispatch",
       description:
-        "Whether you teach school syllabus, competitive entrance tests, coding, or spoken languages — anyone can create a batch and start teaching immediately.",
+        "Speak or prompt naturally to your favorite AI (Claude, ChatGPT, or Classy). Generate full quizzes, lecture recaps, and homework sets without filling out tedious form builders.",
     },
     {
-      icon: QrCode,
-      tag: "Zero-Friction Invites",
-      title: "1-Tap WhatsApp & Code Invites",
+      icon: Smartphone,
+      tag: "Zero Friction",
+      title: "Clean Student Mobile Hub",
       description:
-        "Invite your students with a clean 6-letter short code or direct WhatsApp link. Students open in their phone browser without downloading an app.",
+        "Students join in seconds via a 1-tap browser link. No hefty App Store downloads or student logins required to start practicing.",
     },
     {
-      icon: HelpCircle,
-      tag: "Assessment",
-      title: "Interactive Timed Quizzes",
+      icon: Zap,
+      tag: "Automated",
+      title: "Timed Quizzes & Instant Scoring",
       description:
-        "Set up multiple-choice tests with countdown timers. Answers are scored automatically with instant result breakdowns and step-by-step explanations.",
+        "Set custom countdown timers. Answers are evaluated securely on the server with step-by-step explanations unlocking the moment students submit.",
     },
     {
       icon: FileText,
-      tag: "Study Material",
-      title: "Clean Revision Notes & Drops",
+      tag: "Study Materials",
+      title: "Formula Drops & Study Decks",
       description:
-        "Release structured study notes, formula cheat sheets, and summaries formatted in crisp Markdown. Students read offline on any phone without chat clutter.",
+        "Push structured Markdown notes, cheat sheets, and summaries straight to your students' pocket libraries, permanently organized and offline-ready.",
     },
     {
-      icon: ClipboardList,
-      tag: "Evaluation",
-      title: "Homework Tasks & Grading",
+      icon: QrCode,
+      tag: "Batch Roster",
+      title: "1-Tap WhatsApp Batch Invites",
       description:
-        "Post problem sets with clear submission deadlines and maximum marks. Review student submissions and return private grades and constructive feedback.",
+        "Launch a batch in 30 seconds. Share a direct 1-tap WhatsApp invite link to onboard an entire class without typing emails.",
     },
     {
       icon: CreditCard,
-      tag: "Earnings",
-      title: "Built-In UPI & Card Monetization",
+      tag: "Monetization",
+      title: "Built-In UPI & Card Checkout",
       description:
-        `Monetize crash courses and revision batches effortlessly. Students pay securely via Razorpay UPI or cards; ${tutorKeepPercent}% is transferred directly to your bank account.`,
+        `Collect course fees seamlessly through Razorpay UPI and cards. You keep ${tutorKeepPercent}% of every rupee earned, settled directly to your bank account.`,
     },
   ];
 
@@ -64,13 +64,13 @@ export function BentoFeatures() {
           variant="outline"
           className="rounded-full border-primary/20 bg-primary-soft text-primary font-semibold text-xs mb-3 px-3 py-1"
         >
-          Capabilities
+          Classroom Superpowers
         </Badge>
         <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-ink">
-          Everything You Need to Run Your Classes
+          How Classy Runs The Class For You
         </h2>
         <p className="text-xs sm:text-sm text-muted max-w-xl mx-auto mt-3 leading-relaxed">
-          Built specifically for independent tutors, private coaching teachers, and mentors.
+          The heavy lifting of running batches, creating tests, and managing student submissions happens on auto-pilot.
         </p>
       </div>
 
@@ -101,8 +101,8 @@ export function BentoFeatures() {
                 </p>
               </div>
 
-              <div className="pt-2 border-t border-border/40 text-[11px] font-medium text-primary">
-                Included in free educator account →
+              <div className="pt-2 border-t border-border/50 text-[11px] text-primary font-medium flex items-center gap-1.5">
+                <span>✓ Fully automated</span>
               </div>
             </div>
           );

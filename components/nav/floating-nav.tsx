@@ -13,7 +13,6 @@ import {
   Home,
   LogOut,
   ChevronDown,
-  Shield,
   ArrowRight,
   Menu,
   X,
@@ -37,14 +36,12 @@ interface FloatingNavProps {
   role?: "tutor" | "student" | "public";
   userName?: string;
   userEmail?: string;
-  isAdmin?: boolean;
 }
 
 export function FloatingNav({
   role = "public",
   userName = "User",
   userEmail,
-  isAdmin = false,
 }: FloatingNavProps) {
   const pathname = usePathname();
   const router = useRouter();
@@ -108,7 +105,7 @@ export function FloatingNav({
               <span className="font-serif text-base leading-none">C</span>
             </div>
             <div className="flex items-baseline gap-1.5">
-              <span className="font-serif italic font-bold text-xl tracking-tight text-ink">
+              <span className="font-serif font-bold text-xl tracking-tight text-ink">
                 {APP_NAME}
               </span>
               {role !== "public" && (
@@ -232,15 +229,6 @@ export function FloatingNav({
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  {isAdmin && (
-                    <DropdownMenuItem
-                      onClick={() => router.push("/admin")}
-                      className="rounded-xl cursor-pointer flex items-center gap-2 text-xs font-semibold text-primary"
-                    >
-                      <Shield className="w-3.5 h-3.5" />
-                      <span>Founder Dashboard</span>
-                    </DropdownMenuItem>
-                  )}
                   <DropdownMenuItem
                     onClick={() => router.push(role === "tutor" ? "/t/account" : "/s/profile")}
                     className="rounded-xl cursor-pointer flex items-center gap-2 text-xs"

@@ -12,34 +12,39 @@ interface FAQItem {
 
 const FAQS: FAQItem[] = [
   {
-    question: "Who can become a tutor on Classy?",
+    question: "What does 'You talk to your AI. Classy runs the class' mean?",
     answer:
-      "Anyone! Whether you are a school teacher, private tutor, college student mentoring juniors, test-prep coach, coding mentor, or hobby instructor — you can sign up for free in 30 seconds, create your batch, and invite students immediately.",
+      "Instead of spending hours manually creating forms, setting timers, formatting PDFs, and copying links into WhatsApp, you simply tell your favorite AI (Claude, ChatGPT, Cursor, or Classy's built-in assistant) what you need (e.g., 'Draft a 15-minute quiz on Newton's Laws and push to Batch 10-A'). Classy automatically parses your request, turns it into an interactive mobile experience, notifies your students, and grades submissions automatically.",
   },
   {
-    question: "How do my students join my classroom?",
+    question: "Do my students need AI accounts or ChatGPT subscriptions?",
     answer:
-      "Every batch you create generates a unique 6-letter join code and a 1-tap WhatsApp invite link. Share it with your students via WhatsApp, Telegram, or email. They open the link and join your classroom instantly.",
+      "No! Your students do not need any AI accounts, API keys, or subscriptions. They receive a clean, focused, distraction-free mobile classroom feed where they take timed quizzes, read revision notes, and submit homework with zero complexity.",
+  },
+  {
+    question: "Which AI models or apps can I connect with Classy?",
+    answer:
+      "You can talk to Classy directly via the built-in web dashboard, or connect external AI desktop and coding tools (like Claude Desktop, Cursor, or any MCP-compatible agent) using your private Classy token found under your Tutor Account settings.",
   },
   {
     question: "Do students need to install an app from the Play Store or App Store?",
     answer:
-      "No downloads are required. Students open your batch link directly in any mobile or desktop browser (Chrome, Safari). They can also tap 'Add to Home Screen' to use it as a standalone, lightweight app with zero storage overhead.",
+      "No downloads are required. Students open your 1-tap batch invite link in any mobile browser (Chrome, Safari). They can also tap 'Add to Home Screen' to use it as a lightweight Progressive Web App (PWA) with instant offline caching.",
+  },
+  {
+    question: "Can students view the correct answers or cheat before submitting?",
+    answer:
+      "No. All answer keys and step-by-step explanations are securely stored and validated on the server. They are never sent to the student's device until after their test attempt has been officially submitted and locked.",
   },
   {
     question: "Is Classy free to use for teachers?",
     answer:
-      "Yes, 100% free. You can create unlimited batches, invite unlimited students, publish unlimited study notes, run timed practice quizzes, and collect homework with zero monthly subscription fees.",
+      "Yes, 100% free for open classrooms. You can create unlimited batches, invite unlimited students, publish unlimited study notes, run timed practice quizzes, and assign homework with zero monthly subscription fees.",
   },
   {
-    question: "Can I collect fees for my batches or courses?",
+    question: "Can I collect fees for my coaching batches or courses?",
     answer:
-      `Yes! If you choose to set an enrollment fee for any batch, students can pay securely using Razorpay UPI, credit/debit cards, or netbanking. Classy retains a transparent ${PLATFORM_FEE_PERCENT}% platform fee to cover payment gateway charges and cloud servers, and you receive ${100 - PLATFORM_FEE_PERCENT}% transferred directly to your bank account.`,
-  },
-  {
-    question: "Can students cheat or view quiz answer keys in the browser?",
-    answer:
-      "No. Correct answers and step-by-step explanations are securely evaluated on the server. They are never sent to the student's device until after their test attempt is submitted and locked.",
+      `Yes! If you choose to set an enrollment fee for any batch, students can pay securely using Razorpay UPI, credit/debit cards, or netbanking. Classy retains a transparent ${PLATFORM_FEE_PERCENT}% platform fee to cover gateway charges and server hosting, and you receive ${100 - PLATFORM_FEE_PERCENT}% transferred directly to your bank account with automated receipts sent to parents.`,
   },
 ];
 

@@ -1,4 +1,4 @@
-import { CheckCircle2, Clock } from "lucide-react";
+import { CheckCircle2, Clock, Sparkles } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export function ContrastSection() {
@@ -9,13 +9,13 @@ export function ContrastSection() {
           variant="outline"
           className="rounded-full border-primary/20 bg-primary-soft text-primary font-semibold text-xs mb-3 px-3 py-1"
         >
-          The Difference
+          The Operational Shift
         </Badge>
         <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-ink">
-          Why Independent Tutors Choose Classy
+          The 5-App Headache vs. The Classy OS
         </h2>
         <p className="text-xs sm:text-sm text-muted max-w-xl mx-auto mt-3 leading-relaxed">
-          Running classes shouldn&apos;t mean drowning in 5 disconnected apps and manual administrative chaos.
+          Educators love brainstorming with AI. But running the actual class usually turns into an administrative nightmare. Here is how Classy fixes it:
         </p>
       </div>
 
@@ -25,86 +25,86 @@ export function ContrastSection() {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/10 text-rose-700 dark:text-rose-300 text-xs font-semibold">
-                The Disorganized Setup
+                The Fragmented Workflow
               </span>
               <span className="text-xs text-muted flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5" /> 6+ hours / week wasted
+                <Clock className="w-3.5 h-3.5" /> 8+ hours / week lost
               </span>
             </div>
 
             <h3 className="font-serif text-2xl font-bold text-ink">
-              The 5-App Teaching Headache
+              The 5-App Teaching Maze
             </h3>
             <p className="text-xs sm:text-sm text-muted leading-relaxed">
-              Most independent educators spend more time managing tools than actually teaching:
+              You get great ideas from ChatGPT or Claude, but deploying them to students requires endless manual labor:
             </p>
 
             <ul className="space-y-3.5 text-xs sm:text-sm text-ink/90 pt-1">
               <li className="flex items-start gap-3">
                 <span className="w-5 h-5 rounded-full bg-rose-500/10 text-rose-600 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">✕</span>
-                <span><strong>Lost PDFs in WhatsApp:</strong> Critical study notes and formula sheets get buried in family messages and class chat noise.</span>
+                <span><strong>Copy-pasting into Form Builders:</strong> Re-typing questions, setting up options, radio buttons, and scoring rules one-by-one in Google Forms.</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="w-5 h-5 rounded-full bg-rose-500/10 text-rose-600 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">✕</span>
-                <span><strong>Tedious Google Forms:</strong> Manually typing 20 questions, copying radio choices, and setting answer keys one-by-one.</span>
+                <span><strong>Lost PDFs in WhatsApp Noise:</strong> Crucial lecture notes, test links, and formula cheat sheets vanish under group chat banter.</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="w-5 h-5 rounded-full bg-rose-500/10 text-rose-600 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">✕</span>
-                <span><strong>Weekend Test Grading:</strong> Spending hours grading student sheets, calculating percentage scores, and emailing results.</span>
+                <span><strong>Weekend Test Grading:</strong> Spending Sunday checking answer sheets, tallying scores, and manually calculating percentage ranks.</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="w-5 h-5 rounded-full bg-rose-500/10 text-rose-600 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">✕</span>
-                <span><strong>Chasing Fees on UPI:</strong> Manually matching payment screenshots across multiple chat threads and keeping paper registers.</span>
+                <span><strong>Awkward Fee Chasing:</strong> Matching payment screenshots across WhatsApp threads, reminding parents, and updating paper registers.</span>
               </li>
             </ul>
           </div>
 
           <div className="pt-3 border-t border-border/60 text-xs text-muted">
-            Result: Administrative fatigue, scattered resources, and disengaged students.
+            The Result: You spend more time being an administrative assistant than an educator.
           </div>
         </div>
 
-        {/* Card 2: The Classy Hub */}
+        {/* Card 2: The Classy System */}
         <div className="p-7 sm:p-8 rounded-3xl border-2 border-primary/40 bg-primary-soft/30 shadow-xs flex flex-col justify-between space-y-6">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-semibold">
                 The Classy Way
               </span>
-              <span className="text-xs text-primary font-medium">
-                Under 30 seconds to launch
+              <span className="text-xs text-primary font-medium flex items-center gap-1">
+                <Sparkles className="w-3.5 h-3.5" /> You Talk • Classy Runs
               </span>
             </div>
 
             <h3 className="font-serif text-2xl font-bold text-ink">
-              One Dedicated Classroom Hub
+              One Unified Operating System
             </h3>
             <p className="text-xs sm:text-sm text-muted leading-relaxed">
-              Everything in one serene space where you teach and your students thrive:
+              Speak or type to your AI, and Classy immediately handles the classroom execution end-to-end:
             </p>
 
             <ul className="space-y-3.5 text-xs sm:text-sm text-ink/90 pt-1">
               <li className="flex items-start gap-3">
                 <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
-                <span><strong>Instant Batch Creation:</strong> Anyone can create a classroom in 30 seconds and invite students with a short code or WhatsApp link.</span>
+                <span><strong>Conversational Dispatch:</strong> Just prompt your quiz, homework, or revision notes. Classy parses and publishes it in under a second.</span>
               </li>
               <li className="flex items-start gap-3">
                 <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
-                <span><strong>Organized Study Stream:</strong> Lecture notes, formulas, and revision materials stay permanently organized and searchable.</span>
+                <span><strong>Clean Mobile Feed for Students:</strong> Delivered to your students&apos; phones instantly with countdown timers, formula sheets, and no chat noise.</span>
               </li>
               <li className="flex items-start gap-3">
                 <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
-                <span><strong>Automated Timed Tests:</strong> Set countdown timers; students take tests on mobile and receive instant marks and step explanations.</span>
+                <span><strong>Automatic Server Grading:</strong> Answer keys are securely graded the second students submit. Students see explanations; you see batch analytics.</span>
               </li>
               <li className="flex items-start gap-3">
                 <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
-                <span><strong>Direct Payouts &amp; Monetization:</strong> Collect optional batch fees with Razorpay; 85% is transferred directly to your bank account.</span>
+                <span><strong>Built-In UPI &amp; Bank Payouts:</strong> Set course fees with one click. Parents pay seamlessly via UPI; payouts settle directly to your bank account.</span>
               </li>
             </ul>
           </div>
 
-          <div className="pt-3 border-t border-primary/20 text-xs text-primary font-semibold">
-            Result: Spend 100% of your energy teaching, inspire your students, and grow your batches.
+          <div className="pt-3 border-t border-primary/20 text-xs text-primary font-medium">
+            The Result: You focus 100% on teaching. Classy takes care of the classroom logistics.
           </div>
         </div>
       </div>

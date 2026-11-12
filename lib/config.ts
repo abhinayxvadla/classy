@@ -1,5 +1,5 @@
 export const APP_NAME = "Classy";
-export const APP_TAGLINE = "Launch your teaching batch in seconds. Invite students with a link.";
+export const APP_TAGLINE = "You talk to your AI. Classy runs the class.";
 
 export const PLATFORM_FEE_PERCENT = 15;
 

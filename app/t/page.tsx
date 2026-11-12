@@ -14,7 +14,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { NewBatchDialog } from "@/components/tutor/new-batch-dialog";
 import { BatchCard } from "@/components/tutor/batch-card";
 import { buttonVariants } from "@/components/ui/button";
-import { PLATFORM_FEE_PERCENT, isUserAdmin } from "@/lib/config";
+import { PLATFORM_FEE_PERCENT } from "@/lib/config";
 
 export default async function TutorDashboardPage() {
   const supabase = await createClient();
@@ -104,7 +104,6 @@ export default async function TutorDashboardPage() {
       userName={profile.full_name}
       userEmail={profile.email}
       subtitle={profile.institute || "Educator Portal"}
-      isAdmin={isUserAdmin(profile.email)}
     >
       <div className="space-y-8">
         {/* Header Greeting & Primary Action */}
@@ -128,7 +127,7 @@ export default async function TutorDashboardPage() {
 
         {/* Classroom Quick Launcher Banner */}
         <section className="mb-8 p-6 sm:p-7 rounded-3xl bg-linear-to-r from-primary via-primary/95 to-ink text-white relative overflow-hidden shadow-sm">
-          <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div className="space-y-1.5 max-w-xl">
               <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-wide uppercase bg-white/15 text-white backdrop-blur-md">
                 Classroom Hub
@@ -144,8 +143,9 @@ export default async function TutorDashboardPage() {
             <div className="flex items-center gap-2 shrink-0">
               <Link
                 href="/t/batches"
+                prefetch={true}
                 className={buttonVariants({
-                  className: "rounded-xl bg-white text-ink hover:bg-white/90 text-xs font-bold shadow-sm px-4 py-2.5",
+                  className: "rounded-xl bg-white text-ink hover:bg-white/90 text-xs font-bold shadow-sm px-4 py-2.5 whitespace-nowrap",
                 })}
               >
                 Manage Batches &rarr;

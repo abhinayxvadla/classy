@@ -19,7 +19,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { cn } from "@/lib/utils";
 import { generateMcpTokenAction, revokeMcpTokenAction } from "@/app/actions/tutor";
 
 export interface McpTokenItem {
@@ -48,6 +48,7 @@ const EXAMPLE_PROMPTS = [
 export function ConnectMcpClient({ tokens, appUrl }: ConnectMcpClientProps) {
   const [isPending, startTransition] = useTransition();
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
+  const [selectedAi, setSelectedAi] = useState<"claude" | "chatgpt" | "gemini" | "perplexity">("claude");
 
   // Active token is the latest non-revoked token
   const activeToken = tokens.find((t) => !t.revoked_at);
@@ -242,24 +243,60 @@ export function ConnectMcpClient({ tokens, appUrl }: ConnectMcpClientProps) {
           </p>
         </div>
 
-        <Tabs defaultValue="claude" className="w-full">
-          <TabsList className="bg-surface border border-border p-1 w-full grid grid-cols-2 sm:grid-cols-4 gap-1 h-auto">
-            <TabsTrigger value="claude" className="text-xs py-2 gap-1.5 font-medium data-[state=active]:bg-primary-soft data-[state=active]:text-primary">
-              <Bot className="h-3.5 w-3.5 text-purple-600" /> Claude
-            </TabsTrigger>
-            <TabsTrigger value="chatgpt" className="text-xs py-2 gap-1.5 font-medium data-[state=active]:bg-emerald-50 data-[state=active]:text-emerald-700">
-              <Sparkles className="h-3.5 w-3.5 text-emerald-600" /> ChatGPT
-            </TabsTrigger>
-            <TabsTrigger value="gemini" className="text-xs py-2 gap-1.5 font-medium data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700">
-              <Layers className="h-3.5 w-3.5 text-blue-600" /> Gemini
-            </TabsTrigger>
-            <TabsTrigger value="perplexity" className="text-xs py-2 gap-1.5 font-medium data-[state=active]:bg-amber-50 data-[state=active]:text-amber-700">
-              <Globe className="h-3.5 w-3.5 text-amber-600" /> Perplexity
-            </TabsTrigger>
-          </TabsList>
+        <div className="bg-surface border border-border p-1 w-full grid grid-cols-2 sm:grid-cols-4 gap-1 rounded-2xl shadow-2xs">
+          <button
+            type="button"
+            onClick={() => setSelectedAi("claude")}
+            className={cn(
+              "text-xs py-2 px-3 rounded-xl gap-1.5 font-medium flex items-center justify-center transition-all cursor-pointer",
+              selectedAi === "claude"
+                ? "bg-primary-soft text-primary font-semibold shadow-2xs border border-primary/20"
+                : "text-muted hover:text-ink hover:bg-bg"
+            )}
+          >
+            <Bot className="h-3.5 w-3.5 text-purple-600" /> Claude
+          </button>
+          <button
+            type="button"
+            onClick={() => setSelectedAi("chatgpt")}
+            className={cn(
+              "text-xs py-2 px-3 rounded-xl gap-1.5 font-medium flex items-center justify-center transition-all cursor-pointer",
+              selectedAi === "chatgpt"
+                ? "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 font-semibold shadow-2xs border border-emerald-500/20"
+                : "text-muted hover:text-ink hover:bg-bg"
+            )}
+          >
+            <Sparkles className="h-3.5 w-3.5 text-emerald-600" /> ChatGPT
+          </button>
+          <button
+            type="button"
+            onClick={() => setSelectedAi("gemini")}
+            className={cn(
+              "text-xs py-2 px-3 rounded-xl gap-1.5 font-medium flex items-center justify-center transition-all cursor-pointer",
+              selectedAi === "gemini"
+                ? "bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 font-semibold shadow-2xs border border-blue-500/20"
+                : "text-muted hover:text-ink hover:bg-bg"
+            )}
+          >
+            <Layers className="h-3.5 w-3.5 text-blue-600" /> Gemini
+          </button>
+          <button
+            type="button"
+            onClick={() => setSelectedAi("perplexity")}
+            className={cn(
+              "text-xs py-2 px-3 rounded-xl gap-1.5 font-medium flex items-center justify-center transition-all cursor-pointer",
+              selectedAi === "perplexity"
+                ? "bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 font-semibold shadow-2xs border border-amber-500/20"
+                : "text-muted hover:text-ink hover:bg-bg"
+            )}
+          >
+            <Globe className="h-3.5 w-3.5 text-amber-600" /> Perplexity
+          </button>
+        </div>
 
-          {/* 1. Claude (Desktop & Code CLI) */}
-          <TabsContent value="claude" className="mt-4">
+        {/* 1. Claude (Desktop & Code CLI) */}
+        {selectedAi === "claude" && (
+          <div className="mt-4">
             <Card className="p-5 sm:p-6 bg-surface border-border space-y-5">
               <div className="flex items-center justify-between">
                 <div>
@@ -322,10 +359,12 @@ export function ConnectMcpClient({ tokens, appUrl }: ConnectMcpClientProps) {
                 </p>
               </div>
             </Card>
-          </TabsContent>
+          </div>
+        )}
 
-          {/* 2. ChatGPT */}
-          <TabsContent value="chatgpt" className="mt-4">
+        {/* 2. ChatGPT */}
+        {selectedAi === "chatgpt" && (
+          <div className="mt-4">
             <Card className="p-5 sm:p-6 bg-surface border-border space-y-5">
               <div className="flex items-center justify-between">
                 <div>
@@ -385,10 +424,12 @@ export function ConnectMcpClient({ tokens, appUrl }: ConnectMcpClientProps) {
                 </ol>
               </div>
             </Card>
-          </TabsContent>
+          </div>
+        )}
 
-          {/* 3. Gemini */}
-          <TabsContent value="gemini" className="mt-4">
+        {/* 3. Gemini */}
+        {selectedAi === "gemini" && (
+          <div className="mt-4">
             <Card className="p-5 sm:p-6 bg-surface border-border space-y-5">
               <div className="flex items-center justify-between">
                 <div>
@@ -442,10 +483,12 @@ export function ConnectMcpClient({ tokens, appUrl }: ConnectMcpClientProps) {
                 </ol>
               </div>
             </Card>
-          </TabsContent>
+          </div>
+        )}
 
-          {/* 4. Perplexity */}
-          <TabsContent value="perplexity" className="mt-4">
+        {/* 4. Perplexity */}
+        {selectedAi === "perplexity" && (
+          <div className="mt-4">
             <Card className="p-5 sm:p-6 bg-surface border-border space-y-5">
               <div className="flex items-center justify-between">
                 <div>
@@ -502,8 +545,8 @@ export function ConnectMcpClient({ tokens, appUrl }: ConnectMcpClientProps) {
                 </ol>
               </div>
             </Card>
-          </TabsContent>
-        </Tabs>
+          </div>
+        )}
 
         <p className="text-[11px] text-muted italic flex items-center gap-1.5 pt-1">
           <HelpCircle className="h-3.5 w-3.5 shrink-0" />

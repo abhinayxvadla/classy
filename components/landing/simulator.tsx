@@ -9,21 +9,28 @@ import {
   CheckCircle2,
   Clock,
   RotateCcw,
+  Bot,
+  Sparkles,
+  Smartphone,
+  Zap,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 interface DemoScenario {
   id: string;
-  label: string;
+  chipLabel: string;
   icon: typeof HelpCircle;
-  tutorActionTitle: string;
-  tutorActionDescription: string;
-  tutorDetails: { label: string; value: string }[];
-  itemType: string;
+  userPrompt: string;
+  aiResponse: string;
+  targetBatch: string;
+  syncStats: string;
+  extractedMeta: { label: string; value: string }[];
   studentView: {
+    type: "quiz" | "notes" | "assignment" | "batch";
     title: string;
     badge: string;
+    duration?: string;
     question: string;
     options: string[];
     correctIndex: number;
@@ -33,103 +40,85 @@ interface DemoScenario {
 
 const DEMO_SCENARIOS: DemoScenario[] = [
   {
-    id: "batch",
-    label: "Create Batch & Invite",
-    icon: Users,
-    tutorActionTitle: "Launch Class & Invite Students",
-    tutorActionDescription: "Create a batch in 30 seconds. Generate an instant 6-letter join code and 1-tap WhatsApp invite link.",
-    tutorDetails: [
-      { label: "Classroom Name", value: "Class 10 Science – Batch A" },
-      { label: "Subject & Grade", value: "Chemistry & Biology · Grade 10" },
-      { label: "Invite Code", value: "SC10A (WhatsApp Ready)" },
-      { label: "Student Roster", value: "Self-enroll via link with tutor approval" },
-    ],
-    itemType: "Classroom Setup · Instant Invite",
-    studentView: {
-      title: "Welcome to Class 10 Science – Batch A",
-      badge: "Enrolled in Classroom",
-      question: "How would you like to receive your classroom materials?",
-      options: [
-        "Interactive Timed Quizzes on mobile with instant scores",
-        "Distraction-free Markdown study notes & formula sheets",
-        "Homework assignments with deadlines & private tutor feedback",
-        "All of the above in one quiet personal learning hub",
-      ],
-      correctIndex: 3,
-      explanation: "Students join your batch with a single tap. All notes, quizzes, and homework appear in their feed with zero clutter.",
-    },
-  },
-  {
     id: "quiz",
-    label: "Timed Practice Quiz",
+    chipLabel: '💬 "Create 15m Chemistry Quiz"',
     icon: HelpCircle,
-    tutorActionTitle: "Publish Timed Assessment",
-    tutorActionDescription: "Set up multi-choice questions with a countdown timer. Answer keys are encrypted and graded on the server automatically.",
-    tutorDetails: [
-      { label: "Assessment Title", value: "Chemical Reactions Diagnostic" },
-      { label: "Duration", value: "15 Minutes · Countdown Timer" },
-      { label: "Grading", value: "Instant auto-scoring with step explanations" },
-      { label: "Student Access", value: "Available to all enrolled students" },
+    userPrompt: "Draft a 4-question timed diagnostic quiz on Chemical Reactions with 15m timer for Grade 10 Batch A.",
+    aiResponse: "Generated 4 MCQs with step explanations, set 15m timer, encrypted answer keys, and dispatched to Grade 10 Batch A stream.",
+    targetBatch: "Grade 10 Science — Batch A",
+    syncStats: "24 Students Notified • 0.3s Sync",
+    extractedMeta: [
+      { label: "Action", value: "Timed Assessment" },
+      { label: "Duration", value: "15 Minutes (Countdown)" },
+      { label: "Scoring", value: "Automated on server" },
+      { label: "Access", value: "Instant mobile push" },
     ],
-    itemType: "Quiz · 5 Questions · 15 mins",
     studentView: {
+      type: "quiz",
       title: "Chemical Reactions Diagnostic",
-      badge: "Timed Quiz · 15m",
+      badge: "Timed Quiz",
+      duration: "14:48",
       question: "When quicklime (CaO) reacts vigorously with water, what type of reaction takes place?",
       options: [
         "Combination and Exothermic reaction",
         "Decomposition and Endothermic reaction",
         "Displacement and Endothermic reaction",
-        "Neutralization without heat change",
+        "Neutralization without temperature change",
       ],
       correctIndex: 0,
-      explanation: "Quicklime reacts with water to form slaked lime Ca(OH)₂ with vigorous heat release — making it both a combination and an exothermic reaction.",
+      explanation: "Quicklime reacts vigorously with water to form slaked lime Ca(OH)₂ while releasing substantial heat — making it both combination and exothermic.",
     },
   },
   {
     id: "notes",
-    label: "Study & Revision Notes",
+    chipLabel: '💬 "Push Periodic Table Notes"',
     icon: FileText,
-    tutorActionTitle: "Release Revision Notes",
-    tutorActionDescription: "Drop clean lecture notes, formula cheat sheets, and summaries formatted in rich Markdown. Students read offline on any phone.",
-    tutorDetails: [
-      { label: "Document Title", value: "Modern Periodic Table Trends" },
-      { label: "Format", value: "Structured Markdown with key takeaways" },
-      { label: "Delivery", value: "Pinned to student batch stream" },
-      { label: "Device Support", value: "Mobile, iPad, and Laptop responsive" },
+    userPrompt: "Summarize modern periodic table trends into clean revision bullet points and pin to Batch A notes.",
+    aiResponse: "Formatted concise Markdown revision sheet highlighting atomic radii, electronegativity, and exam rules. Pinned to student feeds.",
+    targetBatch: "Grade 10 Science — Batch A",
+    syncStats: "Revision Feed Updated • Offline Ready",
+    extractedMeta: [
+      { label: "Action", value: "Study Material Drop" },
+      { label: "Format", value: "Structured Markdown" },
+      { label: "Read Time", value: "3 Minutes" },
+      { label: "Device Sync", value: "Cached for offline study" },
     ],
-    itemType: "Study Material · 4 min read",
     studentView: {
+      type: "notes",
       title: "Periodic Trends Quick Summary",
-      badge: "Revision Notes",
-      question: "Key Trend to Remember for Exams:",
+      badge: "Study Notes",
+      duration: "3 min read",
+      question: "Core Exam Rule: What happens to atomic radius across a period?",
       options: [
-        "Atomic radius decreases across a period (left to right) due to increasing nuclear pull.",
-        "Atomic radius increases across a period due to shielding.",
-        "Metallic character increases from left to right across a period.",
-        "Electronegativity decreases across a period.",
+        "Decreases left-to-right due to higher nuclear charge pulling electrons inward",
+        "Increases left-to-right because additional electrons add more electron shells",
+        "Remains unchanged across representative periods",
+        "Fluctuates unpredictably across transition metals",
       ],
       correctIndex: 0,
-      explanation: "As nuclear charge increases across a period without adding shells, electrons are pulled closer to the nucleus, decreasing atomic size.",
+      explanation: "Nuclear charge increases across a period without adding shells, pulling outer electrons closer to the nucleus and decreasing atomic radius.",
     },
   },
   {
     id: "assignment",
-    label: "Homework & Grading",
+    chipLabel: '💬 "Assign Trig Homework Due Friday"',
     icon: ClipboardList,
-    tutorActionTitle: "Assign Problem Set & Grade",
-    tutorActionDescription: "Assign homework tasks with clear submission deadlines and maximum marks. Review student answers and share private feedback.",
-    tutorDetails: [
-      { label: "Assignment", value: "Trigonometry Identities Problem Set" },
-      { label: "Deadline", value: "Friday at 6:00 PM" },
+    userPrompt: "Post Trigonometry Identities problem set with Friday 6 PM deadline and 10 max marks for Batch 10-A.",
+    aiResponse: "Created assignment entry with submission deadline, attached formula cheat-sheet, and scheduled parent reminder notification.",
+    targetBatch: "Class 10 Advanced Math",
+    syncStats: "Deadline Set: Fri 6 PM • Submissions Open",
+    extractedMeta: [
+      { label: "Action", value: "Homework Assignment" },
       { label: "Max Marks", value: "10 Points" },
-      { label: "Submission Mode", value: "Text response or document link" },
+      { label: "Deadline", value: "Friday 6:00 PM" },
+      { label: "Submission", value: "Student upload / text" },
     ],
-    itemType: "Assignment · Due Friday · Max 10",
     studentView: {
+      type: "assignment",
       title: "Trigonometry Problem Set 1",
-      badge: "Homework · Due Friday",
-      question: "Which of the following represents the fundamental identity?",
+      badge: "Homework Task",
+      duration: "Due Friday 6 PM",
+      question: "Which of the following is the fundamental Pythagorean identity?",
       options: [
         "sin²θ + cos²θ = 1",
         "1 + cos²θ = sin²θ",
@@ -137,13 +126,43 @@ const DEMO_SCENARIOS: DemoScenario[] = [
         "sinθ · cosθ = 1",
       ],
       correctIndex: 0,
-      explanation: "sin²θ + cos²θ = 1 is the primary Pythagorean trigonometric identity, true for all values of θ.",
+      explanation: "sin²θ + cos²θ = 1 is the primary Pythagorean trigonometric identity, true for all angle values θ.",
+    },
+  },
+  {
+    id: "batch",
+    chipLabel: '💬 "Launch Physics Batch & Invite"',
+    icon: Users,
+    userPrompt: "Launch a new batch named 'Class 10 Physics' and generate a 1-tap WhatsApp invite link.",
+    aiResponse: "Batch created successfully. 1-tap WhatsApp invite link generated and ready to share with students.",
+    targetBatch: "Class 10 Physics (New)",
+    syncStats: "Batch Active • Ready to Invite",
+    extractedMeta: [
+      { label: "Action", value: "Create Batch" },
+      { label: "Enrollment", value: "1-Tap Invite Link" },
+      { label: "Approval", value: "Tutor Confirmed" },
+      { label: "Pricing", value: "Free Tier Activated" },
+    ],
+    studentView: {
+      type: "batch",
+      title: "Welcome to Class 10 Physics",
+      badge: "Classroom Enrolled",
+      duration: "Active Batch",
+      question: "How will you attend and receive your classroom materials?",
+      options: [
+        "Interactive mobile quizzes with live countdown timers and auto-grades",
+        "Distraction-free Markdown study notes and cheat sheets",
+        "Weekly homework problem sets with private teacher feedback",
+        "All of the above directly in this mobile web app",
+      ],
+      correctIndex: 3,
+      explanation: "Students join your batch with a single tap. All notes, quizzes, and homework appear in their feed with zero clutter.",
     },
   },
 ];
 
 export function InteractiveSimulator() {
-  const [selectedId, setSelectedId] = useState("batch");
+  const [selectedId, setSelectedId] = useState("quiz");
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
@@ -168,144 +187,196 @@ export function InteractiveSimulator() {
   const isCorrect = selectedOption === scenario.studentView.correctIndex;
 
   return (
-    <div className="w-full my-8 text-left">
-      {/* Tab Switcher */}
-      <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
-        {DEMO_SCENARIOS.map((s) => {
-          const Icon = s.icon;
-          const isActive = s.id === selectedId;
-          return (
-            <button
-              key={s.id}
-              onClick={() => handleSelectScenario(s.id)}
-              className={cn(
-                "flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all border cursor-pointer",
-                isActive
-                  ? "bg-primary text-primary-foreground border-primary shadow-xs"
-                  : "bg-surface text-muted hover:text-ink border-border hover:bg-bg"
-              )}
-            >
-              <Icon className="w-3.5 h-3.5" />
-              <span>{s.label}</span>
-            </button>
-          );
-        })}
+    <div className="w-full my-6 text-left">
+      {/* Interactive Prompt Chip Selector */}
+      <div className="flex flex-col items-center mb-6">
+        <p className="text-xs text-muted font-medium mb-3">
+          Select a sample prompt to watch the conversational hand-off:
+        </p>
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          {DEMO_SCENARIOS.map((s) => {
+            const isActive = s.id === selectedId;
+            return (
+              <button
+                key={s.id}
+                type="button"
+                onClick={() => handleSelectScenario(s.id)}
+                className={cn(
+                  "px-3.5 py-2 rounded-xl text-xs font-semibold transition-all border cursor-pointer flex items-center gap-1.5",
+                  isActive
+                    ? "bg-primary text-primary-foreground border-primary shadow-xs ring-2 ring-primary/20"
+                    : "bg-surface text-ink hover:text-primary border-border hover:bg-bg"
+                )}
+              >
+                <span>{s.chipLabel}</span>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
-      {/* Main Dual-Pane Canvas */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 rounded-3xl border border-border/80 bg-surface/95 p-5 sm:p-7 shadow-xs">
-        {/* Left Pane: Tutor Classroom Control (5 cols) */}
-        <div className="lg:col-span-5 flex flex-col justify-between space-y-5 border-b lg:border-b-0 lg:border-r border-border/70 pb-6 lg:pb-0 lg:pr-6">
+      {/* Main Dual-Pane Canvas (The Split-Brain Classroom) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 rounded-3xl border border-border/80 bg-surface/95 p-5 sm:p-7 shadow-xs relative overflow-hidden">
+        {/* Background glow accent */}
+        <div className="absolute -top-24 -left-24 w-72 h-72 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+
+        {/* ------------------------------------------------------------- */}
+        {/* LEFT PANE: You Talk to Your AI (5 cols) */}
+        {/* ------------------------------------------------------------- */}
+        <div className="lg:col-span-5 flex flex-col justify-between space-y-4 border-b lg:border-b-0 lg:border-r border-border/70 pb-6 lg:pb-0 lg:pr-6">
           <div className="space-y-4">
+            {/* Header / Sub-badge */}
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-semibold text-primary uppercase tracking-wider flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-primary" />
-                Tutor Hub View
-              </span>
-              <Badge variant="outline" className="text-[10px] font-semibold border-border text-muted">
-                Educator Control
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-bold">
+                  <Bot className="w-3.5 h-3.5" />
+                </div>
+                <span className="text-[11px] font-semibold text-primary uppercase tracking-wider">
+                  You Talk To Your AI
+                </span>
+              </div>
+              <Badge variant="outline" className="text-[10px] font-semibold border-border text-muted bg-bg">
+                Claude • ChatGPT • Classy
               </Badge>
             </div>
 
-            <div>
-              <h3 className="font-serif text-lg font-bold text-ink">
-                {scenario.tutorActionTitle}
-              </h3>
-              <p className="text-xs text-muted mt-1 leading-relaxed">
-                {scenario.tutorActionDescription}
+            {/* Educator's Natural Speech / Prompt Box */}
+            <div className="p-4 rounded-2xl bg-bg border border-border/80 space-y-2.5 shadow-2xs">
+              <div className="flex items-center justify-between text-[11px] text-muted font-medium">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  Educator Voice / Prompt
+                </span>
+                <span className="font-mono text-[10px] text-muted/80">Batch: {scenario.targetBatch}</span>
+              </div>
+              <div className="p-3 rounded-xl bg-surface border border-border/60 text-xs text-ink font-medium leading-relaxed">
+                <p className="italic text-ink/90">
+                  &ldquo;{scenario.userPrompt}&rdquo;
+                </p>
+              </div>
+            </div>
+
+            {/* AI Confirmation / Execution Box */}
+            <div className="p-4 rounded-2xl bg-primary-soft/40 border border-primary/20 space-y-2">
+              <div className="flex items-center gap-1.5 text-primary text-xs font-semibold">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Classy Protocol Execution</span>
+              </div>
+              <p className="text-xs text-ink/90 leading-relaxed">
+                {scenario.aiResponse}
               </p>
             </div>
 
-            {/* Structured Tutor Action Spec */}
-            <div className="space-y-2 pt-1">
-              {scenario.tutorDetails.map((detail, idx) => (
-                <div
-                  key={idx}
-                  className="p-2.5 rounded-xl bg-bg border border-border/60 flex items-center justify-between text-xs"
-                >
-                  <span className="text-muted font-medium">{detail.label}</span>
-                  <span className="text-ink font-semibold truncate max-w-[180px]">
-                    {detail.value}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            <div className="p-3 rounded-2xl bg-primary-soft/60 border border-primary/20 text-xs text-primary leading-relaxed flex items-start gap-2.5">
-              <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-              <p className="text-xs text-ink leading-relaxed">
-                Published to your batch stream. Enrolled students receive instant access.
+            {/* Structured Parameters Hand-Off */}
+            <div className="space-y-1.5 pt-1">
+              <p className="text-[11px] font-semibold text-muted uppercase tracking-wider">
+                Extracted Blueprint
               </p>
+              <div className="grid grid-cols-2 gap-2">
+                {scenario.extractedMeta.map((meta, idx) => (
+                  <div
+                    key={idx}
+                    className="p-2.5 rounded-xl bg-bg border border-border/60 text-xs flex flex-col justify-between"
+                  >
+                    <span className="text-[10px] text-muted font-medium">{meta.label}</span>
+                    <span className="text-ink font-semibold truncate mt-0.5">{meta.value}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
-          <div className="pt-2 border-t border-border/60 text-[11px] text-muted flex items-center justify-between">
-            <span>Invite Mode</span>
-            <span className="font-semibold text-primary">1-Tap WhatsApp or Code</span>
+          {/* Sync Status Footer */}
+          <div className="pt-3 border-t border-border/60 flex items-center justify-between text-xs">
+            <span className="text-muted flex items-center gap-1.5">
+              <Zap className="w-3.5 h-3.5 text-amber-500" />
+              Auto-Dispatched
+            </span>
+            <span className="font-semibold text-primary text-[11px]">{scenario.syncStats}</span>
           </div>
         </div>
 
-        {/* Right Pane: Live Student Mobile Experience (7 cols) */}
+        {/* ------------------------------------------------------------- */}
+        {/* RIGHT PANE: Classy Runs The Class on Student Phone (7 cols) */}
+        {/* ------------------------------------------------------------- */}
         <div className="lg:col-span-7 flex flex-col justify-between space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-[11px] font-semibold text-muted uppercase tracking-wider">
-                Student Live Screen
+              <div className="w-6 h-6 rounded-lg bg-emerald-500/10 text-emerald-600 flex items-center justify-center font-bold">
+                <Smartphone className="w-3.5 h-3.5" />
+              </div>
+              <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
+                Classy Runs The Class
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <Badge className="bg-primary-soft text-primary font-medium text-[10px]">
-                {scenario.itemType}
-              </Badge>
+              <span className="text-[11px] text-muted hidden sm:inline">Student Mobile Live Feed</span>
               {hasSubmitted && (
                 <button
+                  type="button"
                   onClick={handleReset}
-                  className="text-xs text-muted hover:text-ink flex items-center gap-1 cursor-pointer"
-                  title="Try again"
+                  className="flex items-center gap-1 text-[11px] text-primary hover:underline cursor-pointer font-medium"
                 >
                   <RotateCcw className="w-3 h-3" />
-                  <span className="text-[11px]">Reset</span>
+                  <span>Try Again</span>
                 </button>
               )}
             </div>
           </div>
 
-          {/* Interactive Student Card */}
-          <div className="p-5 rounded-2xl border border-border/80 bg-bg/50 space-y-4">
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-primary-soft text-primary">
-                  {scenario.studentView.badge}
-                </span>
-                <span className="text-[11px] text-muted flex items-center gap-1">
-                  <Clock className="w-3 h-3" /> Calm learning mode
-                </span>
+          {/* Mobile Screen Shell Simulation */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-bg border-2 border-border/80 shadow-inner space-y-4">
+            {/* Phone Top Status Bar */}
+            <div className="flex items-center justify-between pb-2 border-b border-border/60 text-[10px] text-muted">
+              <span className="font-mono font-medium">Classy Student App</span>
+              <div className="flex items-center gap-2">
+                {scenario.studentView.duration && (
+                  <span className="inline-flex items-center gap-1 text-primary font-semibold bg-primary-soft px-2 py-0.5 rounded-full">
+                    <Clock className="w-3 h-3" />
+                    {scenario.studentView.duration}
+                  </span>
+                )}
+                <span className="w-2 h-2 rounded-full bg-emerald-500" />
               </div>
-              <h4 className="font-serif text-base font-bold text-ink">
+            </div>
+
+            {/* Assessment / Content Header */}
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <Badge
+                  variant="outline"
+                  className="text-[10px] font-semibold border-primary/20 bg-primary-soft text-primary"
+                >
+                  {scenario.studentView.badge}
+                </Badge>
+                <span className="text-[11px] text-muted">Question 1 of 4</span>
+              </div>
+              <h4 className="font-serif text-base sm:text-lg font-bold text-ink">
                 {scenario.studentView.title}
               </h4>
-              <p className="text-xs text-ink/90 font-medium mt-2">
+              <p className="text-xs sm:text-sm text-ink/90 font-medium mt-2 leading-relaxed">
                 {scenario.studentView.question}
               </p>
             </div>
 
-            {/* Clickable Multiple-Choice Options */}
-            <div className="space-y-2">
-              {scenario.studentView.options.map((opt, idx) => {
+            {/* Interactive Multiple Choice Options */}
+            <div className="space-y-2 pt-1">
+              {scenario.studentView.options.map((option, idx) => {
                 const isSelected = selectedOption === idx;
-                const isThisOptionCorrect = idx === scenario.studentView.correctIndex;
+                const isCorrectOption = idx === scenario.studentView.correctIndex;
 
-                let cardStyle = "border-border bg-surface hover:border-primary/50 text-ink";
+                let optionStyle =
+                  "border-border/80 bg-surface text-ink hover:border-primary/40 hover:bg-surface/80";
+
                 if (hasSubmitted) {
-                  if (isSelected && isCorrect) {
-                    cardStyle = "border-emerald-500 bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 font-semibold";
-                  } else if (isSelected && !isCorrect) {
-                    cardStyle = "border-rose-500 bg-rose-500/10 text-rose-800 dark:text-rose-300 font-semibold";
-                  } else if (isThisOptionCorrect) {
-                    cardStyle = "border-emerald-500/60 bg-emerald-500/5 text-emerald-800 dark:text-emerald-300";
+                  if (isCorrectOption) {
+                    optionStyle =
+                      "border-emerald-500 bg-emerald-500/10 text-emerald-900 dark:text-emerald-100 font-semibold";
+                  } else if (isSelected && !isCorrectOption) {
+                    optionStyle =
+                      "border-rose-500 bg-rose-500/10 text-rose-900 dark:text-rose-100";
                   } else {
-                    cardStyle = "opacity-50 border-border bg-surface text-muted";
+                    optionStyle = "border-border/40 opacity-50 text-muted";
                   }
                 }
 
@@ -313,51 +384,62 @@ export function InteractiveSimulator() {
                   <button
                     key={idx}
                     type="button"
+                    disabled={hasSubmitted}
                     onClick={() => handleSelectOption(idx)}
                     className={cn(
-                      "w-full text-left p-3 rounded-xl border text-xs transition-all flex items-start gap-3 cursor-pointer",
-                      cardStyle
+                      "w-full p-3 rounded-xl border text-left text-xs transition-all flex items-start gap-3 cursor-pointer",
+                      optionStyle
                     )}
                   >
-                    <span className="w-5 h-5 rounded-md border border-border/80 bg-bg flex items-center justify-center font-mono text-[10px] font-bold shrink-0 mt-0.5">
+                    <span
+                      className={cn(
+                        "w-5 h-5 rounded-full border flex items-center justify-center shrink-0 text-[11px] font-bold mt-0.5",
+                        isSelected
+                          ? "bg-primary text-primary-foreground border-primary"
+                          : "border-border text-muted bg-bg"
+                      )}
+                    >
                       {String.fromCharCode(65 + idx)}
                     </span>
-                    <span className="flex-1 leading-relaxed">{opt}</span>
+                    <span className="leading-relaxed flex-1">{option}</span>
+                    {hasSubmitted && isCorrectOption && (
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                    )}
                   </button>
                 );
               })}
             </div>
 
-            {/* Explanation card after answering */}
-            {hasSubmitted && (
+            {/* Feedback & Server Rationale on Submit */}
+            {hasSubmitted ? (
               <div
                 className={cn(
-                  "p-3.5 rounded-xl border text-xs transition-all animate-in fade-in duration-200",
+                  "p-3.5 rounded-xl border text-xs space-y-1.5 transition-all animate-in fade-in-50 duration-200",
                   isCorrect
-                    ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-900 dark:text-emerald-200"
-                    : "bg-rose-500/10 border-rose-500/30 text-rose-900 dark:text-rose-200"
+                    ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-950 dark:text-emerald-100"
+                    : "bg-amber-500/10 border-amber-500/30 text-amber-950 dark:text-amber-100"
                 )}
               >
-                <div className="flex items-center gap-1.5 font-bold mb-1">
-                  {isCorrect ? (
-                    <>
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                      <span>Correct Answer! Instant Score Recorded.</span>
-                    </>
-                  ) : (
-                    <span>Solution &amp; Explanation:</span>
-                  )}
+                <div className="flex items-center justify-between font-semibold">
+                  <span>{isCorrect ? "✓ Correct Answer! +10 Points" : "Explanation & Step Answer"}</span>
+                  <span className="text-[10px] opacity-75 font-mono">Server Graded</span>
                 </div>
-                <p className="text-[11px] leading-relaxed opacity-90">
+                <p className="text-xs leading-relaxed opacity-90">
                   {scenario.studentView.explanation}
                 </p>
               </div>
+            ) : (
+              <p className="text-[11px] text-muted text-center pt-1 italic">
+                👆 Tap any option above to test the student auto-grading experience
+              </p>
             )}
           </div>
 
-          <div className="flex items-center justify-between text-[11px] text-muted pt-1">
-            <span>Tap an option above to try the live student experience</span>
-            <span className="text-primary font-medium">Auto-scored on server</span>
+          {/* Student Capability micro-strip */}
+          <div className="pt-2 flex flex-wrap items-center justify-between text-[11px] text-muted gap-2">
+            <span>✓ No App Store Download</span>
+            <span>✓ Works on any mobile browser</span>
+            <span>✓ Auto-scores stored in student profile</span>
           </div>
         </div>
       </div>

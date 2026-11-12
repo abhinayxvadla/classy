@@ -98,15 +98,6 @@ export default async function TutorDashboardPage() {
   }, 0);
   const netEarnings = grossEarnings - platformFee;
 
-  // 4. Check if tutor has an active MCP token
-  const { count: activeMcpTokensCount } = await supabase
-    .from("mcp_tokens")
-    .select("id", { count: "exact", head: true })
-    .eq("tutor_id", user.id)
-    .is("revoked_at", null);
-
-  const hasMcpToken = (activeMcpTokensCount || 0) > 0;
-
   return (
     <AppShell
       role="tutor"
@@ -135,33 +126,33 @@ export default async function TutorDashboardPage() {
           </div>
         </div>
 
-        {/* Link Assistant Banner */}
-        {!hasMcpToken && (
-          <section className="mb-8 p-6 sm:p-7 rounded-3xl bg-linear-to-r from-primary via-primary/95 to-ink text-white relative overflow-hidden shadow-sm">
-            <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div className="space-y-1.5 max-w-xl">
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-wide uppercase bg-white/15 text-white backdrop-blur-md">
-                  Assistant Workflows
-                </div>
-                <h2 className="font-serif text-xl sm:text-2xl font-bold text-white">
-                  Connect Claude, ChatGPT, or Gemini
-                </h2>
-                <p className="text-white/80 text-xs sm:text-sm leading-relaxed">
-                  Publish quizzes, revision notes, and assignments directly from your assistant conversation into Classy.
-                </p>
+        {/* Classroom Quick Launcher Banner */}
+        <section className="mb-8 p-6 sm:p-7 rounded-3xl bg-linear-to-r from-primary via-primary/95 to-ink text-white relative overflow-hidden shadow-sm">
+          <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="space-y-1.5 max-w-xl">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-wide uppercase bg-white/15 text-white backdrop-blur-md">
+                Classroom Hub
               </div>
+              <h2 className="font-serif text-xl sm:text-2xl font-bold text-white">
+                Your Teaching Batches &amp; Students
+              </h2>
+              <p className="text-white/80 text-xs sm:text-sm leading-relaxed">
+                Create classrooms, share 1-tap WhatsApp invite links with your students, release study notes, and run auto-scored tests.
+              </p>
+            </div>
 
+            <div className="flex items-center gap-2 shrink-0">
               <Link
-                href="/t/connect"
+                href="/t/batches"
                 className={buttonVariants({
-                  className: "rounded-xl bg-white text-ink hover:bg-white/90 text-xs font-bold shrink-0 shadow-sm px-5 py-2.5",
+                  className: "rounded-xl bg-white text-ink hover:bg-white/90 text-xs font-bold shadow-sm px-4 py-2.5",
                 })}
               >
-                Set Up Assistant &rarr;
+                Manage Batches &rarr;
               </Link>
             </div>
-          </section>
-        )}
+          </div>
+        </section>
 
         {/* Stat Cards Grid */}
         <section className="grid grid-cols-2 lg:grid-cols-5 gap-3.5 sm:gap-4 mb-8">

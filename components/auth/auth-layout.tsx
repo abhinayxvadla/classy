@@ -1,6 +1,6 @@
 import * as React from "react";
 import Link from "next/link";
-import { Sparkles, Bot, CheckCircle2, ShieldCheck, ArrowRight } from "lucide-react";
+import { Sparkles, CheckCircle2, ShieldCheck, ArrowRight } from "lucide-react";
 import { AuthLogoPill } from "@/components/auth/auth-logo-pill";
 import { APP_NAME, APP_TAGLINE } from "@/lib/config";
 
@@ -47,7 +47,7 @@ export function AuthLayout({
 
               <div>
                 <h1 className="font-serif text-3xl lg:text-4xl font-bold tracking-tight text-white leading-tight">
-                  {isTutor ? "Teach smarter with your AI." : "Your classes, in one app."}
+                  {isTutor ? "Start teaching your students today." : "Your classes, in one calm app."}
                 </h1>
                 <p className="mt-3 text-white/80 text-sm lg:text-base leading-relaxed">
                   {APP_TAGLINE}
@@ -59,16 +59,16 @@ export function AuthLayout({
                 {isTutor ? (
                   <>
                     <div className="flex items-start gap-3 text-xs lg:text-sm text-white/90">
-                      <Bot className="w-4 h-4 text-accent mt-0.5 shrink-0" />
-                      <span>Use Claude, ChatGPT, Gemini, or Perplexity through MCP.</span>
+                      <CheckCircle2 className="w-4 h-4 text-accent mt-0.5 shrink-0" />
+                      <span>Anyone can teach — create batches in 30 seconds with zero paperwork.</span>
                     </div>
                     <div className="flex items-start gap-3 text-xs lg:text-sm text-white/90">
                       <CheckCircle2 className="w-4 h-4 text-accent mt-0.5 shrink-0" />
-                      <span>One-click quizzes, notes, assignments & automated grading.</span>
+                      <span>Invite students with a 1-tap WhatsApp link or 6-letter join code.</span>
                     </div>
                     <div className="flex items-start gap-3 text-xs lg:text-sm text-white/90">
                       <ShieldCheck className="w-4 h-4 text-accent mt-0.5 shrink-0" />
-                      <span>No AI keys or cost inside the app. You own your intelligence.</span>
+                      <span>Auto-graded timed quizzes, revision notes, and homework tracking.</span>
                     </div>
                   </>
                 ) : (
@@ -78,12 +78,12 @@ export function AuthLayout({
                       <span>Join batches instantly with your tutor&apos;s 6-character code.</span>
                     </div>
                     <div className="flex items-start gap-3 text-xs lg:text-sm text-white/90">
-                      <Sparkles className="w-4 h-4 text-accent mt-0.5 shrink-0" />
-                      <span>Interactive quizzes with instant explanations & scorecards.</span>
+                      <CheckCircle2 className="w-4 h-4 text-accent mt-0.5 shrink-0" />
+                      <span>Interactive timed quizzes with instant explanations &amp; scorecards.</span>
                     </div>
                     <div className="flex items-start gap-3 text-xs lg:text-sm text-white/90">
                       <ShieldCheck className="w-4 h-4 text-accent mt-0.5 shrink-0" />
-                      <span>Curated free public library for your grade & subjects.</span>
+                      <span>Distraction-free revision notes and study library for your grade.</span>
                     </div>
                   </>
                 )}

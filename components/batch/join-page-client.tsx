@@ -13,7 +13,7 @@ import {
   CheckCircle2,
   AlertCircle,
   GraduationCap,
-  Bot,
+  BookOpen,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -204,7 +204,7 @@ export function JoinPageClient({
                 {userRole === "tutor" && (
                   <div className="p-4 rounded-2xl bg-primary-soft/40 border border-primary/20 space-y-3">
                     <div className="flex items-start gap-2.5">
-                      <Bot className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                      <BookOpen className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                       <div>
                         <div className="text-sm font-semibold text-ink">
                           You&apos;re signed in as a tutor

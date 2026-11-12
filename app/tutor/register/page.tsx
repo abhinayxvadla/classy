@@ -99,7 +99,7 @@ function TutorRegisterForm() {
     <AuthLayout
       portal="tutor"
       title="Create Tutor Account"
-      subtitle="Connect your AI to Classy and start running your batches effortlessly."
+      subtitle="Start teaching on Classy. Set up your classroom and invite your students in seconds."
       otherPortalLink={{
         label: "Register as Student",
         href: `/student/register${

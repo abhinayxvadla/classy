@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { ArrowRight, CheckCircle2, QrCode } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { FloatingNav } from "@/components/nav/floating-nav";
@@ -44,29 +44,29 @@ export default async function HomePage() {
         {/* =================================================================== */}
         {/* 1. HERO SECTION (Editorial Serif, Menler Style) */}
         {/* =================================================================== */}
-        <section className="max-w-3xl mx-auto flex flex-col items-center pt-6 pb-10">
+        <section className="max-w-4xl mx-auto flex flex-col items-center pt-6 pb-10">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary-soft text-primary text-xs font-semibold tracking-wide uppercase mb-6 border border-primary/20 shadow-2xs">
             <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-            Classroom Operating System for Independent Tutors
+            Open Platform for Independent Educators
           </div>
 
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-bold tracking-tight text-ink leading-[1.08] mb-6">
-            Run your entire classroom from the tools you already use.
+            Anyone can teach. Launch your batches and invite your students.
           </h1>
 
           <p className="text-sm sm:text-base md:text-lg text-muted max-w-2xl leading-relaxed mb-8">
-            Create student batches, publish timed quizzes, distribute lecture notes, and collect homework — directly from Claude, ChatGPT, or your web dashboard. Free for educators.
+            The modern teaching platform built for independent tutors, mentors, and educators. Create your classroom in 30 seconds, share your WhatsApp invite link, drop study notes, conduct auto-graded timed quizzes, and track your students — completely free.
           </p>
 
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
             <Link
-              href="/login?mode=signup"
+              href="/tutor/register"
               className={buttonVariants({
                 size: "lg",
                 className: "bg-primary hover:bg-primary/90 text-primary-foreground text-sm font-semibold h-12 px-7 rounded-2xl shadow-sm gap-2 justify-center",
               })}
             >
-              <span>Start Teaching Free</span>
+              <span>Become a Tutor (Free)</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
 
@@ -80,17 +80,29 @@ export default async function HomePage() {
             >
               <span>Join as Student</span>
             </Link>
+
+            <Link
+              href="/join"
+              className={buttonVariants({
+                variant: "ghost",
+                size: "lg",
+                className: "text-muted hover:text-ink text-sm font-medium h-12 px-4 rounded-2xl justify-center gap-1.5",
+              })}
+            >
+              <QrCode className="w-4 h-4 text-primary" />
+              <span>Enter Class Code</span>
+            </Link>
           </div>
 
           {/* Trust & Outcome Metrics Strip */}
           <div className="mt-12 pt-8 border-t border-border/60 w-full grid grid-cols-2 md:grid-cols-4 gap-4 text-left">
             <div className="space-y-0.5">
-              <p className="font-serif text-xl sm:text-2xl font-bold text-ink">15s</p>
-              <p className="text-xs text-muted">Batch setup time</p>
+              <p className="font-serif text-xl sm:text-2xl font-bold text-ink">30s</p>
+              <p className="text-xs text-muted">To launch any batch</p>
             </div>
             <div className="space-y-0.5">
-              <p className="font-serif text-xl sm:text-2xl font-bold text-ink">Zero</p>
-              <p className="text-xs text-muted">App install required</p>
+              <p className="font-serif text-xl sm:text-2xl font-bold text-ink">1-Tap</p>
+              <p className="text-xs text-muted">WhatsApp invite links</p>
             </div>
             <div className="space-y-0.5">
               <p className="font-serif text-xl sm:text-2xl font-bold text-ink">Instant</p>
@@ -98,7 +110,7 @@ export default async function HomePage() {
             </div>
             <div className="space-y-0.5">
               <p className="font-serif text-xl sm:text-2xl font-bold text-ink">{tutorKeepPercent}%</p>
-              <p className="text-xs text-muted">Tutor payout rate</p>
+              <p className="text-xs text-muted">Direct tutor payout</p>
             </div>
           </div>
         </section>
@@ -112,13 +124,13 @@ export default async function HomePage() {
               variant="outline"
               className="rounded-full border-primary/20 bg-primary-soft text-primary font-semibold text-xs mb-2 px-3 py-1"
             >
-              Live Preview
+              Interactive Preview
             </Badge>
             <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">
-              See How It Works in Real Time
+              See How Teaching on Classy Works
             </h2>
             <p className="text-xs sm:text-sm text-muted max-w-lg mx-auto mt-2">
-              Select a workflow below to see how a simple tutor instruction translates into a live student experience:
+              Select a workflow below to see how a tutor manages a batch and how students experience it live on their phones:
             </p>
           </div>
 
@@ -144,13 +156,13 @@ export default async function HomePage() {
               variant="outline"
               className="rounded-full border-primary/20 bg-primary-soft text-primary font-semibold text-xs mb-3 px-3 py-1"
             >
-              Workflow
+              Simple 3-Step Setup
             </Badge>
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-ink">
-              Set Up in Under 2 Minutes
+              Start Teaching in Under 2 Minutes
             </h2>
             <p className="text-xs sm:text-sm text-muted max-w-xl mx-auto mt-3 leading-relaxed">
-              No complicated configuration. No lengthy verification forms.
+              No complicated onboarding. No waiting for verification approvals.
             </p>
           </div>
 
@@ -161,10 +173,10 @@ export default async function HomePage() {
                 01
               </span>
               <h3 className="font-serif text-xl font-bold text-ink">
-                Create Your Batch
+                Become a Tutor
               </h3>
               <p className="text-xs sm:text-sm text-muted leading-relaxed">
-                Sign in and set up your classroom in seconds. Define your subject, grade level, and optional enrollment fee.
+                Sign up in 30 seconds with your email or phone. Create your tutor profile, set your subjects, and you are ready to teach.
               </p>
             </div>
 
@@ -174,10 +186,10 @@ export default async function HomePage() {
                 02
               </span>
               <h3 className="font-serif text-xl font-bold text-ink">
-                Invite Students
+                Create Batch &amp; Invite
               </h3>
               <p className="text-xs sm:text-sm text-muted leading-relaxed">
-                Share your unique 6-character short code or 1-tap WhatsApp link. Students open in any mobile browser with zero friction.
+                Name your batch, set an optional enrollment fee, and copy your 6-letter join code or 1-tap WhatsApp invite link to send to students.
               </p>
             </div>
 
@@ -187,10 +199,10 @@ export default async function HomePage() {
                 03
               </span>
               <h3 className="font-serif text-xl font-bold text-ink">
-                Publish &amp; Track
+                Share Material &amp; Teach
               </h3>
               <p className="text-xs sm:text-sm text-muted leading-relaxed">
-                Instruct your assistant or dashboard to publish quizzes, revision notes, and homework. View automated scores instantly.
+                Publish revision notes, conduct timed quizzes with auto-scoring, assign homework, and track every student&apos;s submissions in real time.
               </p>
             </div>
           </div>
@@ -208,10 +220,10 @@ export default async function HomePage() {
               Economics
             </Badge>
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-ink">
-              Transparent, Aligned Pricing
+              Transparent, Educator-First Pricing
             </h2>
             <p className="text-xs sm:text-sm text-muted max-w-xl mx-auto mt-3 leading-relaxed">
-              We only make money when you make money. No monthly subscriptions for educators.
+              We only succeed when you succeed. Zero monthly fees, zero hidden charges.
             </p>
           </div>
 
@@ -220,20 +232,20 @@ export default async function HomePage() {
             <div className="p-8 rounded-3xl border border-border/80 bg-surface/90 shadow-2xs flex flex-col justify-between space-y-6">
               <div className="space-y-4">
                 <div className="inline-flex px-3 py-1 rounded-full text-xs font-semibold bg-bg text-muted border border-border/60">
-                  Standard Classes
+                  Free Classrooms
                 </div>
                 <div>
                   <h3 className="font-serif text-3xl font-bold text-ink">₹0</h3>
-                  <p className="text-xs text-muted mt-1">Always free for open batches</p>
+                  <p className="text-xs text-muted mt-1">100% free forever for open batches</p>
                 </div>
                 <ul className="space-y-3 text-xs sm:text-sm text-ink/90 pt-2">
                   <li className="flex items-center gap-2.5">
                     <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Unlimited student batches</span>
+                    <span>Unlimited batches &amp; classrooms</span>
                   </li>
                   <li className="flex items-center gap-2.5">
                     <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Timed interactive quizzes &amp; notes</span>
+                    <span>Timed interactive quizzes with auto-scoring</span>
                   </li>
                   <li className="flex items-center gap-2.5">
                     <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
@@ -241,19 +253,19 @@ export default async function HomePage() {
                   </li>
                   <li className="flex items-center gap-2.5">
                     <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Claude, ChatGPT, &amp; Gemini connections</span>
+                    <span>Study notes, formula drops, &amp; homework</span>
                   </li>
                 </ul>
               </div>
 
               <Link
-                href="/login?mode=signup"
+                href="/tutor/register"
                 className={buttonVariants({
                   variant: "outline",
                   className: "w-full rounded-xl text-xs font-semibold h-11 border-border hover:bg-bg",
                 })}
               >
-                Get Started Free
+                Become a Tutor (Free)
               </Link>
             </div>
 
@@ -279,7 +291,7 @@ export default async function HomePage() {
                   </li>
                   <li className="flex items-center gap-2.5">
                     <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Automated UPI &amp; card checkout via Razorpay</span>
+                    <span>Instant UPI &amp; card checkout via Razorpay</span>
                   </li>
                   <li className="flex items-center gap-2.5">
                     <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
@@ -293,12 +305,12 @@ export default async function HomePage() {
               </div>
 
               <Link
-                href="/login?mode=signup"
+                href="/tutor/register"
                 className={buttonVariants({
                   className: "w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl text-xs font-semibold h-11 shadow-xs",
                 })}
               >
-                Start Monetizing Batches
+                Start Teaching &amp; Monetizing
               </Link>
             </div>
           </div>
@@ -319,7 +331,7 @@ export default async function HomePage() {
               Frequently Asked Questions
             </h2>
             <p className="text-xs sm:text-sm text-muted max-w-xl mx-auto mt-3 leading-relaxed">
-              Clear answers about privacy, student access, payments, and workflow integrations.
+              Clear answers about becoming a tutor, student access, tests, and payments.
             </p>
           </div>
 
@@ -332,21 +344,32 @@ export default async function HomePage() {
         <section className="w-full my-12 p-8 sm:p-12 rounded-3xl bg-linear-to-br from-primary via-primary/95 to-ink text-white text-center relative overflow-hidden shadow-lg">
           <div className="max-w-2xl mx-auto space-y-5 relative z-10">
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight">
-              Ready to streamline your teaching?
+              Ready to start teaching your students?
             </h2>
             <p className="text-white/80 text-xs sm:text-sm max-w-lg mx-auto leading-relaxed">
-              Join modern educators who spend less time on administration and more time teaching. Set up your first batch in under 2 minutes.
+              Join educators and tutors who run their classrooms smoothly on Classy. Set up your first batch in under 30 seconds and invite your students today.
             </p>
-            <div className="pt-2">
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link
-                href="/login?mode=signup"
+                href="/tutor/register"
                 className={buttonVariants({
                   size: "lg",
-                  className: "bg-white text-ink hover:bg-white/90 text-xs sm:text-sm font-bold h-12 px-8 rounded-2xl shadow-sm gap-2",
+                  className: "w-full sm:w-auto bg-white text-ink hover:bg-white/90 text-xs sm:text-sm font-bold h-12 px-8 rounded-2xl shadow-sm gap-2",
                 })}
               >
-                <span>Start Teaching Free</span>
+                <span>Become a Tutor (Free)</span>
                 <ArrowRight className="w-4 h-4" />
+              </Link>
+
+              <Link
+                href="/join"
+                className={buttonVariants({
+                  variant: "outline",
+                  size: "lg",
+                  className: "w-full sm:w-auto text-white border-white/30 hover:bg-white/10 text-xs sm:text-sm font-semibold h-12 px-6 rounded-2xl",
+                })}
+              >
+                <span>Join with a Code</span>
               </Link>
             </div>
           </div>
@@ -364,15 +387,17 @@ export default async function HomePage() {
             </div>
             <span className="font-serif italic font-bold text-base text-ink">{APP_NAME}</span>
             <span className="text-muted/60">•</span>
-            <span>The modern classroom operating system</span>
+            <span>The open tutor and classroom platform</span>
           </div>
 
           <div className="flex items-center gap-6">
-            <a href="#features" className="hover:text-ink transition-colors">Features</a>
-            <a href="#pricing" className="hover:text-ink transition-colors">Economics</a>
+            <a href="#how-it-works" className="hover:text-ink transition-colors">How It Works</a>
+            <a href="#capabilities" className="hover:text-ink transition-colors">For Tutors</a>
+            <a href="#pricing" className="hover:text-ink transition-colors">Pricing</a>
             <a href="#faq" className="hover:text-ink transition-colors">FAQ</a>
             <Link href="/tutor/login" className="hover:text-ink transition-colors">Tutors</Link>
             <Link href="/student/login" className="hover:text-ink transition-colors">Students</Link>
+            <Link href="/join" className="hover:text-ink transition-colors">Join Class</Link>
           </div>
         </div>
       </footer>

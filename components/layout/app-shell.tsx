@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   Users,
-  Bot,
+  Layers,
   User,
   BookOpen,
   Home,
@@ -55,7 +55,7 @@ export function AppShell({
   const tutorNavItems: NavItem[] = [
     { label: "Dashboard", href: "/t", icon: LayoutDashboard },
     { label: "Batches", href: "/t/batches", icon: Users },
-    { label: "Assistant", href: "/t/connect", icon: Bot },
+    { label: "Integrations", href: "/t/connect", icon: Layers },
     { label: "Account", href: "/t/account", icon: User },
   ];
 

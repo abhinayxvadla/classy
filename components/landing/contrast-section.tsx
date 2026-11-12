@@ -12,59 +12,59 @@ export function ContrastSection() {
           The Difference
         </Badge>
         <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-ink">
-          Why Educators Are Moving to Classy
+          Why Independent Tutors Choose Classy
         </h2>
         <p className="text-xs sm:text-sm text-muted max-w-xl mx-auto mt-3 leading-relaxed">
-          The contrast between juggling 5 disconnected tools and running a streamlined, modern classroom.
+          Running classes shouldn&apos;t mean drowning in 5 disconnected apps and manual administrative chaos.
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
-        {/* Card 1: The Old Way (Fragmented Tools) */}
+        {/* Card 1: The Fragmented Headache */}
         <div className="p-7 sm:p-8 rounded-3xl border border-border/80 bg-surface/60 shadow-2xs flex flex-col justify-between space-y-6">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-muted/10 text-muted text-xs font-semibold">
-                The Fragmented Setup
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/10 text-rose-700 dark:text-rose-300 text-xs font-semibold">
+                The Disorganized Setup
               </span>
               <span className="text-xs text-muted flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5" /> 6+ hours / week lost
+                <Clock className="w-3.5 h-3.5" /> 6+ hours / week wasted
               </span>
             </div>
 
             <h3 className="font-serif text-2xl font-bold text-ink">
-              Juggling 5 Disparate Apps
+              The 5-App Teaching Headache
             </h3>
             <p className="text-xs sm:text-sm text-muted leading-relaxed">
-              Educators spend more time on manual logistics than actual teaching:
+              Most independent educators spend more time managing tools than actually teaching:
             </p>
 
             <ul className="space-y-3.5 text-xs sm:text-sm text-ink/90 pt-1">
               <li className="flex items-start gap-3">
-                <span className="text-rose-500 font-bold shrink-0 mt-0.5">✕</span>
-                <span><strong>Google Forms:</strong> Manually copy-pasting questions and radio options one-by-one.</span>
+                <span className="w-5 h-5 rounded-full bg-rose-500/10 text-rose-600 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">✕</span>
+                <span><strong>Lost PDFs in WhatsApp:</strong> Critical study notes and formula sheets get buried in family messages and class chat noise.</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-rose-500 font-bold shrink-0 mt-0.5">✕</span>
-                <span><strong>WhatsApp Groups:</strong> PDF study materials get lost in family and group message clutter.</span>
+                <span className="w-5 h-5 rounded-full bg-rose-500/10 text-rose-600 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">✕</span>
+                <span><strong>Tedious Google Forms:</strong> Manually typing 20 questions, copying radio choices, and setting answer keys one-by-one.</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-rose-500 font-bold shrink-0 mt-0.5">✕</span>
-                <span><strong>Payment Chasing:</strong> Verifying UPI and bank transfer screenshots across multiple chat threads.</span>
+                <span className="w-5 h-5 rounded-full bg-rose-500/10 text-rose-600 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">✕</span>
+                <span><strong>Weekend Test Grading:</strong> Spending hours grading student sheets, calculating percentage scores, and emailing results.</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-rose-500 font-bold shrink-0 mt-0.5">✕</span>
-                <span><strong>Manual Grading:</strong> Spending weekends checking test answers and recording marks on spreadsheets.</span>
+                <span className="w-5 h-5 rounded-full bg-rose-500/10 text-rose-600 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">✕</span>
+                <span><strong>Chasing Fees on UPI:</strong> Manually matching payment screenshots across multiple chat threads and keeping paper registers.</span>
               </li>
             </ul>
           </div>
 
           <div className="pt-3 border-t border-border/60 text-xs text-muted">
-            Result: Administrative fatigue and lost student engagement.
+            Result: Administrative fatigue, scattered resources, and disengaged students.
           </div>
         </div>
 
-        {/* Card 2: The Classy Way (Streamlined Classroom) */}
+        {/* Card 2: The Classy Hub */}
         <div className="p-7 sm:p-8 rounded-3xl border-2 border-primary/40 bg-primary-soft/30 shadow-xs flex flex-col justify-between space-y-6">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
@@ -72,39 +72,39 @@ export function ContrastSection() {
                 The Classy Way
               </span>
               <span className="text-xs text-primary font-medium">
-                Under 15 seconds per task
+                Under 30 seconds to launch
               </span>
             </div>
 
             <h3 className="font-serif text-2xl font-bold text-ink">
-              One Unified Teaching Hub
+              One Dedicated Classroom Hub
             </h3>
             <p className="text-xs sm:text-sm text-muted leading-relaxed">
-              Instruct your assistant or dashboard, and your classroom updates automatically:
+              Everything in one serene space where you teach and your students thrive:
             </p>
 
             <ul className="space-y-3.5 text-xs sm:text-sm text-ink/90 pt-1">
               <li className="flex items-start gap-3">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                <span><strong>One-Command Publishing:</strong> Draft quizzes or notes in Claude, ChatGPT, or web — published in 1 click.</span>
+                <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
+                <span><strong>Instant Batch Creation:</strong> Anyone can create a classroom in 30 seconds and invite students with a short code or WhatsApp link.</span>
               </li>
               <li className="flex items-start gap-3">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                <span><strong>Dedicated Mobile Portal:</strong> Students access their batch stream, study notes, and tests in one quiet app.</span>
+                <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
+                <span><strong>Organized Study Stream:</strong> Lecture notes, formulas, and revision materials stay permanently organized and searchable.</span>
               </li>
               <li className="flex items-start gap-3">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                <span><strong>Instant Auto-Scoring:</strong> Quizzes are graded automatically with explanations released immediately.</span>
+                <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
+                <span><strong>Automated Timed Tests:</strong> Set countdown timers; students take tests on mobile and receive instant marks and step explanations.</span>
               </li>
               <li className="flex items-start gap-3">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                <span><strong>Built-In Payouts:</strong> Students enroll and pay via Razorpay; 85% is transferred directly to your bank.</span>
+                <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
+                <span><strong>Direct Payouts &amp; Monetization:</strong> Collect optional batch fees with Razorpay; 85% is transferred directly to your bank account.</span>
               </li>
             </ul>
           </div>
 
           <div className="pt-3 border-t border-primary/20 text-xs text-primary font-semibold">
-            Result: More time teaching, zero administrative friction.
+            Result: Spend 100% of your energy teaching, inspire your students, and grow your batches.
           </div>
         </div>
       </div>

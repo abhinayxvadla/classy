@@ -78,7 +78,7 @@ function TutorLoginForm() {
     <AuthLayout
       portal="tutor"
       title="Tutor Sign In"
-      subtitle="Welcome back. Manage your batches, AI tools, and coursework."
+      subtitle="Welcome back. Manage your classrooms, students, and coursework."
       otherPortalLink={{
         label: "Go to Student Login",
         href: `/student/login${

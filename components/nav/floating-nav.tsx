@@ -71,10 +71,10 @@ export function FloatingNav({
   ];
 
   const publicNavLinks = [
-    { label: "Features", href: "#features" },
+    { label: "How It Works", href: "#how-it-works" },
+    { label: "Tutor Platform", href: "#capabilities" },
     { label: "The Difference", href: "#the-difference" },
-    { label: "Capabilities", href: "#capabilities" },
-    { label: "Economics", href: "#pricing" },
+    { label: "Pricing", href: "#pricing" },
     { label: "FAQ", href: "#faq" },
   ];
 
@@ -185,13 +185,13 @@ export function FloatingNav({
                   Tutor Sign In
                 </Link>
                 <Link
-                  href="/login?mode=signup"
+                  href="/tutor/register"
                   className={buttonVariants({
                     size: "sm",
                     className: "bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-semibold h-9 px-4 rounded-xl shadow-xs gap-1.5",
                   })}
                 >
-                  <span>Start Free</span>
+                  <span>Become a Tutor</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
@@ -320,14 +320,14 @@ export function FloatingNav({
                 Tutor Sign In
               </Link>
               <Link
-                href="/login?mode=signup"
+                href="/tutor/register"
                 onClick={() => setMobileMenuOpen(false)}
                 className={buttonVariants({
                   size: "sm",
                   className: "w-full bg-primary text-primary-foreground text-xs font-semibold rounded-xl justify-center",
                 })}
               >
-                Start Teaching Free
+                Become a Tutor (Free)
               </Link>
             </div>
           </div>

@@ -1,10 +1,10 @@
 import {
+  Users,
+  QrCode,
   HelpCircle,
   FileText,
   ClipboardList,
-  QrCode,
   CreditCard,
-  Bot,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { PLATFORM_FEE_PERCENT } from "@/lib/config";
@@ -14,46 +14,46 @@ export function BentoFeatures() {
 
   const capabilities = [
     {
+      icon: Users,
+      tag: "Anyone Can Teach",
+      title: "Launch Batches in 30 Seconds",
+      description:
+        "Whether you teach school syllabus, competitive entrance tests, coding, or spoken languages — anyone can create a batch and start teaching immediately.",
+    },
+    {
+      icon: QrCode,
+      tag: "Zero-Friction Invites",
+      title: "1-Tap WhatsApp & Code Invites",
+      description:
+        "Invite your students with a clean 6-letter short code or direct WhatsApp link. Students open in their phone browser without downloading an app.",
+    },
+    {
       icon: HelpCircle,
       tag: "Assessment",
       title: "Interactive Timed Quizzes",
       description:
-        "Publish multiple-choice assessments with countdown timers and server-encrypted answer keys. Students receive instant scores and step-by-step explanations.",
+        "Set up multiple-choice tests with countdown timers. Answers are scored automatically with instant result breakdowns and step-by-step explanations.",
     },
     {
       icon: FileText,
-      tag: "Coursework",
-      title: "Markdown Lecture Drops",
+      tag: "Study Material",
+      title: "Clean Revision Notes & Drops",
       description:
-        "Release clean revision notes, formula sheets, and study materials formatted in rich Markdown. Students can read offline on mobile without clutter.",
+        "Release structured study notes, formula cheat sheets, and summaries formatted in crisp Markdown. Students read offline on any phone without chat clutter.",
     },
     {
       icon: ClipboardList,
       tag: "Evaluation",
-      title: "Homework & Assignment Grading",
+      title: "Homework Tasks & Grading",
       description:
-        "Assign problem sets with explicit deadlines and maximum marks. Review submissions and return constructive feedback privately in seconds.",
-    },
-    {
-      icon: QrCode,
-      tag: "Onboarding",
-      title: "WhatsApp-Ready Join Links",
-      description:
-        "Generate a 6-character short code or 1-tap invite link for each batch. Pre-roster students via spreadsheet or approve them as they arrive.",
+        "Post problem sets with clear submission deadlines and maximum marks. Review student submissions and return private grades and constructive feedback.",
     },
     {
       icon: CreditCard,
-      tag: "Monetization",
-      title: "Built-In Razorpay Payouts",
+      tag: "Earnings",
+      title: "Built-In UPI & Card Monetization",
       description:
-        `Monetize specialized crash courses and revision batches effortlessly. Students pay securely via UPI or cards; ${tutorKeepPercent}% is transferred directly to your bank account.`,
-    },
-    {
-      icon: Bot,
-      tag: "Integration",
-      title: "Universal Assistant Support",
-      description:
-        "Control your entire classroom from Claude Desktop, Claude Code, ChatGPT, Gemini, or Perplexity. One personal endpoint links all your workflows.",
+        `Monetize crash courses and revision batches effortlessly. Students pay securely via Razorpay UPI or cards; ${tutorKeepPercent}% is transferred directly to your bank account.`,
     },
   ];
 
@@ -70,7 +70,7 @@ export function BentoFeatures() {
           Everything You Need to Run Your Classes
         </h2>
         <p className="text-xs sm:text-sm text-muted max-w-xl mx-auto mt-3 leading-relaxed">
-          Designed specifically for independent educators, coaching tutors, and test-prep instructors.
+          Built specifically for independent tutors, private coaching teachers, and mentors.
         </p>
       </div>
 
@@ -92,13 +92,17 @@ export function BentoFeatures() {
                   </span>
                 </div>
 
-                <h3 className="font-serif text-xl font-bold text-ink">
+                <h3 className="font-serif text-lg font-bold text-ink">
                   {cap.title}
                 </h3>
 
                 <p className="text-xs sm:text-sm text-muted leading-relaxed">
                   {cap.description}
                 </p>
+              </div>
+
+              <div className="pt-2 border-t border-border/40 text-[11px] font-medium text-primary">
+                Included in free educator account →
               </div>
             </div>
           );

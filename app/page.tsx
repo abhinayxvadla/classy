@@ -6,13 +6,6 @@ import {
   Bot,
   GraduationCap,
   CheckCircle2,
-  FileText,
-  Clock,
-  ShieldCheck,
-  CreditCard,
-  WifiOff,
-  QrCode,
-  Share2,
 } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Compass, ArrowLeft, Home } from "lucide-react";
+import { Compass, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FloatingNav } from "@/components/nav/floating-nav";
 

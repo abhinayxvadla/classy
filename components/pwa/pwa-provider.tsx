@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Share, PlusSquare, Smartphone, Download, X } from "lucide-react";
+import { Share, PlusSquare, Smartphone } from "lucide-react";
 import { APP_NAME } from "@/lib/config";
 
 interface BeforeInstallPromptEvent extends Event {

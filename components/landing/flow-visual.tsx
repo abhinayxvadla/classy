@@ -1,4 +1,4 @@
-import { Bot, ArrowRight, Smartphone, Sparkles, CheckCircle2, ShieldCheck, Zap } from "lucide-react";
+import { Bot, Smartphone, Sparkles, CheckCircle2, ShieldCheck, Zap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export function FlowVisual() {

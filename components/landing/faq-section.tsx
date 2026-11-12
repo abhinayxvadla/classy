@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { PLATFORM_FEE_PERCENT } from "@/lib/config";
 
 interface FAQItem {
   question: string;
@@ -11,29 +12,34 @@ interface FAQItem {
 
 const FAQS: FAQItem[] = [
   {
-    question: "Does Classy contain its own AI or train on my data?",
+    question: "How is Classy different from just copying questions from ChatGPT?",
     answer:
-      "No. Classy has zero AI inside the application. We never bundle LLMs, we never send your data to external model training pipelines, and we never touch your prompts. Your AI remains completely inside your own Claude, ChatGPT, Gemini, or Perplexity client. Classy only exposes an authenticated MCP server that receives the structured coursework you ask your assistant to create.",
+      "A raw ChatGPT conversation or PDF is static, easy to leak, impossible to time, and requires manual grading. Classy turns your AI prompt directly into an interactive classroom on your students' phones—complete with countdown timers, server-encrypted answer keys, instant 12ms grading, and automated scoreboards.",
   },
   {
-    question: "How do students join my batches?",
+    question: "Do I need a special or paid AI subscription?",
     answer:
-      "Each batch has a unique 6-character join code (e.g. 'SCI10A'), an invite link (/join/CODE), a 1-click WhatsApp share button, and a scannable classroom QR code. Students can enter the code on the student portal or click your link to join instantly.",
+      "No. Classy works with both free and paid AI tiers. You can connect Claude Desktop, ChatGPT, Google Gemini, Perplexity, or Cursor using our standard MCP endpoint.",
   },
   {
-    question: "How does quiz grading work?",
+    question: "Do students need to download anything from the App Store or Play Store?",
     answer:
-      "When your AI pushes a quiz to Classy, the correct answer keys and explanations are stored securely on our server and never exposed to the student client. When a student submits their attempt, Classy automatically grades it against the fixed answer key in milliseconds and publishes the verified score.",
+      "No app store downloads or updates needed. Students simply open your batch link in any browser (Safari, Chrome) and tap 'Add to Home Screen' to get the full, distraction-free mobile app experience with offline revision support.",
   },
   {
-    question: "How does batch monetization and pricing work?",
+    question: "Can students cheat by inspecting browser code or HTML?",
     answer:
-      "Classy is 100% free for tutors to create unlimited batches and free coursework. When you choose to set a monthly premium fee for a batch, students unlock it via seamless Razorpay checkout (UPI, cards, netbanking). Classy deducts a modest 15% platform fee and you keep 85% net earnings.",
+      "Never. Correct answers and step-by-step explanations are securely isolated on our backend and are never sent to the student client until after their test attempt has been submitted and permanently locked.",
   },
   {
-    question: "Can students access their coursework offline?",
+    question: `How does batch pricing and the ${PLATFORM_FEE_PERCENT}% platform fee work?`,
     answer:
-      "Yes. Classy is built as a progressive web application (PWA). Opened study notes and revision materials are automatically cached in the background so students can review them without an active internet connection.",
+      `Classy is completely free for tutors to create unlimited batches and publish free coursework. If you choose to monetize a batch with a monthly fee (e.g. ₹499/month), students pay via 1-tap UPI or cards. Classy retains a modest ${PLATFORM_FEE_PERCENT}% platform fee to cover server infrastructure and payment processing, and you keep ${100 - PLATFORM_FEE_PERCENT}% net earnings.`,
+  },
+  {
+    question: "Does Classy train on my questions or student data?",
+    answer:
+      "Zero. Classy has no internal AI models and will never train on your teaching IP. Your prompts remain between you and your AI provider; Classy only acts as the authenticated delivery bridge for your classroom.",
   },
 ];
 
@@ -55,7 +61,7 @@ export function FAQSection() {
           >
             <button
               onClick={() => toggle(index)}
-              className="w-full p-4 sm:p-5 flex items-center justify-between text-left font-serif font-bold text-base sm:text-lg text-ink hover:text-primary transition-colors gap-4"
+              className="w-full p-4 sm:p-5 flex items-center justify-between text-left font-serif font-bold text-base sm:text-lg text-ink hover:text-primary transition-colors gap-4 cursor-pointer"
               aria-expanded={isOpen}
             >
               <span>{faq.question}</span>

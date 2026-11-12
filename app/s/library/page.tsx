@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { Sparkles } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { FloatingNav } from "@/components/nav/floating-nav";
+import { AppShell } from "@/components/layout/app-shell";
 import { Badge } from "@/components/ui/badge";
 import type { RosterStatus } from "@/lib/database.types";
 import { PublicLibraryClient, type PublicLibraryItem } from "@/components/student/public-library-client";
@@ -49,14 +49,13 @@ export default async function StudentLibraryPage() {
   }));
 
   return (
-    <div className="min-h-screen bg-bg text-ink flex flex-col justify-between">
-      <FloatingNav
-        role="student"
-        userName={profile.full_name}
-        userEmail={profile.email}
-      />
-
-      <main className="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 md:pt-[104px] pb-[calc(96px+env(safe-area-inset-bottom))] space-y-8">
+    <AppShell
+      role="student"
+      userName={profile.full_name}
+      userEmail={profile.email}
+      subtitle={profile.grade ? `${profile.grade} Student` : "Revision Library"}
+    >
+      <div className="space-y-8">
         {/* Header */}
         <div className="space-y-2">
           <div className="flex items-center gap-2">
@@ -78,7 +77,7 @@ export default async function StudentLibraryPage() {
         </div>
 
         <PublicLibraryClient items={items} userGrade={profile.grade} />
-      </main>
-    </div>
+      </div>
+    </AppShell>
   );
 }

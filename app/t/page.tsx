@@ -9,7 +9,7 @@ import {
   BookOpen,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { FloatingNav } from "@/components/nav/floating-nav";
+import { AppShell } from "@/components/layout/app-shell";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { NewBatchDialog } from "@/components/tutor/new-batch-dialog";
 import { BatchCard } from "@/components/tutor/batch-card";
@@ -108,17 +108,16 @@ export default async function TutorDashboardPage() {
   const hasMcpToken = (activeMcpTokensCount || 0) > 0;
 
   return (
-    <div className="min-h-screen bg-bg text-ink flex flex-col justify-between selection:bg-primary-soft selection:text-primary">
-      <FloatingNav
-        role="tutor"
-        userName={profile.full_name}
-        userEmail={profile.email}
-        isAdmin={isUserAdmin(profile.email)}
-      />
-
-      <main className="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-20">
+    <AppShell
+      role="tutor"
+      userName={profile.full_name}
+      userEmail={profile.email}
+      subtitle={profile.institute || "Educator Portal"}
+      isAdmin={isUserAdmin(profile.email)}
+    >
+      <div className="space-y-8">
         {/* Header Greeting & Primary Action */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-primary-soft text-primary mb-2">
               Educator Portal
@@ -311,7 +310,7 @@ export default async function TutorDashboardPage() {
             </div>
           )}
         </section>
-      </main>
-    </div>
+      </div>
+    </AppShell>
   );
 }

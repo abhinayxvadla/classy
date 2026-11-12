@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { formatDistanceToNow, isPast } from "date-fns";
 import { createClient } from "@/lib/supabase/server";
-import { FloatingNav } from "@/components/nav/floating-nav";
+import { AppShell } from "@/components/layout/app-shell";
 import { buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -176,15 +176,13 @@ export default async function StudentHomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-bg text-ink flex flex-col justify-between">
-      {/* Floating Pill Nav for Student: Home · Batches · Library · Profile */}
-      <FloatingNav
-        role="student"
-        userName={profile.full_name}
-        userEmail={profile.email}
-      />
-
-      <main className="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-20 space-y-8">
+    <AppShell
+      role="student"
+      userName={profile.full_name}
+      userEmail={profile.email}
+      subtitle={profile.grade ? `${profile.grade} Student` : "Student Portal"}
+    >
+      <div className="space-y-8">
         {/* Dismissible PWA Install Banner */}
         <InstallBanner />
 
@@ -530,7 +528,7 @@ export default async function StudentHomePage() {
             )}
           </div>
         )}
-      </main>
-    </div>
+      </div>
+    </AppShell>
   );
 }

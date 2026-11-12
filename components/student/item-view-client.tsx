@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { Lock, Crown } from "lucide-react";
-import { FloatingNav } from "@/components/nav/floating-nav";
+import { AppShell } from "@/components/layout/app-shell";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
@@ -49,14 +49,12 @@ export function ItemViewClient({ item, userName, userEmail }: ItemViewClientProp
   // If item is premium-locked
   if (item.locked) {
     return (
-      <div className="min-h-screen bg-bg text-ink flex flex-col justify-between">
-        <FloatingNav
-          role="student"
-          userName={userName}
-          userEmail={userEmail}
-        />
-
-        <main className="flex-1 w-full max-w-xl mx-auto px-4 sm:px-6 pt-24 md:pt-[104px] pb-24">
+      <AppShell
+        role="student"
+        userName={userName}
+        userEmail={userEmail}
+      >
+        <div className="max-w-xl mx-auto py-8">
           <Card className="rounded-3xl border-accent/40 bg-surface shadow-xs p-6 sm:p-8 text-center space-y-4">
             <div className="h-14 w-14 rounded-2xl bg-accent/20 text-accent-dark flex items-center justify-center mx-auto shadow-2xs">
               <Lock className="h-7 w-7 text-accent" />
@@ -113,27 +111,18 @@ export function ItemViewClient({ item, userName, userEmail }: ItemViewClientProp
               }}
             />
           )}
-        </main>
-      </div>
+        </div>
+      </AppShell>
     );
   }
 
   return (
-    <div className="min-h-screen bg-bg text-ink flex flex-col justify-between">
-      {/* Hide floating nav during active quiz mode */}
-      {!isQuizActive && (
-        <FloatingNav
-          role="student"
-          userName={userName}
-          userEmail={userEmail}
-        />
-      )}
-
-      <main
-        className={`flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 ${
-          isQuizActive ? "pt-6 sm:pt-10" : "pt-24 md:pt-[104px]"
-        }`}
-      >
+    <AppShell
+      role="student"
+      userName={userName}
+      userEmail={userEmail}
+      hideNav={isQuizActive}
+    >
         {item.type === "quiz" && (
           <QuizPlayer
             itemId={item.id}
@@ -207,7 +196,6 @@ export function ItemViewClient({ item, userName, userEmail }: ItemViewClientProp
             createdAt={item.created_at}
           />
         )}
-      </main>
-    </div>
+    </AppShell>
   );
 }

@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { FloatingNav } from "@/components/nav/floating-nav";
+import { AppShell } from "@/components/layout/app-shell";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BatchShareDialog } from "@/components/tutor/batch-share-dialog";
@@ -237,14 +237,12 @@ export default async function TutorBatchDetailPage({
   const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(whatsappText)}`;
 
   return (
-    <div className="min-h-screen bg-bg text-ink flex flex-col justify-between selection:bg-primary-soft selection:text-primary">
-      <FloatingNav
-        role="tutor"
-        userName={profile.full_name}
-        userEmail={profile.email}
-      />
-
-      <main className="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-20">
+    <AppShell
+      role="tutor"
+      userName={profile.full_name}
+      userEmail={profile.email}
+    >
+      <div>
         {/* Back navigation link */}
         <div className="mb-4">
           <Link
@@ -409,7 +407,7 @@ export default async function TutorBatchDetailPage({
             />
           </TabsContent>
         </Tabs>
-      </main>
-    </div>
+      </div>
+    </AppShell>
   );
 }

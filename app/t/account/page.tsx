@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { FloatingNav } from "@/components/nav/floating-nav";
+import { AppShell } from "@/components/layout/app-shell";
 import { TutorAccountClient } from "@/components/tutor/tutor-account-client";
 
 export default async function TutorAccountPage() {
@@ -24,22 +24,23 @@ export default async function TutorAccountPage() {
   }
 
   return (
-    <div className="min-h-screen bg-bg">
-      <FloatingNav role="tutor" />
-
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 pt-24 md:pt-[104px] pb-[calc(96px+env(safe-area-inset-bottom))]">
-        <TutorAccountClient
-          profile={{
-            id: profile.id,
-            email: profile.email,
-            full_name: profile.full_name,
-            phone: profile.phone,
-            institute: profile.institute,
-            subjects: profile.subjects,
-            created_at: profile.created_at,
-          }}
-        />
-      </main>
-    </div>
+    <AppShell
+      role="tutor"
+      userName={profile.full_name}
+      userEmail={profile.email}
+      subtitle={profile.institute || "Account Settings"}
+    >
+      <TutorAccountClient
+        profile={{
+          id: profile.id,
+          email: profile.email,
+          full_name: profile.full_name,
+          phone: profile.phone,
+          institute: profile.institute,
+          subjects: profile.subjects,
+          created_at: profile.created_at,
+        }}
+      />
+    </AppShell>
   );
 }

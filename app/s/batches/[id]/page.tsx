@@ -2,7 +2,7 @@ import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { Clock, AlertCircle } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { FloatingNav } from "@/components/nav/floating-nav";
+import { AppShell } from "@/components/layout/app-shell";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
@@ -78,14 +78,12 @@ export default async function StudentBatchFeedPage({ params }: PageProps) {
 
   if (isPending) {
     return (
-      <div className="min-h-screen bg-bg text-ink flex flex-col justify-between">
-        <FloatingNav
-          role="student"
-          userName={profile.full_name}
-          userEmail={profile.email}
-        />
-
-        <main className="flex-1 w-full max-w-3xl mx-auto px-4 sm:px-6 pt-24 md:pt-[104px] pb-[calc(96px+env(safe-area-inset-bottom))] space-y-6">
+      <AppShell
+        role="student"
+        userName={profile.full_name}
+        userEmail={profile.email}
+      >
+        <div className="max-w-2xl mx-auto py-8">
           <Card className="p-8 rounded-3xl border-warning/40 bg-surface shadow-xs space-y-4 text-center">
             <div className="h-12 w-12 rounded-2xl bg-warning/15 text-warning flex items-center justify-center mx-auto">
               <Clock className="h-6 w-6" />
@@ -116,21 +114,19 @@ export default async function StudentBatchFeedPage({ params }: PageProps) {
               </Link>
             </div>
           </Card>
-        </main>
-      </div>
+        </div>
+      </AppShell>
     );
   }
 
   if (!isJoined) {
     return (
-      <div className="min-h-screen bg-bg text-ink flex flex-col justify-between">
-        <FloatingNav
-          role="student"
-          userName={profile.full_name}
-          userEmail={profile.email}
-        />
-
-        <main className="flex-1 w-full max-w-3xl mx-auto px-4 sm:px-6 pt-24 md:pt-[104px] pb-[calc(96px+env(safe-area-inset-bottom))] space-y-6">
+      <AppShell
+        role="student"
+        userName={profile.full_name}
+        userEmail={profile.email}
+      >
+        <div className="max-w-2xl mx-auto py-8">
           <Card className="p-8 rounded-3xl border-border bg-surface shadow-xs text-center space-y-4">
             <div className="h-12 w-12 rounded-2xl bg-destructive/15 text-destructive flex items-center justify-center mx-auto">
               <AlertCircle className="h-6 w-6" />
@@ -158,8 +154,8 @@ export default async function StudentBatchFeedPage({ params }: PageProps) {
               </Link>
             </div>
           </Card>
-        </main>
-      </div>
+        </div>
+      </AppShell>
     );
   }
 
@@ -178,25 +174,21 @@ export default async function StudentBatchFeedPage({ params }: PageProps) {
     : [];
 
   return (
-    <div className="min-h-screen bg-bg text-ink flex flex-col justify-between">
-      <FloatingNav
-        role="student"
-        userName={profile.full_name}
-        userEmail={profile.email}
+    <AppShell
+      role="student"
+      userName={profile.full_name}
+      userEmail={profile.email}
+    >
+      <BatchFeedClient
+        batchId={batchId}
+        batchName={batch.name}
+        tutorName={tutorName}
+        subject={batch.subject}
+        grade={batch.grade}
+        hasPremium={hasPremium}
+        premiumPriceInr={batch.premium_price_inr}
+        items={items}
       />
-
-      <main className="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 md:pt-[104px] pb-[calc(96px+env(safe-area-inset-bottom))] space-y-8">
-        <BatchFeedClient
-          batchId={batchId}
-          batchName={batch.name}
-          tutorName={tutorName}
-          subject={batch.subject}
-          grade={batch.grade}
-          hasPremium={hasPremium}
-          premiumPriceInr={batch.premium_price_inr}
-          items={items}
-        />
-      </main>
-    </div>
+    </AppShell>
   );
 }

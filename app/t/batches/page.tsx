@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { FloatingNav } from "@/components/nav/floating-nav";
+import { AppShell } from "@/components/layout/app-shell";
 import { BatchesListClient, type BatchListItem } from "@/components/tutor/batches-list-client";
 
 export default async function TutorBatchesPage() {
@@ -64,15 +64,13 @@ export default async function TutorBatchesPage() {
   });
 
   return (
-    <div className="min-h-screen bg-bg text-ink flex flex-col justify-between selection:bg-primary-soft selection:text-primary">
-      <FloatingNav
-        role="tutor"
-        userName={profile.full_name}
-        userEmail={profile.email}
-      />
-
-      <main className="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-20">
-        <div className="mb-6">
+    <AppShell
+      role="tutor"
+      userName={profile.full_name}
+      userEmail={profile.email}
+    >
+      <div className="space-y-6">
+        <div>
           <h1 className="font-serif text-3xl font-bold tracking-tight text-ink">
             All Batches
           </h1>
@@ -82,7 +80,7 @@ export default async function TutorBatchesPage() {
         </div>
 
         <BatchesListClient batches={batchList} />
-      </main>
-    </div>
+      </div>
+    </AppShell>
   );
 }

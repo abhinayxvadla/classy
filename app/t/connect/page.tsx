@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { FloatingNav } from "@/components/nav/floating-nav";
+import { AppShell } from "@/components/layout/app-shell";
 import { ConnectMcpClient } from "@/components/tutor/connect-mcp-client";
 
 export default async function TutorConnectPage() {
@@ -15,7 +15,7 @@ export default async function TutorConnectPage() {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("role")
+    .select("role, full_name, email")
     .eq("id", user.id)
     .single();
 
@@ -33,12 +33,12 @@ export default async function TutorConnectPage() {
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
   return (
-    <div className="min-h-screen bg-bg">
-      <FloatingNav role="tutor" />
-
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-20">
-        <ConnectMcpClient tokens={tokens || []} appUrl={appUrl} />
-      </main>
-    </div>
+    <AppShell
+      role="tutor"
+      userName={profile.full_name}
+      userEmail={profile.email}
+    >
+      <ConnectMcpClient tokens={tokens || []} appUrl={appUrl} />
+    </AppShell>
   );
 }

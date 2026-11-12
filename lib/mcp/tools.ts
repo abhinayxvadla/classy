@@ -27,7 +27,7 @@ export function detectAiClient(req: Request): string {
 export const SERVER_INSTRUCTIONS =
   "Classy runs a tutor's classes. Usually call list_batches first to get batch ids. To create a batch from a student list, call create_batch then add_students. Content is published to a batch; use access 'premium' only when the tutor asks. Always confirm what you published and share the invite link when relevant.";
 
-interface ToolDefinition<T extends z.ZodTypeAny> {
+export interface ToolDefinition<T extends z.ZodTypeAny> {
   name: string;
   title: string;
   description: string;
@@ -129,19 +129,19 @@ function registerClassyTool<T extends z.ZodTypeAny>(
 }
 
 /**
- * Register all 15 Classy tools bound strictly to the authenticated tutor's ID
+ * Returns all 15 Classy tool definitions bound strictly to the authenticated tutor's ID
  */
-export function registerClassyTools(
-  server: McpServer,
+export function getClassyTools(
   tutorId: string,
-  clientName: string = "Other",
   adminClient?: SupabaseClient<Database>
-) {
+): ToolDefinition<z.ZodTypeAny>[] {
   const admin = adminClient || createAdminClient();
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const tools: ToolDefinition<z.ZodTypeAny>[] = [];
 
-  const register = <T extends z.ZodTypeAny>(def: ToolDefinition<T>) =>
-    registerClassyTool(server, def, tutorId, clientName);
+  const register = <T extends z.ZodTypeAny>(def: ToolDefinition<T>) => {
+    tools.push(def as unknown as ToolDefinition<z.ZodTypeAny>);
+  };
 
   // ---------------------------------------------------------------------------
   // 1. list_batches
@@ -1416,4 +1416,93 @@ export function registerClassyTools(
       };
     },
   });
+
+  return tools;
+}
+
+/**
+ * Register all 15 Classy tools on an McpServer instance
+ */
+export function registerClassyTools(
+  server: McpServer,
+  tutorId: string,
+  clientName: string = "Other",
+  adminClient?: SupabaseClient<Database>
+) {
+  const tools = getClassyTools(tutorId, adminClient);
+  for (const def of tools) {
+    registerClassyTool(server, def, tutorId, clientName);
+  }
+}
+
+/**
+ * Execute a Classy tool directly by name (used by OpenAPI/ChatGPT/Gemini/Perplexity adapters)
+ */
+export async function executeClassyTool(
+  toolName: string,
+  args: Record<string, unknown>,
+  tutorId: string,
+  clientName: string = "Other",
+  adminClient?: SupabaseClient<Database>
+) {
+  const tools = getClassyTools(tutorId, adminClient);
+  const tool = tools.find((t) => t.name === toolName);
+  if (!tool) {
+    throw new Error(
+      `Tool "${toolName}" not found. Available tools: ${tools.map((t) => t.name).join(", ")}`
+    );
+  }
+
+  // Parse arguments with Zod schema
+  const parsedArgs = tool.schema.parse(args || {});
+  const start = Date.now();
+  try {
+    const res = await tool.handler(parsedArgs);
+    const durationMs = Date.now() - start;
+
+    const batchId = (parsedArgs as Record<string, unknown>)?.batch_id as string | undefined;
+    const itemId = (parsedArgs as Record<string, unknown>)?.item_id as string | undefined;
+
+    track({
+      event: "mcp_tool_call",
+      source: "mcp",
+      actorId: tutorId,
+      actorRole: "tutor",
+      tool: tool.name,
+      clientName,
+      batchId: batchId || null,
+      itemId: itemId || null,
+      success: true,
+      durationMs,
+      meta: { tool: tool.name, client: clientName },
+    });
+
+    return res;
+  } catch (err: unknown) {
+    const durationMs = Date.now() - start;
+    const message = err instanceof Error ? err.message : String(err);
+    const batchId = (parsedArgs as Record<string, unknown>)?.batch_id as string | undefined;
+    const itemId = (parsedArgs as Record<string, unknown>)?.item_id as string | undefined;
+
+    track({
+      event: "mcp_tool_call",
+      source: "mcp",
+      actorId: tutorId,
+      actorRole: "tutor",
+      tool: tool.name,
+      clientName,
+      batchId: batchId || null,
+      itemId: itemId || null,
+      success: false,
+      durationMs,
+      meta: {
+        tool: tool.name,
+        client: clientName,
+        error_name: err instanceof Error ? err.name : "ToolError",
+        error_message: message,
+      },
+    });
+
+    throw err;
+  }
 }

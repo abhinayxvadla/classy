@@ -10,9 +10,11 @@ import {
   RefreshCw,
   Clock,
   Bot,
-  Cpu,
   Layers,
   HelpCircle,
+  Terminal,
+  ShieldCheck,
+  Globe,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -50,6 +52,14 @@ export function ConnectMcpClient({ tokens, appUrl }: ConnectMcpClientProps) {
 
   // Active token is the latest non-revoked token
   const activeToken = tokens.find((t) => !t.revoked_at);
+
+  const cleanAppUrl = appUrl.replace(/\/$/, "");
+
+  // Personalized endpoints for this tutor
+  const claudeUrl = activeToken ? `${cleanAppUrl}/m/${activeToken.token}` : "";
+  const chatGptActionUrl = activeToken ? `${cleanAppUrl}/gpt/${activeToken.token}` : "";
+  const geminiUrl = activeToken ? `${cleanAppUrl}/gemini/${activeToken.token}` : "";
+  const perplexityUrl = activeToken ? `${cleanAppUrl}/m/${activeToken.token}` : "";
 
   const copyToClipboard = async (text: string, keyId: string) => {
     try {
@@ -103,10 +113,19 @@ export function ConnectMcpClient({ tokens, appUrl }: ConnectMcpClientProps) {
     });
   };
 
-  // URL for "No authentication" streamable HTTP
-  const mcpConnectionUrl = activeToken
-    ? `${appUrl}/api/c/${activeToken.token}/mcp`
-    : "";
+  const claudeDesktopJson = JSON.stringify(
+    {
+      mcpServers: {
+        classy: {
+          url: claudeUrl || `${cleanAppUrl}/m/<YOUR_TOKEN>`,
+        },
+      },
+    },
+    null,
+    2
+  );
+
+  const claudeCodeCliCmd = `claude mcp add classy ${claudeUrl || `${cleanAppUrl}/m/<YOUR_TOKEN>`}`;
 
   return (
     <div className="space-y-8">
@@ -114,18 +133,18 @@ export function ConnectMcpClient({ tokens, appUrl }: ConnectMcpClientProps) {
       <div className="relative overflow-hidden rounded-3xl bg-surface border border-border p-6 sm:p-8 shadow-xs">
         <div className="max-w-2xl space-y-3">
           <Badge className="bg-primary-soft text-primary font-medium text-xs px-2.5 py-1">
-            <Sparkles className="h-3.5 w-3.5 mr-1" /> External AI Control via MCP
+            <Sparkles className="h-3.5 w-3.5 mr-1" /> External AI Control via MCP & Actions
           </Badge>
           <h1 className="font-serif text-2xl sm:text-3xl font-bold text-ink tracking-tight">
             Connect your AI assistant to {APP_NAME}
           </h1>
           <p className="text-sm text-muted leading-relaxed">
-            Run your classes directly from Claude, ChatGPT, Perplexity, or Gemini. The Model Context Protocol (MCP) server lets your AI create quizzes, draft notes, manage batch rosters, and grade assignments in {APP_NAME}.
+            Run your entire classroom directly from your favorite AI tool: Claude, ChatGPT, Gemini, or Perplexity. Your personal token securely connects your AI directly to your Classy account.
           </p>
         </div>
       </div>
 
-      {/* Active Connection URL Card */}
+      {/* Connection State Card */}
       {!activeToken ? (
         <Card className="p-8 text-center bg-surface border-border space-y-4">
           <div className="h-12 w-12 rounded-2xl bg-primary-soft flex items-center justify-center mx-auto text-primary">
@@ -136,7 +155,7 @@ export function ConnectMcpClient({ tokens, appUrl }: ConnectMcpClientProps) {
               No active AI connection
             </h2>
             <p className="text-xs text-muted max-w-sm mx-auto mt-1">
-              Generate a unique connection endpoint to plug {APP_NAME} into Claude, ChatGPT, Perplexity, or Gemini.
+              Generate a unique personal connection link to plug {APP_NAME} into Claude, ChatGPT, Gemini, or Perplexity.
             </p>
           </div>
           <Button
@@ -145,7 +164,7 @@ export function ConnectMcpClient({ tokens, appUrl }: ConnectMcpClientProps) {
             className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-xs h-10 px-6 gap-2"
           >
             <Sparkles className="h-3.5 w-3.5" />
-            <span>{isPending ? "Generating..." : "Generate my connection"}</span>
+            <span>{isPending ? "Generating..." : "Generate my personal connection"}</span>
           </Button>
         </Card>
       ) : (
@@ -154,14 +173,14 @@ export function ConnectMcpClient({ tokens, appUrl }: ConnectMcpClientProps) {
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="font-serif font-bold text-ink text-base">
-                  Your MCP Connection URL
+                  Your Personal AI Endpoint
                 </h2>
-                <Badge className="bg-success/15 text-success text-[10px] font-medium">
-                  Active
+                <Badge className="bg-success/15 text-success text-[10px] font-medium flex items-center gap-1">
+                  <ShieldCheck className="h-3 w-3" /> Scoped to Your Login
                 </Badge>
               </div>
               <p className="text-xs text-muted mt-0.5">
-                Paste this URL into your AI app. It works as &quot;No authentication&quot; because your secret token is built right into the URL.
+                Every action taken through this link modifies only your batches and students.
               </p>
             </div>
 
@@ -173,27 +192,27 @@ export function ConnectMcpClient({ tokens, appUrl }: ConnectMcpClientProps) {
               className="text-xs gap-1.5 shrink-0 hover:bg-danger/10 hover:text-danger hover:border-danger/40"
             >
               <RefreshCw className="h-3.5 w-3.5" />
-              <span>Regenerate</span>
+              <span>Regenerate Token</span>
             </Button>
           </div>
 
-          {/* Copyable URL input block */}
+          {/* Simple URL Display */}
           <div className="space-y-2">
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
               <div className="flex-1 p-3 bg-bg rounded-xl border border-border font-mono text-xs text-ink truncate select-all">
-                {mcpConnectionUrl}
+                {claudeUrl}
               </div>
               <Button
-                onClick={() => copyToClipboard(mcpConnectionUrl, "connection-url")}
+                onClick={() => copyToClipboard(claudeUrl, "master-url")}
                 className="h-11 px-5 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-xs shrink-0 gap-1.5"
               >
-                {copiedKey === "connection-url" ? (
+                {copiedKey === "master-url" ? (
                   <>
                     <Check className="h-3.5 w-3.5 text-success" /> Copied!
                   </>
                 ) : (
                   <>
-                    <Copy className="h-3.5 w-3.5" /> Copy URL
+                    <Copy className="h-3.5 w-3.5" /> Copy Link
                   </>
                 )}
               </Button>
@@ -215,160 +234,281 @@ export function ConnectMcpClient({ tokens, appUrl }: ConnectMcpClientProps) {
         </Card>
       )}
 
-      {/* Step-by-Step AI Setup Tabs */}
+      {/* 4 Dedicated AI Tool Tabs */}
       <div className="space-y-4">
         <div>
-          <h2 className="font-serif font-bold text-ink text-lg">Step-by-Step AI Setup</h2>
+          <h2 className="font-serif font-bold text-ink text-lg">Choose Your AI Assistant</h2>
           <p className="text-xs text-muted">
-            Choose your AI assistant below and follow the quick instructions.
+            Select Claude, ChatGPT, Gemini, or Perplexity below for step-by-step connection instructions:
           </p>
         </div>
 
         <Tabs defaultValue="claude" className="w-full">
-          <TabsList className="bg-surface border border-border p-1 w-full justify-start overflow-x-auto">
-            <TabsTrigger value="claude" className="text-xs gap-1.5">
-              <Bot className="h-3.5 w-3.5" /> Claude
+          <TabsList className="bg-surface border border-border p-1 w-full grid grid-cols-2 sm:grid-cols-4 gap-1 h-auto">
+            <TabsTrigger value="claude" className="text-xs py-2 gap-1.5 font-medium data-[state=active]:bg-primary-soft data-[state=active]:text-primary">
+              <Bot className="h-3.5 w-3.5 text-purple-600" /> Claude
             </TabsTrigger>
-            <TabsTrigger value="chatgpt" className="text-xs gap-1.5">
-              <Sparkles className="h-3.5 w-3.5" /> ChatGPT
+            <TabsTrigger value="chatgpt" className="text-xs py-2 gap-1.5 font-medium data-[state=active]:bg-emerald-50 data-[state=active]:text-emerald-700">
+              <Sparkles className="h-3.5 w-3.5 text-emerald-600" /> ChatGPT
             </TabsTrigger>
-            <TabsTrigger value="perplexity" className="text-xs gap-1.5">
-              <Cpu className="h-3.5 w-3.5" /> Perplexity
+            <TabsTrigger value="gemini" className="text-xs py-2 gap-1.5 font-medium data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700">
+              <Layers className="h-3.5 w-3.5 text-blue-600" /> Gemini
             </TabsTrigger>
-            <TabsTrigger value="gemini" className="text-xs gap-1.5">
-              <Layers className="h-3.5 w-3.5" /> Gemini
+            <TabsTrigger value="perplexity" className="text-xs py-2 gap-1.5 font-medium data-[state=active]:bg-amber-50 data-[state=active]:text-amber-700">
+              <Globe className="h-3.5 w-3.5 text-amber-600" /> Perplexity
             </TabsTrigger>
           </TabsList>
 
-          {/* 1. Claude */}
+          {/* 1. Claude (Desktop & Code CLI) */}
           <TabsContent value="claude" className="mt-4">
-            <Card className="p-5 sm:p-6 bg-surface border-border space-y-4">
-              <h3 className="font-serif font-bold text-ink text-base">
-                Connect Claude to {APP_NAME}
-              </h3>
-              <ol className="space-y-2.5 text-xs text-ink/90 list-decimal pl-5 leading-relaxed">
-                <li>
-                  Open <strong>Settings</strong> → <strong>Connectors</strong>.
-                </li>
-                <li>
-                  Click <strong>Add custom connector</strong>.
-                </li>
-                <li>
-                  Set Name to <code className="text-primary font-mono bg-bg px-1 rounded">&quot;Classy&quot;</code>.
-                </li>
-                <li>
-                  Paste your connection URL:{" "}
-                  <code className="text-ink font-mono text-[11px] bg-bg px-1.5 py-0.5 rounded border border-border">
-                    {mcpConnectionUrl || `${appUrl}/api/c/<YOUR_TOKEN>/mcp`}
-                  </code>
-                </li>
-                <li>
-                  Click <strong>Add</strong>.
-                </li>
-                <li>
-                  In any chat, enable <strong>Classy</strong> from the tools menu.
-                </li>
-              </ol>
+            <Card className="p-5 sm:p-6 bg-surface border-border space-y-5">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-serif font-bold text-ink text-base">
+                    Claude (Desktop App &amp; Claude Code CLI)
+                  </h3>
+                  <p className="text-xs text-muted">
+                    Supports native Model Context Protocol (Streamable HTTP) with zero setup headaches.
+                  </p>
+                </div>
+                <Badge className="bg-purple-100 text-purple-800 text-[10px]">MCP Native</Badge>
+              </div>
+
+              {/* Option A: Claude Code CLI */}
+              <div className="space-y-2 p-4 rounded-2xl bg-bg border border-border">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-ink flex items-center gap-1.5">
+                    <Terminal className="h-3.5 w-3.5 text-primary" /> Option A: Claude Code CLI (1 command)
+                  </span>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => copyToClipboard(claudeCodeCliCmd, "claude-cli")}
+                    className="h-7 text-xs text-primary gap-1"
+                  >
+                    {copiedKey === "claude-cli" ? <Check className="h-3 w-3 text-success" /> : <Copy className="h-3 w-3" />}
+                    Copy Command
+                  </Button>
+                </div>
+                <pre className="p-2.5 rounded-lg bg-surface border border-border font-mono text-[11px] text-ink overflow-x-auto">
+                  {claudeCodeCliCmd}
+                </pre>
+              </div>
+
+              {/* Option B: Claude Desktop App */}
+              <div className="space-y-3 p-4 rounded-2xl bg-bg border border-border">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-ink flex items-center gap-1.5">
+                    <Bot className="h-3.5 w-3.5 text-purple-600" /> Option B: Claude Desktop App
+                  </span>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => copyToClipboard(claudeDesktopJson, "claude-json")}
+                    className="h-7 text-xs text-primary gap-1"
+                  >
+                    {copiedKey === "claude-json" ? <Check className="h-3 w-3 text-success" /> : <Copy className="h-3 w-3" />}
+                    Copy JSON
+                  </Button>
+                </div>
+                <ol className="space-y-1.5 text-xs text-muted list-decimal pl-5">
+                  <li>In Claude Desktop, open <strong>Settings</strong> → <strong>Developer</strong> → <strong>Edit Config</strong>.</li>
+                  <li>Paste this configuration into <code className="text-ink font-mono text-[11px]">claude_desktop_config.json</code>:</li>
+                </ol>
+                <pre className="p-2.5 rounded-lg bg-surface border border-border font-mono text-[11px] text-ink overflow-x-auto">
+                  {claudeDesktopJson}
+                </pre>
+                <p className="text-[11px] text-muted">
+                  Restart Claude Desktop. You will see the hammer icon with all 15 Classy tools ready to use!
+                </p>
+              </div>
             </Card>
           </TabsContent>
 
           {/* 2. ChatGPT */}
           <TabsContent value="chatgpt" className="mt-4">
-            <Card className="p-5 sm:p-6 bg-surface border-border space-y-4">
-              <h3 className="font-serif font-bold text-ink text-base">
-                Connect ChatGPT (Paid plans)
-              </h3>
-              <ol className="space-y-2.5 text-xs text-ink/90 list-decimal pl-5 leading-relaxed">
-                <li>
-                  Go to <strong>Settings</strong> → <strong>Apps &amp; Connectors</strong> → <strong>Advanced</strong>.
-                </li>
-                <li>
-                  Turn on <strong>Developer mode</strong>, then click <strong>Create</strong>.
-                </li>
-                <li>
-                  Set Name to <code className="text-primary font-mono bg-bg px-1 rounded">&quot;Classy&quot;</code>.
-                </li>
-                <li>
-                  Paste URL:{" "}
-                  <code className="text-ink font-mono text-[11px] bg-bg px-1.5 py-0.5 rounded border border-border">
-                    {mcpConnectionUrl || `${appUrl}/api/c/<YOUR_TOKEN>/mcp`}
-                  </code>
-                </li>
-                <li>
-                  Set Authentication to <strong>&quot;No authentication&quot;</strong>.
-                </li>
-                <li>
-                  Click <strong>Trust</strong> → <strong>Create</strong>.
-                </li>
-                <li>
-                  In a chat, choose Classy from the tools (+) menu.
-                </li>
-              </ol>
+            <Card className="p-5 sm:p-6 bg-surface border-border space-y-5">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-serif font-bold text-ink text-base">
+                    ChatGPT (Custom GPT Actions &amp; Web/Mobile)
+                  </h3>
+                  <p className="text-xs text-muted">
+                    Works across ChatGPT Web, iOS, and Android mobile apps via OpenAPI 3.1 Actions.
+                  </p>
+                </div>
+                <Badge className="bg-emerald-100 text-emerald-800 text-[10px]">OpenAPI 3.1 Actions</Badge>
+              </div>
+
+              {/* OpenAPI URL for ChatGPT */}
+              <div className="space-y-2 p-4 rounded-2xl bg-bg border border-border">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-ink">
+                    Your Personal ChatGPT Action Schema URL:
+                  </span>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => copyToClipboard(chatGptActionUrl, "chatgpt-url")}
+                    className="h-7 text-xs text-emerald-700 gap-1"
+                  >
+                    {copiedKey === "chatgpt-url" ? <Check className="h-3 w-3 text-success" /> : <Copy className="h-3 w-3" />}
+                    Copy URL
+                  </Button>
+                </div>
+                <div className="p-2.5 rounded-lg bg-surface border border-border font-mono text-[11px] text-ink truncate select-all">
+                  {chatGptActionUrl || `${cleanAppUrl}/gpt/<YOUR_TOKEN>`}
+                </div>
+              </div>
+
+              {/* Step-by-Step Instructions */}
+              <div className="space-y-2 text-xs text-ink/90">
+                <h4 className="font-semibold text-ink">Setup in 30 seconds:</h4>
+                <ol className="space-y-2 list-decimal pl-5 leading-relaxed text-muted">
+                  <li>
+                    Open ChatGPT, click your profile or sidebar → <strong>Explore GPTs</strong> → <strong>+ Create</strong>.
+                  </li>
+                  <li>
+                    Go to the <strong>Configure</strong> tab. Set Name to <strong className="text-ink">Classy Teaching Assistant</strong>.
+                  </li>
+                  <li>
+                    Scroll down to <strong>Actions</strong> and click <strong>Create new action</strong>.
+                  </li>
+                  <li>
+                    Click <strong>Import from URL</strong>, paste your Action Schema URL from above, and click <strong>Import</strong>.
+                  </li>
+                  <li>
+                    Leave Authentication as <strong>None</strong> (your unique token is already embedded in the URL).
+                  </li>
+                  <li>
+                    Click <strong>Save</strong> (Only me). You can now manage your classroom from ChatGPT Web or the mobile app!
+                  </li>
+                </ol>
+              </div>
             </Card>
           </TabsContent>
 
-          {/* 3. Perplexity */}
-          <TabsContent value="perplexity" className="mt-4">
-            <Card className="p-5 sm:p-6 bg-surface border-border space-y-4">
-              <h3 className="font-serif font-bold text-ink text-base">
-                Connect Perplexity (Pro / Max / Enterprise)
-              </h3>
-              <ol className="space-y-2.5 text-xs text-ink/90 list-decimal pl-5 leading-relaxed">
-                <li>
-                  Go to <strong>Settings</strong> → <strong>Connectors</strong> → <strong>+ Custom connector</strong>.
-                </li>
-                <li>
-                  Choose <strong>Remote</strong>.
-                </li>
-                <li>
-                  Paste URL:{" "}
-                  <code className="text-ink font-mono text-[11px] bg-bg px-1.5 py-0.5 rounded border border-border">
-                    {mcpConnectionUrl || `${appUrl}/api/c/<YOUR_TOKEN>/mcp`}
-                  </code>
-                </li>
-                <li>
-                  Set Transport to <strong>&quot;Streamable HTTP&quot;</strong>.
-                </li>
-                <li>
-                  Set Authentication to <strong>&quot;None&quot;</strong>.
-                </li>
-                <li>
-                  Click <strong>Add</strong>.
-                </li>
-              </ol>
-            </Card>
-          </TabsContent>
-
-          {/* 4. Gemini */}
+          {/* 3. Gemini */}
           <TabsContent value="gemini" className="mt-4">
-            <Card className="p-5 sm:p-6 bg-surface border-border space-y-4">
-              <h3 className="font-serif font-bold text-ink text-base">
-                Connect Gemini (AI Ultra, personal account, web)
-              </h3>
-              <ol className="space-y-2.5 text-xs text-ink/90 list-decimal pl-5 leading-relaxed">
-                <li>
-                  Go to <strong>Settings</strong> → <strong>Connected Apps</strong>.
-                </li>
-                <li>
-                  Click <strong>Add a custom app</strong>.
-                </li>
-                <li>
-                  Paste URL:{" "}
-                  <code className="text-ink font-mono text-[11px] bg-bg px-1.5 py-0.5 rounded border border-border">
-                    {mcpConnectionUrl || `${appUrl}/api/c/<YOUR_TOKEN>/mcp`}
-                  </code>
-                </li>
-                <li>
-                  Confirm and enable {APP_NAME}.
-                </li>
-              </ol>
+            <Card className="p-5 sm:p-6 bg-surface border-border space-y-5">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-serif font-bold text-ink text-base">
+                    Google Gemini (AI Studio &amp; Gemini Extensions)
+                  </h3>
+                  <p className="text-xs text-muted">
+                    Supports Function Calling schemas in Google AI Studio and native Streamable MCP.
+                  </p>
+                </div>
+                <Badge className="bg-blue-100 text-blue-800 text-[10px]">AI Studio &amp; Tools</Badge>
+              </div>
+
+              {/* Gemini Schema URL */}
+              <div className="space-y-2 p-4 rounded-2xl bg-bg border border-border">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-ink">
+                    Gemini Tool Schema URL:
+                  </span>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => copyToClipboard(geminiUrl, "gemini-url")}
+                    className="h-7 text-xs text-blue-700 gap-1"
+                  >
+                    {copiedKey === "gemini-url" ? <Check className="h-3 w-3 text-success" /> : <Copy className="h-3 w-3" />}
+                    Copy Schema URL
+                  </Button>
+                </div>
+                <div className="p-2.5 rounded-lg bg-surface border border-border font-mono text-[11px] text-ink truncate select-all">
+                  {geminiUrl || `${cleanAppUrl}/gemini/<YOUR_TOKEN>`}
+                </div>
+              </div>
+
+              {/* Step-by-Step Instructions */}
+              <div className="space-y-2 text-xs text-ink/90">
+                <h4 className="font-semibold text-ink">How to connect in Google AI Studio:</h4>
+                <ol className="space-y-2 list-decimal pl-5 leading-relaxed text-muted">
+                  <li>
+                    Open <strong>Google AI Studio</strong> (aistudio.google.com) and start a new prompt.
+                  </li>
+                  <li>
+                    In the right-hand panel under <strong>Tools</strong>, toggle on <strong>Function Calling</strong>.
+                  </li>
+                  <li>
+                    Import the tool definitions using your Schema URL above.
+                  </li>
+                  <li>
+                    Ask Gemini to create quizzes, check submissions, or post batch notes!
+                  </li>
+                </ol>
+              </div>
+            </Card>
+          </TabsContent>
+
+          {/* 4. Perplexity */}
+          <TabsContent value="perplexity" className="mt-4">
+            <Card className="p-5 sm:p-6 bg-surface border-border space-y-5">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-serif font-bold text-ink text-base">
+                    Perplexity (Pro / Max / Enterprise Connectors)
+                  </h3>
+                  <p className="text-xs text-muted">
+                    Connect Classy directly to Perplexity using Custom Connectors.
+                  </p>
+                </div>
+                <Badge className="bg-amber-100 text-amber-800 text-[10px]">MCP Connector</Badge>
+              </div>
+
+              {/* Perplexity Connector URL */}
+              <div className="space-y-2 p-4 rounded-2xl bg-bg border border-border">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-ink">
+                    Perplexity Connector URL:
+                  </span>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => copyToClipboard(perplexityUrl, "pplx-url")}
+                    className="h-7 text-xs text-amber-700 gap-1"
+                  >
+                    {copiedKey === "pplx-url" ? <Check className="h-3 w-3 text-success" /> : <Copy className="h-3 w-3" />}
+                    Copy URL
+                  </Button>
+                </div>
+                <div className="p-2.5 rounded-lg bg-surface border border-border font-mono text-[11px] text-ink truncate select-all">
+                  {perplexityUrl || `${cleanAppUrl}/m/<YOUR_TOKEN>`}
+                </div>
+              </div>
+
+              {/* Step-by-Step Instructions */}
+              <div className="space-y-2 text-xs text-ink/90">
+                <h4 className="font-semibold text-ink">Setup in Perplexity Settings:</h4>
+                <ol className="space-y-2 list-decimal pl-5 leading-relaxed text-muted">
+                  <li>
+                    Go to <strong>Settings</strong> → <strong>Connectors</strong> → <strong>+ Custom connector</strong>.
+                  </li>
+                  <li>
+                    Choose <strong>Remote</strong> transport and set it to <strong>Streamable HTTP</strong>.
+                  </li>
+                  <li>
+                    Paste your Connector URL from above.
+                  </li>
+                  <li>
+                    Set Authentication to <strong>None</strong> and click <strong>Add</strong>.
+                  </li>
+                  <li>
+                    Use Perplexity to research curriculum materials and instantly publish them to your batches!
+                  </li>
+                </ol>
+              </div>
             </Card>
           </TabsContent>
         </Tabs>
 
-        <p className="text-[11px] text-muted italic flex items-center gap-1.5">
+        <p className="text-[11px] text-muted italic flex items-center gap-1.5 pt-1">
           <HelpCircle className="h-3.5 w-3.5 shrink-0" />
-          Note: Menu names and settings locations change often in AI platforms; if a label differs slightly, look for &quot;Connectors&quot;, &quot;Apps&quot;, or &quot;Custom MCP&quot;.
+          Each tool connection is fully isolated to your login. Tutors never share access or data.
         </p>
       </div>
 
